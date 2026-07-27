@@ -35,6 +35,11 @@ pip install -r requirements.txt
 ```
 
 ### Como buscar (Exemplos)
+
+
+
+<img width="1303" height="607" alt="image" src="https://github.com/user-attachments/assets/f377681c-3237-4512-b72f-2245ebf78506" />
+
 ```bash
 # 1. Buscar um alvo por CPF (busca estado inteiro + 1º e 2º grau)
 python consultar.py --doc 00000000000
