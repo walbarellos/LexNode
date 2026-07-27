@@ -2,7 +2,7 @@
 
 Ferramenta em Python para consulta, extração e estruturação de processos públicos do Tribunal de Justiça do Acre (TJAC), especificamente do sistema e-SAJ de 1º Grau.
 
-O **ProcessoLivreAC** funciona como um "JusBrasil local", permitindo buscar processos por nome da parte ou pelo número CNJ, extraindo os metadados processuais (partes, juízo, classe, assunto) e as movimentações, com uma premissa técnica de *privacy-by-design* (fail-closed para processos sigilosos). 
+O **LexNode** funciona como um "JusBrasil local", permitindo buscar processos por nome da parte ou pelo número CNJ, extraindo os metadados processuais (partes, juízo, classe, assunto) e as movimentações, com uma premissa técnica de *privacy-by-design* (fail-closed para processos sigilosos). 
 
 A ferramenta exporta os dados em formato JSON, em TXT puro, ou gera uma interface **HTML completa e acessível**, desenhada para apresentar uma leitura clara, profissional e rápida do processo.
 
