@@ -15,6 +15,9 @@ Ferramenta em Python focada em OSINT e levantamento de alvos a partir de process
 * **Interface Web API / Frontend:** Embrulhar tudo num backend FastAPI e criar um frontend que consuma a base sem precisar do terminal.
 * **Integração com IA (Tradutor Jurídico):** Passar as movimentações processuais brutas por um LLM para gerar resumos explicativos simples das decisões judiciais.
 
+<img width="1219" height="561" alt="image" src="https://github.com/user-attachments/assets/ade240d7-db03-46dd-b821-1d0f91775779" />
+
+
 ## Tutorial de Uso
 
 ### Instalação
