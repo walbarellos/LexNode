@@ -27,7 +27,9 @@ from src.normalizer import (
     ProcessoNormalizado,
     ProcessoSigilosoError,
     normalizar_html_1grau,
+    normalizar_html_2grau,
     extrair_resumos_pesquisa,
+    extrair_resumos_pesquisa_2grau,
 )
 from src.formatter import formatar_texto, formatar_json, formatar_resumos_processos
 
@@ -54,9 +56,13 @@ Exemplos:
         help="Nome da parte para buscar (retorna lista de processos)",
     )
     parser.add_argument(
+        "--doc",
+        help="CPF ou CNPJ da parte para buscar (apenas números ou com máscara)",
+    )
+    parser.add_argument(
         "--foro",
-        default="0001",
-        help="Código do foro/comarca para busca por nome (padrão: 0001 = Rio Branco)",
+        default="-1",
+        help="Código do foro/comarca para busca por nome/doc (padrão: -1 = Todos os foros do Estado)",
     )
     parser.add_argument(
         "--json",
@@ -83,6 +89,13 @@ Exemplos:
         action="store_true",
         help="Desativa a formatação com cores no terminal",
     )
+    parser.add_argument(
+        "--grau",
+        type=int,
+        choices=[1, 2],
+        default=1,
+        help="Grau de jurisdição: 1 = 1º Grau (cpopg, padrão), 2 = 2º Grau (cposg5, Tribunal)",
+    )
 
     args = parser.parse_args()
 
@@ -106,51 +119,81 @@ Exemplos:
         else:
             print(f"✓ {msg}", file=sys.stderr)
 
-    if not args.processo and not args.nome:
+    if not args.processo and not args.nome and not args.doc:
         parser.print_help()
         sys.exit(1)
 
     if not args.json:
+        grau_label = "2º Grau (Tribunal)" if args.grau == 2 else "1º Grau"
         print()
         print("  ProcessoLivreAC — Consulta pública de processos")
-        print("  TJAC · 1º Grau · e-SAJ")
+        print(f"  TJAC · {grau_label} · e-SAJ")
         print()
 
     crawler = BaseCrawler()
 
     try:
-        if args.nome:
-            if not args.json:
-                print(f"Consultando por nome: {args.nome}...\n")
+        if args.nome or args.doc:
+            termo_busca = args.nome or args.doc
+            tipo_pesquisa = 'NMPARTE' if args.nome else 'DOCPARTE'
             
-            params = {
-                'conversationId': '',
-                'cbPesquisa': 'NMPARTE',
-                'dadosConsulta.tipoNuProcesso': 'UNIFICADO',
-                'dadosConsulta.valorConsulta': args.nome,
-                'cdForo': args.foro,
-                'numeroDigitoAnoUnificado': '',
-                'foroNumeroUnificado': '',
-                'dadosConsulta.valorConsultaNuUnificado': '',
-            }
-            
-            # Use crawler session to respect user-agent and potential future session handling
-            crawler.iniciar_sessao()
-            resp = crawler._session.get("https://esaj.tjac.jus.br/cpopg/search.do", params=params, timeout=15)
-            resp.raise_for_status()
-            
-            texto_lower = resp.text.lower()
-            if "muitos processos" in texto_lower or "refine sua busca" in texto_lower:
-                print_warn("Foram encontrados muitos processos. Refine sua busca ou especifique o foro.")
-                sys.exit(0)
-            elif "não existem informações disponíveis" in texto_lower:
-                print_warn("Não existem informações disponíveis para este nome/foro (nada encontrado).")
-                sys.exit(0)
+            if args.doc:
+                # Sanitiza CPF/CNPJ mantendo apenas números
+                termo_busca = re.sub(r'[^0-9]', '', termo_busca)
                 
-            resumos = extrair_resumos_pesquisa(resp.text)
+            if not args.json:
+                tipo_lbl = "nome" if args.nome else "documento"
+                print(f"Consultando por {tipo_lbl}: {termo_busca}...\n")
+            
+            resumos = []
+            for g in [1, 2]:
+                if not args.json:
+                    print(f"  Buscando no {g}º Grau...")
+                
+                if g == 2:
+                    params = {
+                        'conversationId': '',
+                        'paginaConsulta': '0',
+                        'cbPesquisa': tipo_pesquisa,
+                        'tipoNuProcesso': 'UNIFICADO',
+                        'dePesquisa': termo_busca,
+                        'dePesquisaNuUnificado': '',
+                        'numeroDigitoAnoUnificado': '',
+                        'foroNumeroUnificado': '',
+                    }
+                    search_url = "https://esaj.tjac.jus.br/cposg5/search.do"
+                    crawler.iniciar_sessao(grau=2)
+                else:
+                    params = {
+                        'conversationId': '',
+                        'cbPesquisa': tipo_pesquisa,
+                        'dadosConsulta.tipoNuProcesso': 'UNIFICADO',
+                        'dadosConsulta.valorConsulta': termo_busca,
+                        'cdForo': args.foro,
+                        'numeroDigitoAnoUnificado': '',
+                        'foroNumeroUnificado': '',
+                        'dadosConsulta.valorConsultaNuUnificado': '',
+                    }
+                    search_url = "https://esaj.tjac.jus.br/cpopg/search.do"
+                    crawler.iniciar_sessao()
+                
+                # Use crawler session to respect user-agent and potential future session handling
+                resp = crawler._session.get(search_url, params=params, timeout=15)
+                resp.raise_for_status()
+                
+                texto_lower = resp.text.lower()
+                if "muitos processos" in texto_lower or "refine sua busca" in texto_lower:
+                    if not args.json: print_warn(f"Muitos processos no {g}º Grau. Refine a busca.")
+                    continue
+                elif "não existem informações disponíveis" in texto_lower:
+                    continue
+                    
+                novos_resumos = extrair_resumos_pesquisa_2grau(resp.text) if g == 2 else extrair_resumos_pesquisa(resp.text)
+                if novos_resumos:
+                    resumos.extend(novos_resumos)
             
             if not resumos:
-                print_warn("Nenhum processo encontrado com este nome/foro.")
+                print_warn("Nenhum processo encontrado com este nome/documento em nenhum dos graus.")
                 sys.exit(0)
             
             if args.html:
@@ -162,8 +205,12 @@ Exemplos:
                         try:
                             # Tentar não sobrecarregar o tribunal
                             time.sleep(1)
-                            resp_proc = crawler.consultar_processo_1grau(r.numero)
-                            proc_norm = normalizar_html_1grau(r.numero, resp_proc.html)
+                            try:
+                                resp_proc = crawler.consultar_processo_1grau(r.numero)
+                                proc_norm = normalizar_html_1grau(r.numero, resp_proc.html)
+                            except ProcessoNaoEncontradoError:
+                                resp_proc = crawler.consultar_processo_2grau(r.numero)
+                                proc_norm = normalizar_html_2grau(r.numero, resp_proc.html)
                             html_proc = gerar_html_processo(proc_norm)
                             
                             num_sanitizado = r.numero.replace(".", "_").replace("-", "_").replace("/", "_")
@@ -173,8 +220,8 @@ Exemplos:
                         except Exception as e:
                             print_warn(f"Erro ao baixar detalhes de {r.numero}: {e}")
                             
-                saida_html = gerar_html_lista_busca(args.nome, resumos, link_local=args.detalhar)
-                nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", args.nome)[:50]
+                saida_html = gerar_html_lista_busca(termo_busca, resumos, link_local=args.detalhar)
+                nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", termo_busca)[:50]
                 saida_dir = Path("saida")
                 saida_dir.mkdir(exist_ok=True)
                 arquivo_saida = saida_dir / f"busca_{nome_arq}.html"
@@ -183,7 +230,8 @@ Exemplos:
                 if args.detalhar:
                     print_succ("Detalhes de todos os processos também foram salvos como HTML na pasta 'saida/'.")
             elif args.json:
-                saida = json.dumps({"nome": args.nome, "processos": [r.__dict__ for r in resumos]}, ensure_ascii=False, indent=2)
+                chave_json = "nome" if args.nome else "documento"
+                saida = json.dumps({chave_json: termo_busca, "processos": [r.__dict__ for r in resumos]}, ensure_ascii=False, indent=2)
                 print(saida)
             else:
                 saida = formatar_resumos_processos(resumos, use_colors)
@@ -193,7 +241,7 @@ Exemplos:
                     print(f"   python consultar.py {resumos[0].numero} --html")
                 
             if args.salvar and not args.html:
-                nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", args.nome)[:50]
+                nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", termo_busca)[:50]
                 ext = "json" if args.json else "txt"
                 saida_dir = Path("saida")
                 saida_dir.mkdir(exist_ok=True)
@@ -207,8 +255,12 @@ Exemplos:
             if not args.json:
                 print("Consultando...")
                 
-            resposta = crawler.consultar_processo_1grau(args.processo)
-            processo_normalizado = normalizar_html_1grau(args.processo, resposta.html)
+            if args.grau == 2:
+                resposta = crawler.consultar_processo_2grau(args.processo)
+                processo_normalizado = normalizar_html_2grau(args.processo, resposta.html)
+            else:
+                resposta = crawler.consultar_processo_1grau(args.processo)
+                processo_normalizado = normalizar_html_1grau(args.processo, resposta.html)
             
             if args.html:
                 from src.html_generator import gerar_html_processo

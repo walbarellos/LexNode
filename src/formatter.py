@@ -81,8 +81,12 @@ def formatar_texto(processo: ProcessoNormalizado, colorido: bool = True) -> str:
     # Classe, Vara, Foro
     partes_header = []
     if processo.classe: partes_header.append(processo.classe)
-    if processo.vara: partes_header.append(processo.vara)
-    if processo.foro: partes_header.append(processo.foro)
+    if getattr(processo, 'grau', 1) == 2:
+        if processo.orgao_julgador: partes_header.append(processo.orgao_julgador)
+        if processo.secao: partes_header.append(processo.secao)
+    else:
+        if processo.vara: partes_header.append(processo.vara)
+        if processo.foro: partes_header.append(processo.foro)
     header_text = ' · '.join(partes_header)
     
     if len(header_text) > 63:
@@ -102,13 +106,22 @@ def formatar_texto(processo: ProcessoNormalizado, colorido: bool = True) -> str:
     def add_campo(label: str, valor: str):
         if valor:
             linhas.append(f"  {c_cyan}{label:<16}{c_reset}{c_green}{valor}{c_reset}")
-            
-    add_campo('Juiz', processo.juiz)
-    add_campo('Área', processo.area)
-    add_campo('Assunto', processo.assunto)
-    add_campo('Valor', processo.valor_acao)
-    add_campo('Distribuição', processo.distribuicao)
-    add_campo('Controle', processo.numero_controle)
+
+    if getattr(processo, 'grau', 1) == 2:
+        add_campo('Relator', processo.relator)
+        add_campo('Seção', processo.secao)
+        add_campo('Órgão Julgador', processo.orgao_julgador)
+        add_campo('Área', processo.area)
+        add_campo('Assunto', processo.assunto)
+        add_campo('Valor', processo.valor_acao)
+        add_campo('Volume/Apenso', processo.volume_apenso)
+    else:
+        add_campo('Juiz', processo.juiz)
+        add_campo('Área', processo.area)
+        add_campo('Assunto', processo.assunto)
+        add_campo('Valor', processo.valor_acao)
+        add_campo('Distribuição', processo.distribuicao)
+        add_campo('Controle', processo.numero_controle)
     
     linhas.append("")
     

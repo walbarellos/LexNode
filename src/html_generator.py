@@ -282,6 +282,27 @@ def _gerar_estilo() -> str:
     }
     """
 
+def _campos_sidebar(processo: ProcessoNormalizado) -> list[tuple[str, str]]:
+    """Retorna pares (label, valor) para a sidebar, adaptado ao grau."""
+    campos = []
+    if getattr(processo, 'grau', 1) == 2:
+        campos.append(('Relator', processo.relator or '-'))
+        campos.append(('Seção', processo.secao or '-'))
+        campos.append(('Órgão Julgador', processo.orgao_julgador or '-'))
+        campos.append(('Área', processo.area or '-'))
+        campos.append(('Assunto', processo.assunto or '-'))
+        campos.append(('Valor da Ação', processo.valor_acao or '-'))
+        campos.append(('Volume / Apenso', processo.volume_apenso or '-'))
+    else:
+        campos.append(('Juiz', processo.juiz or '-'))
+        campos.append(('Área', processo.area or '-'))
+        campos.append(('Assunto', processo.assunto or '-'))
+        campos.append(('Distribuição', processo.distribuicao or '-'))
+        campos.append(('Valor da Ação', processo.valor_acao or '-'))
+        campos.append(('Vara', processo.vara or '-'))
+        campos.append(('Controle', processo.numero_controle or '-'))
+    return campos
+
 def gerar_html_processo(processo: ProcessoNormalizado) -> str:
     """Gera um HTML completo estilizado apresentando os dados do processo."""
     
@@ -381,7 +402,7 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
                             <span class="badge {badge_class}" aria-label="Situação do processo">{sit}</span>
                             <span>{processo.classe}</span>
                             <span aria-hidden="true">·</span>
-                            <span>{processo.foro}</span>
+                            <span>{processo.orgao_julgador or processo.foro or '-'}</span>
                         </div>
                     </header>
 
@@ -405,34 +426,11 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
                 <div class="card" style="position: sticky; top: 80px;">
                     <h2 style="font-size: 1.1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Detalhes do Processo</h2>
                     <ul class="detail-list">
+                        {''.join(f'''
                         <li class="detail-item">
-                            <div class="detail-label">Juiz</div>
-                            <div class="detail-value">{processo.juiz or '-'}</div>
-                        </li>
-                        <li class="detail-item">
-                            <div class="detail-label">Área</div>
-                            <div class="detail-value">{processo.area or '-'}</div>
-                        </li>
-                        <li class="detail-item">
-                            <div class="detail-label">Assunto</div>
-                            <div class="detail-value">{processo.assunto or '-'}</div>
-                        </li>
-                        <li class="detail-item">
-                            <div class="detail-label">Distribuição</div>
-                            <div class="detail-value">{processo.distribuicao or '-'}</div>
-                        </li>
-                        <li class="detail-item">
-                            <div class="detail-label">Valor da Ação</div>
-                            <div class="detail-value">{processo.valor_acao or '-'}</div>
-                        </li>
-                        <li class="detail-item">
-                            <div class="detail-label">Vara</div>
-                            <div class="detail-value">{processo.vara or '-'}</div>
-                        </li>
-                        <li class="detail-item">
-                            <div class="detail-label">Controle</div>
-                            <div class="detail-value">{processo.numero_controle or '-'}</div>
-                        </li>
+                            <div class="detail-label">{label}</div>
+                            <div class="detail-value">{valor}</div>
+                        </li>''' for label, valor in _campos_sidebar(processo))}
                     </ul>
                 </div>
             </aside>
@@ -511,7 +509,7 @@ def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local:
         <header style="margin-bottom: 2rem;">
             <p style="color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Resultados da busca</p>
             <h1 class="process-title" style="font-size: 1.8rem;">{nome}</h1>
-            <p style="margin-top: 0.5rem; color: var(--text-muted);">{len(resumos)} processos encontrados no e-SAJ 1º Grau TJAC.</p>
+            <p style="margin-top: 0.5rem; color: var(--text-muted);">{len(resumos)} processos encontrados no e-SAJ TJAC.</p>
         </header>
 
         <section aria-label="Lista de Processos">

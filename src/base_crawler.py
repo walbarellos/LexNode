@@ -29,6 +29,7 @@ logger = logging.getLogger("processolivre.base_crawler")
 
 ESAJ_BASE_URL = "https://esaj.tjac.jus.br"
 ESAJ_CPOPG_SEARCH_PATH = "/cpopg/search.do"  # action real do form (confirmado)
+ESAJ_CPOSG5_SEARCH_PATH = "/cposg5/search.do"  # 2º Grau (Tribunal)
 
 # Intervalo mínimo entre requisições, em segundos.
 # Deliberadamente conservador — este é um sistema do Judiciário estadual,
@@ -96,20 +97,29 @@ class BaseCrawler:
         self._session = requests.Session()
         self._session.headers.update({"User-Agent": USER_AGENT})
         self._sessao_iniciada = False
+        self._sessao_2grau_iniciada = False
 
     # -- rate limiting --------------------------------------------------
 
-    def iniciar_sessao(self) -> None:
+    def iniciar_sessao(self, grau: int = 1) -> None:
         """Faz uma requisição inicial para obter cookies de sessão e evitar captcha direto."""
-        if self._sessao_iniciada:
-            return
+        if grau == 1:
+            if self._sessao_iniciada:
+                return
+            url = f"{self.base_url}/cpopg/open.do"
+        else:
+            if self._sessao_2grau_iniciada:
+                return
+            url = f"{self.base_url}/cposg5/open.do"
             
         self._respeitar_intervalo()
-        url = f"{self.base_url}/cpopg/open.do"
         try:
             self._session.get(url, timeout=15)
             self._last_request_ts = time.monotonic()
-            self._sessao_iniciada = True
+            if grau == 1:
+                self._sessao_iniciada = True
+            else:
+                self._sessao_2grau_iniciada = True
         except requests.RequestException as exc:
             logger.warning("Erro ao inicializar sessão (open.do): %s", exc)
 
@@ -156,6 +166,81 @@ class BaseCrawler:
 
         for attempt in range(1, self.max_retries + 1):
             self.iniciar_sessao()
+            self._respeitar_intervalo()
+            try:
+                resp = self._session.get(url, params=params, timeout=15)
+                self._last_request_ts = time.monotonic()
+
+                if resp.status_code != 200:
+                    raise ConsultaFalhouError(
+                        f"HTTP {resp.status_code} ao consultar {numero_processo}"
+                    )
+
+                if self._parece_captcha(resp.text):
+                    raise ConsultaFalhouError(
+                        f"Captcha detectado ao consultar {numero_processo}; "
+                        "resolução automática não implementada neste ciclo."
+                    )
+
+                if self._processo_nao_encontrado(resp.text):
+                    raise ProcessoNaoEncontradoError(
+                        f"Processo {numero_processo} não encontrado no e-SAJ."
+                    )
+
+                return RespostaConsulta(
+                    numero_processo=numero_processo,
+                    status_code=resp.status_code,
+                    html=resp.text,
+                    url_consultada=resp.url,
+                )
+
+            except ProcessoNaoEncontradoError:
+                raise  # Não faz retry — o processo não existe
+
+            except (requests.RequestException, ConsultaFalhouError) as exc:
+                last_error = exc
+                logger.warning(
+                    "Tentativa %d/%d falhou para %s: %s",
+                    attempt,
+                    self.max_retries,
+                    numero_processo,
+                    exc,
+                )
+                if attempt < self.max_retries:
+                    time.sleep(RETRY_BACKOFF_SECONDS * attempt)
+
+        raise ConsultaFalhouError(
+            f"Falha ao consultar {numero_processo} após {self.max_retries} tentativas"
+        ) from last_error
+
+    def consultar_processo_2grau(self, numero_processo: str) -> RespostaConsulta:
+        """
+        Consulta um processo por número no e-SAJ, 2º grau (cposg5).
+        
+        NOTA: o e-SAJ pode responder com um captcha em vez do conteúdo
+        esperado. Este método NÃO tenta resolver o captcha — apenas
+        detecta essa condição e levanta ConsultaFalhouError, deixando a
+        decisão (resolução manual, retry mais tarde, etc.) para a camada
+        chamadora. Ver Ciclo 00, restrição 3.
+        """
+        digito_ano, foro = self._formatar_numero_cnj(numero_processo)
+
+        params = {
+            "conversationId": "",
+            "paginaConsulta": "0",
+            "cbPesquisa": "NUMPROC",
+            "tipoNuProcesso": "UNIFICADO",
+            "numeroDigitoAnoUnificado": digito_ano,
+            "foroNumeroUnificado": foro,
+            "dePesquisaNuUnificado": numero_processo,
+            "dePesquisa": "",
+        }
+
+        url = f"{self.base_url}{ESAJ_CPOSG5_SEARCH_PATH}"
+        last_error: Optional[Exception] = None
+
+        for attempt in range(1, self.max_retries + 1):
+            self.iniciar_sessao(grau=2)
             self._respeitar_intervalo()
             try:
                 resp = self._session.get(url, params=params, timeout=15)
