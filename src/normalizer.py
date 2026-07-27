@@ -1,0 +1,308 @@
+"""
+normalizer.py — ProcessoLivreAC
+
+Responsabilidade única: transformar HTML bruto do e-SAJ em um schema
+normalizado, aplicando o filtro de sigilo processual ANTES de qualquer
+outra extração.
+
+Constraint crítica (Ciclo 00, seção 3 / seção 6 DoD):
+    O filtro de sigilo é FAIL-CLOSED. Se houver qualquer incerteza sobre
+    se um processo é público, ele é tratado como sigiloso e descartado.
+    Não é uma otimização — é a diferença entre um projeto cívico legítimo
+    e uma exposição indevida de dados protegidos por lei.
+
+IDs confirmados contra HTML real do e-SAJ TJAC em 2026-07-27
+(processo 0800224-44.2013.8.01.0001, Ação Civil Pública, 2ª Vara Cível):
+    #classeProcesso      → "Ação Civil Pública"
+    #assuntoProcesso     → "Defeito, nulidade ou anulação"
+    #varaProcesso        → "2ª Vara Cível"
+    #foroProcesso        → "Rio Branco"
+    #juizProcesso        → "Thaís Queiroz B. de Oliveira A. Khalil"
+    #labelSituacaoProcesso → "Baixado"
+    #areaProcesso        → "Cível"
+    #valorAcaoProcesso   → "R$ 10.000.000,00"
+    #dataHoraDistribuicaoProcesso → "28/06/2013 às 13:00 - Sorteio"
+    #numeroControleProcesso → "2013/000461"
+"""
+
+from __future__ import annotations
+
+import logging
+import re
+import copy
+from dataclasses import dataclass, field
+from typing import Optional
+
+from bs4 import BeautifulSoup
+
+logger = logging.getLogger("processolivre.normalizer")
+
+
+# ---------------------------------------------------------------------------
+# Marcadores de sigilo
+# ---------------------------------------------------------------------------
+# Lista inicial baseada em terminologia comum do e-SAJ/PJe. DEVE ser
+# expandida e validada manualmente contra casos reais antes de qualquer
+# uso em produção — esta lista é um ponto de partida, não uma garantia.
+MARCADORES_SIGILO = (
+    "segredo de justiça",
+    "sigilo",
+    "processo em segredo",
+    "restrito",
+    "acesso restrito",
+)
+
+
+class ProcessoSigilosoError(Exception):
+    """
+    Levantada quando o parser detecta (ou não consegue descartar com
+    confiança) que um processo está sob sigilo. Deve SEMPRE resultar em
+    descarte do conteúdo pela camada chamadora — nunca em log do
+    conteúdo sigiloso, apenas do fato de que houve bloqueio.
+    """
+
+
+@dataclass
+class Movimentacao:
+    data: str
+    descricao: str
+
+
+@dataclass
+class ResumoProcesso:
+    numero: str
+    classe: str
+    assunto: str
+    data_local: str
+    participacao: str
+    nome_parte: str
+
+
+@dataclass
+class Parte:
+    nome: str
+    tipo: str  # ex: "Requerente", "Requerido", "Advogado"
+
+
+@dataclass
+class ProcessoNormalizado:
+    """Schema normalizado de um processo do e-SAJ TJAC, 1º grau.
+
+    Campos confirmados contra HTML real em 2026-07-27.
+    """
+    numero_processo: str
+    classe: Optional[str] = None
+    assunto: Optional[str] = None
+    foro: Optional[str] = None
+    vara: Optional[str] = None
+    juiz: Optional[str] = None
+    situacao: Optional[str] = None        # ex: "Baixado", "Em andamento"
+    area: Optional[str] = None            # ex: "Cível", "Criminal"
+    valor_acao: Optional[str] = None      # ex: "R$ 10.000.000,00"
+    distribuicao: Optional[str] = None    # ex: "28/06/2013 às 13:00 - Sorteio"
+    numero_controle: Optional[str] = None # ex: "2013/000461"
+    partes: list[Parte] = field(default_factory=list)
+    movimentacoes: list[Movimentacao] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        return {
+            'numero_processo': self.numero_processo,
+            'classe': self.classe,
+            'assunto': self.assunto,
+            'foro': self.foro,
+            'vara': self.vara,
+            'juiz': self.juiz,
+            'situacao': self.situacao,
+            'area': self.area,
+            'valor_acao': self.valor_acao,
+            'distribuicao': self.distribuicao,
+            'numero_controle': self.numero_controle,
+            'partes': [{'nome': p.nome, 'tipo': p.tipo} for p in self.partes],
+            'movimentacoes': [{'data': m.data, 'descricao': m.descricao} for m in self.movimentacoes],
+        }
+
+
+def normalizar_html_1grau(numero_processo: str, html: str) -> ProcessoNormalizado:
+    """
+    Ponto de entrada principal. Levanta ProcessoSigilosoError se detectar
+    qualquer indicação de sigilo — a chamada NUNCA deve capturar essa
+    exceção para "tentar extrair mesmo assim".
+    """
+    _verificar_sigilo_fail_closed(html)
+
+    soup = BeautifulSoup(html, "html.parser")
+
+    processo = ProcessoNormalizado(numero_processo=numero_processo)
+
+    # Campos principais — IDs confirmados contra HTML real do TJAC
+    processo.classe = _extrair_texto_seguro(soup, "classeProcesso")
+    processo.assunto = _extrair_texto_seguro(soup, "assuntoProcesso")
+    processo.foro = _extrair_texto_seguro(soup, "foroProcesso")
+    processo.vara = _extrair_texto_seguro(soup, "varaProcesso")
+    processo.juiz = _extrair_texto_seguro(soup, "juizProcesso")
+    processo.situacao = _extrair_texto_seguro(soup, "labelSituacaoProcesso")
+
+    # Campos secundários (dentro de #maisDetalhes, colapsado por padrão)
+    processo.area = _extrair_texto_seguro(soup, "areaProcesso")
+    processo.valor_acao = _extrair_texto_seguro(soup, "valorAcaoProcesso")
+    processo.distribuicao = _extrair_texto_seguro(
+        soup, "dataHoraDistribuicaoProcesso"
+    )
+    processo.numero_controle = _extrair_texto_seguro(
+        soup, "numeroControleProcesso"
+    )
+
+    # Partes e movimentações — stubs, pendente HTML real dessas seções
+    processo.partes = _extrair_partes(soup)
+    processo.movimentacoes = _extrair_movimentacoes(soup)
+
+    return processo
+
+
+def extrair_resumos_pesquisa(html: str) -> list[ResumoProcesso]:
+    """Extrai uma lista de resumos de processo da página de resultados de busca por nome."""
+    soup = BeautifulSoup(html, "html.parser")
+    resumos = []
+    
+    blocos = soup.find_all("div", class_="home__lista-de-processos")
+    for bloco in blocos:
+        link = bloco.find("a", class_="linkProcesso")
+        if not link:
+            continue
+        numero = link.get_text(strip=True)
+        
+        classe_div = bloco.find("div", class_="classeProcesso")
+        classe = classe_div.get_text(strip=True) if classe_div else ""
+        
+        assunto_div = bloco.find("div", class_="assuntoPrincipalProcesso")
+        assunto = assunto_div.get_text(strip=True) if assunto_div else ""
+        
+        data_div = bloco.find("div", class_="dataLocalDistribuicaoProcesso")
+        data_local = data_div.get_text(strip=True) if data_div else ""
+        
+        tipo_label = bloco.find("label", class_="tipoDeParticipacao")
+        tipo = tipo_label.get_text(strip=True).strip(":") if tipo_label else ""
+        
+        nome_div = bloco.find("div", class_="nomeParte")
+        nome = nome_div.get_text(strip=True) if nome_div else ""
+        
+        resumos.append(ResumoProcesso(
+            numero=numero,
+            classe=classe,
+            assunto=assunto,
+            data_local=data_local,
+            participacao=tipo,
+            nome_parte=nome
+        ))
+    return resumos
+
+
+def _verificar_sigilo_fail_closed(html: str) -> None:
+    """
+    Fail-closed: DOM-aware check. Removes UI chrome (forms, select/option,
+    nav, aside, header, footer, script, style, noscript) and checks the
+    remaining text content for sigilo markers to avoid false positives.
+    Também bloqueia se o HTML vier vazio/anormalmente curto, pois isso
+    pode indicar uma página de acesso negado em vez de conteúdo real.
+    """
+    if not html or len(html.strip()) < 200:
+        raise ProcessoSigilosoError(
+            "HTML vazio ou suspeito demais para confirmar que o processo "
+            "é público; bloqueado por precaução."
+        )
+
+    soup = BeautifulSoup(html, "html.parser")
+    # Remover UI Chrome
+    for tag in soup(["form", "select", "option", "nav", "aside", "header", "footer", "script", "style", "noscript"]):
+        tag.decompose()
+        
+    # Remover conteúdo gerado por usuários/juízes que pode citar a palavra acidentalmente
+    for tag_id in ["tabelaTodasMovimentacoes", "tabelaUltimasMovimentacoes", "tablePartesPrincipais", "tableTodasPartes"]:
+        el = soup.find(id=tag_id)
+        if el:
+            el.decompose()
+
+    content_text = soup.get_text(separator=' ', strip=True).lower()
+    for marcador in MARCADORES_SIGILO:
+        if marcador in content_text:
+            logger.info(
+                "Processo bloqueado por marcador de sigilo no conteúdo (não logando conteúdo)."
+            )
+            raise ProcessoSigilosoError(
+                "Processo sob possível segredo de justiça; não indexado."
+            )
+
+
+def _extrair_texto_seguro(soup: BeautifulSoup, element_id: str) -> Optional[str]:
+    el = soup.find(id=element_id)
+    if el is None:
+        return None
+    return el.get_text(strip=True)
+
+
+def _extrair_partes(soup: BeautifulSoup) -> list[Parte]:
+    """
+    Extrai as partes do processo da tabela #tablePartesPrincipais.
+    Identifica a parte principal e seus advogados/representantes.
+    """
+    partes: list[Parte] = []
+    tabela = soup.find(id="tablePartesPrincipais") or soup.find(id="tableTodasPartes")
+    if tabela is None:
+        return partes
+    
+    for tr in tabela.find_all("tr"):
+        label_td = tr.find("td", class_="label")
+        nome_td = tr.find("td", class_="nome")
+        
+        if label_td and nome_td:
+            tipo_principal = label_td.get_text(strip=True).strip(":").strip()
+            
+            linhas = nome_td.get_text('\n', strip=True).split('\n')
+            if linhas:
+                nome_principal = linhas[0].strip()
+                partes.append(Parte(nome=nome_principal, tipo=tipo_principal))
+                
+                current_tipo_rep = None
+                for linha in linhas[1:]:
+                    linha = linha.strip()
+                    if not linha:
+                        continue
+                    
+                    match = re.match(r'^(Advogado|Advogada|Representante|Curador)s?:?(.*)', linha, re.IGNORECASE)
+                    if match:
+                        current_tipo_rep = match.group(1).strip()
+                        resto = match.group(2).strip()
+                        if resto:
+                            partes.append(Parte(nome=resto, tipo=current_tipo_rep))
+                            current_tipo_rep = None
+                    elif current_tipo_rep:
+                        partes.append(Parte(nome=linha, tipo=current_tipo_rep))
+                        current_tipo_rep = None
+                        
+    return partes
+
+
+def _extrair_movimentacoes(soup: BeautifulSoup) -> list[Movimentacao]:
+    """
+    Extrai as movimentações da #tabelaTodasMovimentacoes ou #tabelaUltimasMovimentacoes.
+    Itera sobre as linhas da tabela considerando as classes do e-SAJ.
+    """
+    movimentacoes: list[Movimentacao] = []
+    tabela = soup.find(id="tabelaTodasMovimentacoes") or soup.find(id="tabelaUltimasMovimentacoes")
+    if tabela is None:
+        return movimentacoes
+        
+    for tr in tabela.find_all("tr"):
+        classes = tr.get("class", [])
+        if "containerMovimentacao" in classes or "fundoClaro" in classes or "fundoEscuro" in classes:
+            data_td = tr.find("td", class_="dataMovimentacao")
+            desc_td = tr.find("td", class_="descricaoMovimentacao")
+            
+            if data_td and desc_td:
+                data = data_td.get_text(strip=True)
+                descricao = desc_td.get_text(" ", strip=True)
+                
+                if data and descricao:
+                    movimentacoes.append(Movimentacao(data=data, descricao=descricao))
+                    
+    return movimentacoes
