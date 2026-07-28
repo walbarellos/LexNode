@@ -9,13 +9,14 @@ O LexNode é uma arquitetura de software desenvolvida em Python orientada à col
 * **Extração Direta e Normalização (Padrão CNJ):** O `normalizer.py` mapeia o DOM caótico do e-SAJ para um schema unificado, extraindo metadados críticos (relator, magistrado, classe, assunto, valor da causa) e a cronologia completa de movimentações.
 * **Bypass de Autenticação para PDFs (`--baixar-pdfs`):** Implementação de injeção de cookies via `.env` para autenticação de sessão, permitindo a extração automatizada de peças processuais originais (PDFs) burlando restrições nativas do servidor.
 * **Painel Web Analítico (FastAPI + Tailwind):** Além da CLI, o sistema embarca um servidor assíncrono (`uvicorn`) provendo uma API RESTful completa e um dashboard de inteligência em Glassmorphism responsivo.
-* **Privacy by Design (Fail-Closed):** O sanitizador de HTML implementa uma heurística estrita para detectar flags de "Segredo de Justiça". Em caso de ambiguidade, o pipeline descarta a payload para garantir o compliance com a LGPD e evitar a exposição de dados sensíveis.
+* **Privacy by Design:** O sistema só opera sobre dados classificados como públicos pelo próprio Tribunal. Processos protegidos por Segredo de Justiça são omitidos na origem pelo servidor do e-SAJ, antes de qualquer raspagem.
 
 ## 🛠️ Roadmap e Melhorias Futuras
 
-* **Persistência Relacional:** Implementar `SQLAlchemy` (SQLite/PostgreSQL) para armazenamento em cache local, permitindo investigações offline e versionamento de linha do tempo processual (alertas de movimentação).
-* **Processamento de Linguagem Natural (LLM):** Integração com APIs de LLM para processar a base de movimentações, resumindo o mérito das decisões judiciais de forma autônoma.
-* **Automação Headless Avançada:** Migração parcial da engine de requisições de `requests` para `Playwright` com `stealth plugins`, mitigando de forma definitiva os desafios de *Cloudflare Turnstile* e captchas dinâmicos.
+* **Integração BNMP (CNJ):** Crawler para o Banco Nacional de Mandados de Prisão, consultando mandados em aberto via API REST do portal (`portalbnmp.cnj.jus.br`).
+* **Integração Justiça Federal (TRF1 - PJe):** Crawler para o Processo Judicial Eletrônico do TRF1 (`pje1g-consultapublica.trf1.jus.br`), cobrindo crimes federais no Acre.
+* **Persistência Relacional (SQLite):** Cache local via `SQLAlchemy` para investigações offline e versionamento de linha do tempo processual.
+* **Automação Headless Avançada:** Migração parcial da engine de requisições para `Playwright` com `stealth plugins`, mitigando desafios de *Cloudflare Turnstile* e captchas dinâmicos.
 
 <img width="1219" height="561" alt="image" src="https://github.com/user-attachments/assets/ade240d7-db03-46dd-b821-1d0f91775779" />
 
