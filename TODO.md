@@ -1,31 +1,32 @@
 # TODO: Próximos Passos e Melhorias Futuras
 
-Abaixo está o roadmap sugerido de evolução para o **ProcessoLivreAC**, partindo de uma ferramenta de CLI e web scraping de linha de comando para uma possível solução escalável e completa.
+Abaixo está o roadmap sugerido de evolução para o **LexNode**, partindo de uma ferramenta de CLI e web scraping de linha de comando para uma solução escalável de OSINT e inteligência processual.
 
-## 1. ~~Suporte ao 2º Grau (Tribunal de Justiça)~~ [CONCLUÍDO]
-Atualmente, o script consulta e extrai dados tanto do `cpopg` (1º Grau) quanto do `cposg5` (2º Grau) de forma automática e unificada, incluindo busca exaustiva por CPF/CNPJ.
+## Funcionalidades Implementadas (Concluídas)
+* ~~**1. Suporte ao 2º Grau (Tribunal de Justiça)**~~ [CONCLUÍDO]
+* ~~**2. Motor de Jurisprudência (Text-Search de Decisões)**~~ [CONCLUÍDO]
+* ~~**3. Download de Documentos (Peças Processuais Originais)**~~ [CONCLUÍDO via Cookie Injection]
+* ~~**4. Interface Web API Completa (Backend/Frontend)**~~ [CONCLUÍDO via FastAPI + Tailwind]
 
-## 2. Download de Documentos (Peças Processuais)
-Nós conseguimos ler a *linha do tempo*, mas as peças (PDFs) não são baixadas.
-**Objetivo:** Identificar links e senhas nos movimentos (para o que for público, como sentenças, acórdãos e despachos) e permitir que o usuário baixe diretamente o documento PDF gerado pelo sistema.
+## Próximos Passos
 
-## 3. Gestão Anti-Ban e Tratamento de Captchas
-Ao executar rotinas com `--detalhar` para uma busca muito vasta, o e-SAJ pode interromper a extração através de rate limits ou Captchas.
-**Objetivo:** Incorporar sessão persistente via arquivos de Cookies (aproveitando sessão real do navegador logado do usuário), ou evoluir o scraper para automação *headless* moderna, como o `Playwright`, com a finalidade de lidar com desafios Cloudflare e captchas complexos do TJ.
+### 5. Integração com Banco Nacional de Mandados de Prisão (BNMP - CNJ)
+**Objetivo:** Permitir que o LexNode descubra se o alvo tem mandado de prisão em aberto no Brasil inteiro.
+*   **Alvo:** API JSON oficial do CNJ (`https://portalbnmp.cnj.jus.br/`)
+*   **Abordagem:** Não precisa parsear HTML. O BNMP moderno é uma SPA em React e tem uma API REST por trás. Faremos requisições POST diretas para a API de pesquisa pública.
 
-## 4. Banco de Dados / Camada de Cache
-Bater no Tribunal para cada consulta é ineficiente e arrisca bans. 
-**Objetivo:** Adicionar uma camada de persistência com `SQLite` ou `PostgreSQL` usando um ORM como o SQLAlchemy. Isso permitirá salvar resultados num cache local e construir uma base histórica robusta (sempre respeitando as exclusões do Segredo de Justiça).
+### 6. Integração com a Justiça Federal (TRF1 - PJe)
+**Objetivo:** Capturar crimes federais (contrabando, fraudes ao INSS, corrupção, Receita Federal) no Estado do Acre, que rodam inteiramente fora do e-SAJ.
+*   **Alvo:** Sistema PJe do TRF1 (`https://pje1g.trf1.jus.br/consultapublica/ConsultaPublica/listView.seam`)
+*   **Abordagem:** O PJe usa JavaServer Faces (JSF). Precisamos fazer um Crawler PJe que capture o token oculto `javax.faces.ViewState` e envie via POST para extrair os resultados e a linha do tempo.
 
-## 5. Interface Web API Completa (Backend/Frontend)
-A atual exportação para HTML estático resolve a visualização, mas a interação exige o uso do Terminal.
-**Objetivo:** Embrulhar a aplicação em um framework web (`FastAPI` ou `Flask`). 
-Assim, cria-se um site local ou em nuvem onde o usuário digita a busca em um campo web e consome uma API que faz o trabalho por baixo dos panos, renderizando os processos num frontend React/Next.js (ou templates do lado do servidor) verdadeiramente análogo ao "JusBrasil".
+### 7. Integração com a Justiça do Trabalho (TRT14 - PJe Trabalhista)
+**Objetivo:** Encontrar passivos trabalhistas, fraudes a credores, laranjas e histórico corporativo do alvo (Acre e Rondônia).
+*   **Alvo:** Sistema PJe do TRT14 (`https://pje.trt14.jus.br/consultapublica/ConsultaPublica/listView.seam`)
+*   **Abordagem:** Mesma mecânica do TRF1. O PJe trabalhista segue o mesmo padrão arquitetural JSF do CNJ. 
 
-## 6. Busca Fonética Flexível (Fuzzy Search)
-**Objetivo:** Atualmente a busca usa a mecânica base do e-SAJ. É possível implementar e repassar *flags* (como `chNmCompleto`) na URL ou construir algoritmos baseados em fonética e divergência de caracteres ao iterar pelos resultados devolvidos, para melhorar a taxa de acertos ao procurar partes.
+### 8. Banco de Dados / Camada de Cache (SQLite)
+**Objetivo:** Adicionar uma camada de persistência com `SQLite` usando um ORM como o SQLAlchemy. Bater nos Tribunais para cada consulta é ineficiente. Isso permitirá salvar resultados num cache local e construir uma base histórica offline permanente.
 
-## 7. Motor de Jurisprudência (Text-Search de Decisões)
-**Objetivo:** Criar um módulo independente (`crawler_jurisprudencia.py` e flag `--juris` no CLI) capaz de fazer buscar por texto-livre nos acórdãos e ementas do 2º Grau.
-*   **Motivação:** Diferente dos processos de 1º grau que buscam por nome/documento da parte, a jurisprudência permite buscar qualquer palavra-chave (nomes de empresas, bairros, produtos, infrações). 
-*   **Entrega:** Permitir ao usuário rodar `python consultar.py --juris "atraso voo gol"` e receber um HTML rico com a média de condenações e o histórico da corte para aquele tema, criando uma ferramenta de OSINT contextual valiosíssima.
+### 9. Automação Headless Avançada (Playwright)
+**Objetivo:** Migrar o bypass de PDFs (que hoje depende de injeção manual de cookie no `.env`) para um navegador *headless* automatizado que consiga resolver os desafios Cloudflare Turnstile nativamente e realizar login de forma invisível.
