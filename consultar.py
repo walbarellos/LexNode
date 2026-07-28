@@ -60,6 +60,10 @@ Exemplos:
         help="CPF ou CNPJ da parte para buscar (apenas números ou com máscara)",
     )
     parser.add_argument(
+        "--juris",
+        help="Termo para busca livre em Jurisprudência (acórdãos do 2º Grau)",
+    )
+    parser.add_argument(
         "--foro",
         default="-1",
         help="Código do foro/comarca para busca por nome/doc (padrão: -1 = Todos os foros do Estado)",
@@ -119,7 +123,7 @@ Exemplos:
         else:
             print(f"✓ {msg}", file=sys.stderr)
 
-    if not args.processo and not args.nome and not args.doc:
+    if not args.processo and not args.nome and not args.doc and not args.juris:
         parser.print_help()
         sys.exit(1)
 
@@ -133,7 +137,60 @@ Exemplos:
     crawler = BaseCrawler()
 
     try:
-        if args.nome or args.doc:
+        if args.juris:
+            from src.crawler_jurisprudencia import CrawlerJurisprudencia
+            cj = CrawlerJurisprudencia()
+            if not args.json:
+                print(f"Consultando jurisprudência por: '{args.juris}'...\n")
+            
+            resumos = cj.buscar_jurisprudencia(args.juris)
+            
+            if not resumos:
+                print_warn("Nenhuma jurisprudência encontrada para este termo.")
+                sys.exit(0)
+                
+            if args.json:
+                saida = json.dumps({"termo": args.juris, "jurisprudencia": resumos}, ensure_ascii=False, indent=2)
+                print(saida)
+            elif args.html:
+                # Basic HTML for jurisprudence
+                linhas_html = []
+                for r in resumos:
+                    linhas_html.append(f'''
+                    <div style="border-bottom: 1px solid #ccc; padding: 15px 0;">
+                        <h3><a href="https://esaj.tjac.jus.br/cjsg/resultadoCompleta.do" target="_blank">{r['numero']}</a></h3>
+                        <p><strong>Relator:</strong> {r['relator']} | <strong>Órgão:</strong> {r['orgao']} | <strong>Data:</strong> {r['data']}</p>
+                        <p style="color: #555;">{r['ementa'].replace(chr(10), '<br>')}</p>
+                    </div>''')
+                html = f"<html><body style='font-family:sans-serif; max-width:800px; margin:0 auto; padding:20px;'><h2>Jurisprudência: {args.juris}</h2>{''.join(linhas_html)}</body></html>"
+                nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", args.juris)[:50]
+                saida_dir = Path("saida")
+                saida_dir.mkdir(exist_ok=True)
+                arquivo_saida = saida_dir / f"juris_{nome_arq}.html"
+                arquivo_saida.write_text(html, encoding="utf-8")
+                print_succ(f"HTML de jurisprudência gerado em {arquivo_saida}")
+            else:
+                use_c = "\033[1;36m" if use_colors else ""
+                end_c = "\033[0m" if use_colors else ""
+                print(f"  Decisões encontradas ({len(resumos)}):")
+                for i, r in enumerate(resumos, 1):
+                    print(f"\n    {i}.  {use_c}{r['numero']}{end_c}")
+                    print(f"        Relator(a): {r['relator']} · Julgamento: {r['data']} · {r['orgao']}")
+                    em_curta = r['ementa'][:300].replace(chr(10), ' ') + ('...' if len(r['ementa'])>300 else '')
+                    print(f"        Ementa: {em_curta}")
+            
+            if args.salvar and not args.html:
+                nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", args.juris)[:50]
+                ext = "json" if args.json else "txt"
+                saida_dir = Path("saida")
+                saida_dir.mkdir(exist_ok=True)
+                arquivo_saida = saida_dir / f"juris_{nome_arq}.{ext}"
+                arquivo_saida.write_text(saida if args.json else json.dumps(resumos, ensure_ascii=False, indent=2), encoding="utf-8")
+                if not args.json: print_succ(f"Salvo em {arquivo_saida}")
+                
+            sys.exit(0)
+
+        elif args.nome or args.doc:
             termo_busca = args.nome or args.doc
             tipo_pesquisa = 'NMPARTE' if args.nome else 'DOCPARTE'
             
