@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexNode - Intelligence Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0B0F19',
+                        darkcard: 'rgba(23, 31, 51, 0.7)',
+                        primary: '#3B82F6',
+                        primaryHover: '#2563EB',
+                        accent: '#8B5CF6',
+                        glassborder: 'rgba(255, 255, 255, 0.08)'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(15px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(59, 130, 246, 0.3)' },
+                            '50%': { boxShadow: '0 0 25px rgba(139, 92, 246, 0.5)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B0F19;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #E2E8F0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .glass {
+            background: rgba(23, 31, 51, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.3);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
+        }
+
+        .input-glass {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .input-glass:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.5); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.8); 
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #3B82F6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #60A5FA, #A78BFA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="antialiased selection:bg-primary selection:text-white pb-20">
+
+    <!-- Header -->
+    <header class="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                <i class="fa-solid fa-cube text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-white leading-none">Lex<span class="gradient-text">Node</span></h1>
+                <p class="text-xs text-gray-400 font-medium tracking-widest uppercase mt-1">OSINT & Legal Intelligence</p>
+            </div>
+        </div>
+        <div class="flex gap-4">
+            <button class="text-gray-400 hover:text-white transition-colors"><i class="fa-solid fa-bell"></i></button>
+            <button class="text-gray-400 hover:text-white transition-colors"><i class="fa-solid fa-gear"></i></button>
+            <div class="w-8 h-8 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center">
+                <i class="fa-solid fa-user text-sm text-slate-300"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto mt-12 px-4">
+        
+        <!-- Search Section -->
+        <div class="glass rounded-2xl p-6 sm:p-8 mb-12 animate-slide-up">
+            <h2 class="text-3xl font-semibold text-white mb-2">Omnibus Search</h2>
+            <p class="text-gray-400 mb-8 text-sm">Query court cases, parties, or extract insights from case law.</p>
+            
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-800 mb-6 gap-6">
+                <button onclick="switchTab('processo')" id="tab-processo" class="tab-btn active pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2">
+                    <i class="fa-solid fa-gavel"></i> Número do Processo
+                </button>
+                <button onclick="switchTab('nome')" id="tab-nome" class="tab-btn pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2">
+                    <i class="fa-solid fa-users"></i> Nome / Documento
+                </button>
+                <button onclick="switchTab('jurisprudencia')" id="tab-jurisprudencia" class="tab-btn pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Jurisprudência
+                </button>
+            </div>
+
+            <!-- Search Form -->
+            <form id="search-form" onsubmit="handleSearch(event)" class="relative flex items-center">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 text-gray-400"></i>
+                <input type="text" id="search-input" 
+                    class="input-glass w-full rounded-xl py-4 pl-12 pr-32 text-lg placeholder-gray-500"
+                    placeholder="Ex: 0800224-44.2013.8.01.0001" required>
+                
+                <!-- Grau selector for Processo -->
+                <select id="grau-select" class="absolute right-36 bg-slate-800 border border-slate-700 text-sm rounded-lg px-3 py-2 text-gray-300 focus:outline-none focus:border-blue-500">
+                    <option value="1">1º Grau</option>
+                    <option value="2">2º Grau</option>
+                </select>
+
+                <button type="submit" id="search-btn" class="absolute right-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium py-2 px-6 rounded-lg transition-all shadow-lg hover:shadow-blue-500/25 flex items-center gap-2">
+                    <span>Buscar</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div id="loading-indicator" class="hidden flex-col items-center justify-center py-12 animate-fade-in">
+            <div class="loading-spinner mb-4"></div>
+            <p class="text-blue-400 font-medium tracking-wide">Infiltrating databases...</p>
+        </div>
+
+        <div id="error-message" class="hidden glass border-red-500/30 bg-red-900/10 p-4 rounded-xl text-red-400 mb-8 animate-fade-in flex items-start gap-3">
+            <i class="fa-solid fa-triangle-exclamation mt-1"></i>
+            <div>
+                <h4 class="font-bold text-red-300">Consulta Falhou</h4>
+                <p id="error-text" class="text-sm mt-1"></p>
+            </div>
+        </div>
+
+        <div id="results-container" class="space-y-6 hidden animate-slide-up">
+            <!-- Results will be injected here -->
+        </div>
+
+    </main>
+
+    <script>
+        let currentTab = 'processo';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update UI
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            const input = document.getElementById('search-input');
+            const grauSelect = document.getElementById('grau-select');
+            
+            input.value = '';
+            document.getElementById('results-container').innerHTML = '';
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('error-message').classList.add('hidden');
+            
+            if (tab === 'processo') {
+                input.placeholder = "Ex: 0800224-44.2013.8.01.0001";
+                grauSelect.style.display = 'block';
+            } else if (tab === 'nome') {
+                input.placeholder = "Nome da parte, CPF ou CNPJ...";
+                grauSelect.style.display = 'none';
+            } else if (tab === 'jurisprudencia') {
+                input.placeholder = "Termo de busca livre (ex: roubo majorado)...";
+                grauSelect.style.display = 'none';
+            }
+        }
+
+        async function handleSearch(e) {
+            e.preventDefault();
+            const query = document.getElementById('search-input').value.trim();
+            if (!query) return;
+
+            const resultsContainer = document.getElementById('results-container');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const errorMsg = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            const btn = document.getElementById('search-btn');
+
+            // Reset state
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.add('hidden');
+            errorMsg.classList.add('hidden');
+            loadingIndicator.classList.remove('hidden');
+            loadingIndicator.classList.add('flex');
+            btn.disabled = true;
+            btn.classList.add('opacity-70');
+
+            try {
+                let url = '';
+                
+                if (currentTab === 'processo') {
+                    const grau = document.getElementById('grau-select').value;
+                    url = `/api/buscar/processo/${encodeURIComponent(query)}?grau=${grau}`;
+                } else if (currentTab === 'nome') {
+                    const isDoc = /^[\d\.\-\/]+$/.test(query) && query.replace(/\D/g, '').length >= 11;
+                    url = `/api/buscar/nome/${encodeURIComponent(query)}?doc=${isDoc ? 'true' : 'false'}`;
+                } else if (currentTab === 'jurisprudencia') {
+                    url = `/api/buscar/jurisprudencia/${encodeURIComponent(query)}`;
+                }
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Ocorreu um erro desconhecido');
+                }
+
+                renderResults(data, currentTab);
+                
+            } catch (err) {
+                errorText.textContent = err.message;
+                errorMsg.classList.remove('hidden');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                loadingIndicator.classList.remove('flex');
+                btn.disabled = false;
+                btn.classList.remove('opacity-70');
+            }
+        }
+
+        function renderResults(data, type) {
+            const container = document.getElementById('results-container');
+            container.innerHTML = '';
+            
+            if (type === 'processo') {
+                container.innerHTML = renderProcessoCard(data);
+            } else if (type === 'nome' || type === 'jurisprudencia') {
+                const results = data.resultados || [];
+                
+                if (results.length === 0) {
+                    container.innerHTML = `
+                        <div class="glass-card p-8 rounded-2xl text-center">
+                            <i class="fa-regular fa-folder-open text-4xl text-gray-500 mb-4"></i>
+                            <h3 class="text-xl font-medium text-gray-300">Nenhum resultado encontrado</h3>
+                            <p class="text-gray-500 mt-2">Tente modificar seus termos de busca.</p>
+                        </div>
+                    `;
+                } else {
+                    const header = `<div class="text-sm text-gray-400 mb-4 flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-400"></i> ${results.length} registros recuperados</div>`;
+                    
+                    let cards = '';
+                    if (type === 'nome') {
+                        cards = results.map(r => renderResumoCard(r)).join('');
+                    } else {
+                        cards = results.map(r => renderJurisprudenciaCard(r)).join('');
+                    }
+                    
+                    container.innerHTML = header + `<div class="grid grid-cols-1 md:grid-cols-2 gap-6">${cards}</div>`;
+                }
+            }
+            
+            container.classList.remove('hidden');
+        }
+
+        function renderProcessoCard(p) {
+            // Partes
+            let partesHtml = '';
+            if (p.partes && p.partes.length > 0) {
+                partesHtml = `
+                    <div class="mt-6 border-t border-gray-800 pt-6">
+                        <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-users"></i> Sujeitos do Processo
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${p.partes.map(parte => `
+                                <div class="bg-gray-900/50 rounded-lg p-3 border border-gray-800/50">
+                                    <span class="text-xs text-blue-400 font-medium">${parte.tipo}</span>
+                                    <p class="text-gray-200 font-medium text-sm mt-1">${parte.nome}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Movimentações
+            let movHtml = '';
+            if (p.movimentacoes && p.movimentacoes.length > 0) {
+                movHtml = `
+                    <div class="mt-6 border-t border-gray-800 pt-6">
+                        <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-timeline"></i> Últimas Movimentações
+                        </h4>
+                        <div class="space-y-4 pl-2 border-l-2 border-gray-800">
+                            ${p.movimentacoes.slice(0, 5).map(m => `
+                                <div class="relative pl-4">
+                                    <div class="absolute w-2 h-2 bg-blue-500 rounded-full -left-[5px] top-1.5 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
+                                    <span class="text-xs text-gray-500 font-mono">${m.data}</span>
+                                    <p class="text-gray-300 text-sm mt-0.5">${m.descricao}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="glass-card rounded-2xl p-6 sm:p-8 animate-fade-in relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                        <i class="fa-solid fa-scale-balanced text-9xl"></i>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <div>
+                            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs font-medium tracking-wide uppercase">
+                                ${p.grau === 2 ? '2º Grau' : '1º Grau'}
+                            </span>
+                            <h3 class="text-2xl font-bold text-white mt-3 font-mono">${p.numero_processo}</h3>
+                            <p class="text-gray-400 text-sm mt-1">${p.classe || 'Classe não informada'}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-500 mb-1">Status</div>
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-800/50 rounded-lg border border-gray-700">
+                                <div class="w-2 h-2 rounded-full ${p.situacao?.toLowerCase().includes('baixado') ? 'bg-red-500' : 'bg-green-500 animate-pulse'}"></div>
+                                <span class="text-gray-300 font-medium text-sm">${p.situacao || 'Desconhecido'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 bg-gray-900/30 p-5 rounded-xl border border-gray-800/50">
+                        <div>
+                            <span class="text-xs text-gray-500 block mb-1">Assunto</span>
+                            <span class="text-sm text-gray-300 font-medium">${p.assunto || '-'}</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 block mb-1">Magistrado</span>
+                            <span class="text-sm text-gray-300 font-medium">${p.juiz || p.relator || '-'}</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 block mb-1">Órgão Julgador</span>
+                            <span class="text-sm text-gray-300 font-medium">${p.vara || p.orgao_julgador || p.foro || '-'}</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 block mb-1">Distribuição</span>
+                            <span class="text-sm text-gray-300 font-medium">${p.distribuicao || '-'}</span>
+                        </div>
+                    </div>
+
+                    ${partesHtml}
+                    ${movHtml}
+                </div>
+            `;
+        }
+
+        function renderResumoCard(r) {
+            return `
+                <div class="glass-card p-5 rounded-xl animate-fade-in flex flex-col h-full cursor-pointer hover:bg-slate-800/50 group" onclick="document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="font-mono text-blue-400 group-hover:text-blue-300 transition-colors">${r.numero}</span>
+                        <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded">${r.data_local}</span>
+                    </div>
+                    <div class="mb-3 flex-grow">
+                        <h4 class="text-white font-medium text-sm leading-snug">${r.classe}</h4>
+                        <p class="text-gray-400 text-xs mt-1 line-clamp-2">${r.assunto}</p>
+                    </div>
+                    <div class="mt-auto border-t border-gray-800/50 pt-3 flex items-center justify-between">
+                        <div class="text-xs">
+                            <span class="text-gray-500">Participação:</span> 
+                            <span class="text-gray-300 font-medium">${r.participacao}</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-gray-600 group-hover:text-blue-500 transition-colors"></i>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderJurisprudenciaCard(j) {
+            return `
+                <div class="glass-card p-6 rounded-xl animate-fade-in flex flex-col h-full group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity">
+                        <i class="fa-solid fa-book-open text-6xl"></i>
+                    </div>
+                    
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="font-mono text-purple-400 text-lg group-hover:text-purple-300 transition-colors block cursor-pointer" onclick="document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))">${j.numero}</span>
+                            <span class="text-xs text-gray-400 font-medium mt-1 block">${j.orgao}</span>
+                        </div>
+                        <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded-md border border-gray-700">${j.data}</span>
+                    </div>
+                    
+                    <div class="text-sm text-gray-300 bg-gray-900/40 p-4 rounded-lg border border-gray-800 mb-4 line-clamp-6 font-serif italic flex-grow">
+                        "${j.ementa}"
+                    </div>
+                    
+                    <div class="mt-auto pt-3 flex items-center gap-2">
+                        <i class="fa-solid fa-user-pen text-gray-500 text-xs"></i>
+                        <span class="text-xs text-gray-400"><strong class="text-gray-300 font-medium">Relator:</strong> ${j.relator}</span>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
