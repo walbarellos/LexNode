@@ -84,6 +84,11 @@ Exemplos:
         help="Ao buscar por nome, baixa também os detalhes de todos os processos encontrados",
     )
     parser.add_argument(
+        "--baixar-pdfs",
+        action="store_true",
+        help="Baixa os PDFs originais (ex: Acórdãos) usando o cookie do .env",
+    )
+    parser.add_argument(
         "--salvar",
         action="store_true",
         help="Salva o resultado em um arquivo na pasta 'saida'",
@@ -169,7 +174,7 @@ Exemplos:
                 arquivo_saida = saida_dir / f"juris_{nome_arq}.html"
                 arquivo_saida.write_text(html, encoding="utf-8")
                 print_succ(f"HTML de jurisprudência gerado em {arquivo_saida}")
-            else:
+            if not args.html:
                 use_c = "\033[1;36m" if use_colors else ""
                 end_c = "\033[0m" if use_colors else ""
                 print(f"  Decisões encontradas ({len(resumos)}):")
@@ -178,6 +183,21 @@ Exemplos:
                     print(f"        Relator(a): {r['relator']} · Julgamento: {r['data']} · {r['orgao']}")
                     em_curta = r['ementa'][:300].replace(chr(10), ' ') + ('...' if len(r['ementa'])>300 else '')
                     print(f"        Ementa: {em_curta}")
+            
+            if args.baixar_pdfs:
+                from src.pdf_downloader import baixar_acordao
+                print("\n  Iniciando download dos PDFs (Acórdãos)...")
+                pdf_dir = Path("saida") / "pdfs"
+                pdf_dir.mkdir(parents=True, exist_ok=True)
+                for r in resumos:
+                    if r.get('cd_acordao'):
+                        nome_arquivo = f"{r['numero'].replace('.', '_').replace('-', '_')}.pdf"
+                        caminho = pdf_dir / nome_arquivo
+                        print(f"    Baixando {nome_arquivo}...", end=" ")
+                        if baixar_acordao(r['cd_acordao'], str(caminho)):
+                            print_succ("OK")
+                        else:
+                            print_err("Falhou")
             
             if args.salvar and not args.html:
                 nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", args.juris)[:50]

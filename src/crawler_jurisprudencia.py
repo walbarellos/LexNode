@@ -58,8 +58,12 @@ class CrawlerJurisprudencia:
             orgao = get_meta(r'Órgão julgador:')
             data_julg = get_meta(r'Data do julgamento:')
             
+            link_download = table.find('a', class_='downloadEmenta')
+            cd_acordao = link_download.get('cdacordao', '') if link_download else ''
+
             resultados.append({
                 'numero': numero,
+                'cd_acordao': cd_acordao,
                 'relator': relator,
                 'orgao': orgao,
                 'data': data_julg,
