@@ -29,7 +29,7 @@ crawler_juris = CrawlerJurisprudencia()
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="index.html")
 
 @app.get("/api/buscar/processo/{numero}")
 async def buscar_processo(numero: str, grau: int = Query(1)):
