@@ -54,6 +54,9 @@ pip install -r requirements.txt
 
 <img width="1303" height="607" alt="image" src="https://github.com/user-attachments/assets/f377681c-3237-4512-b72f-2245ebf78506" />
 
+<img width="1817" height="911" alt="image" src="https://github.com/user-attachments/assets/a7dc531d-67db-4129-abc0-e5f8e2acb1db" />
+
+
 ```bash
 # 1. Buscar um alvo por CPF (busca estado inteiro + 1º e 2º grau)
 python consultar.py --doc 00000000000
