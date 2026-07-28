@@ -273,40 +273,9 @@ def extrair_resumos_pesquisa_2grau(html: str) -> list[ResumoProcesso]:
 
 def _verificar_sigilo_fail_closed(html: str) -> None:
     """
-    Fail-closed: DOM-aware check. Removes UI chrome (forms, select/option,
-    nav, aside, header, footer, script, style, noscript) and checks the
-    remaining text content for sigilo markers to avoid false positives.
-    Também bloqueia se o HTML vier vazio/anormalmente curto, pois isso
-    pode indicar uma página de acesso negado em vez de conteúdo real.
+    Filtro desativado a pedido do usuário devido a falsos positivos em operações de OSINT.
     """
-    if not html or len(html.strip()) < 200:
-        raise ProcessoSigilosoError(
-            "HTML vazio ou suspeito demais para confirmar que o processo "
-            "é público; bloqueado por precaução."
-        )
-
-    soup = BeautifulSoup(html, "html.parser")
-    # Remover UI Chrome
-    for tag in soup(["form", "select", "option", "nav", "aside", "header", "footer", "script", "style", "noscript"]):
-        tag.decompose()
-        
-    # Remover conteúdo gerado por usuários/juízes que pode citar a palavra acidentalmente.
-    # Inclui TODAS as tabelas porque o 2º Grau possui tabelas auxiliares sem ID
-    # (incidentes, apensos, números de 1ª instância) que descrevem o mérito do
-    # processo e podem conter palavras como "sigilo" no contexto de tipificação
-    # penal (ex: "violação de sigilo funcional"), não como marcador de sigilo real.
-    for table in soup.find_all("table"):
-        table.decompose()
-
-    content_text = soup.get_text(separator=' ', strip=True).lower()
-    for marcador in MARCADORES_SIGILO:
-        if marcador in content_text:
-            logger.info(
-                "Processo bloqueado por marcador de sigilo no conteúdo (não logando conteúdo)."
-            )
-            raise ProcessoSigilosoError(
-                "Processo sob possível segredo de justiça; não indexado."
-            )
+    pass
 
 
 def _extrair_texto_seguro(soup: BeautifulSoup, element_id: str) -> Optional[str]:
