@@ -20,13 +20,21 @@ Ferramenta em Python focada em OSINT e levantamento de alvos a partir de process
 
 ## Tutorial de Uso
 
-### Instalação
+### Instalação Automática:
 ```bash
 # Clone o repositório
 git clone https://github.com/walbarellos/LexNode.git
 cd LexNode
 
-# Crie e ative um ambiente virtual (recomendado)
+chmod +x install.sh start.sh
+./install.sh
+./start.sh
+
+```
+
+### Instalação MANUAL: Crie e ative um ambiente virtual (recomendado)
+
+```
 python3 -m venv venv
 source venv/bin/activate
 
@@ -34,8 +42,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Como buscar (Exemplos)
+<img width="1311" height="705" alt="image" src="https://github.com/user-attachments/assets/d5b82610-bf1c-4b82-85ac-b62ad1efd9c1" />
 
+<img width="1299" height="269" alt="image" src="https://github.com/user-attachments/assets/4f28fe73-6ae7-4b42-b856-38b59f031414" />
+
+
+### Como buscar (Exemplos) - Terminal ou Web. Screenshots abaixo:
+
+<img width="1920" height="557" alt="image" src="https://github.com/user-attachments/assets/80fd9f02-3a11-4091-b701-f06da5344f8d" />
 
 
 <img width="1303" height="607" alt="image" src="https://github.com/user-attachments/assets/f377681c-3237-4512-b72f-2245ebf78506" />
