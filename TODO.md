@@ -2,9 +2,8 @@
 
 Abaixo está o roadmap sugerido de evolução para o **ProcessoLivreAC**, partindo de uma ferramenta de CLI e web scraping de linha de comando para uma possível solução escalável e completa.
 
-## 1. Suporte ao 2º Grau (Tribunal de Justiça)
-Atualmente, o script consulta apenas o `cpopg` (1º Grau). 
-**Objetivo:** Adaptar o crawler e o normalizador para consultar a base de dados do 2º Grau (`cposg5`). A estrutura do DOM é muito semelhante, exigindo apenas parametrização na URL base e mapeamentos sutis de IDs.
+## 1. ~~Suporte ao 2º Grau (Tribunal de Justiça)~~ [CONCLUÍDO]
+Atualmente, o script consulta e extrai dados tanto do `cpopg` (1º Grau) quanto do `cposg5` (2º Grau) de forma automática e unificada, incluindo busca exaustiva por CPF/CNPJ.
 
 ## 2. Download de Documentos (Peças Processuais)
 Nós conseguimos ler a *linha do tempo*, mas as peças (PDFs) não são baixadas.
@@ -25,3 +24,8 @@ Assim, cria-se um site local ou em nuvem onde o usuário digita a busca em um ca
 
 ## 6. Busca Fonética Flexível (Fuzzy Search)
 **Objetivo:** Atualmente a busca usa a mecânica base do e-SAJ. É possível implementar e repassar *flags* (como `chNmCompleto`) na URL ou construir algoritmos baseados em fonética e divergência de caracteres ao iterar pelos resultados devolvidos, para melhorar a taxa de acertos ao procurar partes.
+
+## 7. Motor de Jurisprudência (Text-Search de Decisões)
+**Objetivo:** Criar um módulo independente (`crawler_jurisprudencia.py` e flag `--juris` no CLI) capaz de fazer buscar por texto-livre nos acórdãos e ementas do 2º Grau.
+*   **Motivação:** Diferente dos processos de 1º grau que buscam por nome/documento da parte, a jurisprudência permite buscar qualquer palavra-chave (nomes de empresas, bairros, produtos, infrações). 
+*   **Entrega:** Permitir ao usuário rodar `python consultar.py --juris "atraso voo gol"` e receber um HTML rico com a média de condenações e o histórico da corte para aquele tema, criando uma ferramenta de OSINT contextual valiosíssima.
