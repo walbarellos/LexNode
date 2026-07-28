@@ -1,0 +1,519 @@
+<table border="0" cellpadding="0" cellspacing="0" class="rich-tabpanel " id="j_id149" style="width:"><tbody><tr><td align="left" class="rich-tab-bottom-line "><form id="j_id149:_form" name="j_id149:_form" method="post" style="margin:0; padding:0; display: inline;" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam"><!--table  border="0" cellpadding="0" cellspacing="0" style="position:relative;top:1px"--><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><img alt="" height="1" src="/consultapublica/a4j/g/3_3_3.Finalimages/spacer.gif" style="width: 1px; ;border:0"></td><td id="pesquisar_cell" style="height: 100%; vertical-align: bottom;" class="rich-tabhdr-cell-active"><table border="0" cellpadding="0" cellspacing="0" id="pesquisar_shifted" onclick="if (RichFaces.isTabActive('pesquisar_lbl')) return false; if (!RichFaces.onTabChange(event, 'j_id149','pesquisar')) return false;var _formName = A4J.findForm(this).id; var _paramName = 'pesquisar_server_submit'; var _params = new Object(); _params[_paramName] = _paramName; _JSFFormSubmit('pesquisar', _formName, null, _params);this.onclick = null; _clearJSFFormParameters(_formName, null, [_paramName]);" style="position:relative; top:1px;;height : 100%; "><tbody><tr><td class="rich-tabhdr-side-border"><img alt="" height="1" src="/consultapublica/a4j/g/3_3_3.Finalimages/spacer.gif" style="border:0" width="1"></td><td class="rich-tabhdr-side-cell"><table border="0" cellpadding="0" cellspacing="0" style="height: 100%; width: 100%;"><tbody><tr><td id="pesquisar_lbl" onmouseover="RichFaces.overTab(this);" onmouseout="RichFaces.outTab(this);" class="rich-tab-header rich-tab-active    ">Dados do Processo</td></tr></tbody></table></td><td class="rich-tabhdr-side-border"><img alt="" height="1" src="/consultapublica/a4j/g/3_3_3.Finalimages/spacer.gif" style="border:0" width="1"></td></tr></tbody></table></td><td><img alt="" height="1" src="/consultapublica/a4j/g/3_3_3.Finalimages/spacer.gif" style="width: 1px; ;border:0"></td></tr></tbody></table><div style="display: none;"><script type="text/javascript">RichFaces.panelTabs['j_id149']=[{'name':'pesquisar','activeClass':'rich\x2Dtab\x2Dheader rich\x2Dtab\x2Dactive    ','ontableave':'','cellInactiveClass':'rich\x2Dtabhdr\x2Dcell\x2Dinactive','id':'pesquisar','inactiveClass':'rich\x2Dtab\x2Dheader rich\x2Dtab\x2Dinactive    ','cellActiveClass':'rich\x2Dtabhdr\x2Dcell\x2Dactive','ontabenter':''} ] ;</script></div><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></td></tr><tr><td id="pesquisar" style=";height:100%"><table border="0" cellpadding="10" cellspacing="0" class="rich-tabpanel-content-position" width="100%"><tbody><tr><td class="rich-tabpanel-content  " style="; "><form id="j_id150" name="j_id150" method="post" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam" target="">
+			<div>
+
+<input type="hidden" name="j_id150:processoTrfViewView" value="j_id150:processoTrfViewView">
+
+			<div class="rich-stglpanel " id="j_id150:processoTrfViewView:j_id153"><script type="text/javascript">SimpleTogglePanelManager.add(new SimpleTogglePanel("j_id150:processoTrfViewView:j_id153", 
+            													"true",{onexpand: '',oncollapse: ''}
+            													
+            							 ));</script><div class="rich-stglpanel-header " id="j_id150:processoTrfViewView:j_id153_header" onclick="SimpleTogglePanelManager.toggleOnClient(event,'j_id150:processoTrfViewView:j_id153');"><div class="rich-stglpanel-marker"><div class="rich-stglpnl-marker" id="j_id150:processoTrfViewView:j_id153_switch_on">«</div><div class="rich-stglpnl-marker" id="j_id150:processoTrfViewView:j_id153_switch_off" style="display: none">»</div></div><div id="j_id150:processoTrfViewView:divDadosProcesso">Dados do Processo <a href="https://www.trf1.jus.br/trf1/sistema-de-conciliacao/quero-conciliar" target="_blank" class="btn btn-primary">
+								Quero Conciliar</a></div></div><div style="display: none;"><input autocomplete="off" id="j_id150:processoTrfViewView:j_id153_input" name="j_id150:processoTrfViewView:j_id153" type="hidden" value="true"></div><div class="rich-stglpanel-body " id="j_id150:processoTrfViewView:j_id153_body"><table width="100%">
+<tbody>
+<tr>
+<td class="viewColumn"><span id="j_id150:processoTrfViewView:j_id158">
+	
+    <div class="propertyView ">
+        <div class="name"><label>
+Número Processo</label>
+        </div>
+        
+        <div class="value col-sm-12 ">
+		<div class="col-sm-12 ">
+			0000001-64.1970.4.01.3300
+		</div>
+        </div>
+    </div></span></td>
+<td><span id="j_id150:processoTrfViewView:j_id170">
+	
+    <div class="propertyView ">
+        <div class="name"><label>
+Data da Distribuição</label>
+        </div>
+        
+        <div class="value col-sm-12 ">03/04/1992
+        </div>
+    </div></span></td>
+<td><span id="j_id150:processoTrfViewView:j_id181">
+	
+    <div class="propertyView ">
+        <div class="name"><label>
+Classe Judicial</label>
+        </div>
+        
+        <div class="value col-sm-12 ">
+			EXECUÇÃO FISCAL (1116)
+        </div>
+    </div></span></td>
+<td><span id="j_id150:processoTrfViewView:j_id192">
+	
+    <div class="propertyView ">
+        <div class="name"><label>
+Assunto</label>
+        </div>
+        
+        <div class="value col-sm-12 ">
+		<div class="col-sm-12 ">
+    DIREITO TRIBUTÁRIO (14)  -  Contribuições (6031)  -  Contribuições Previdenciárias (6048
+
+		</div>
+        </div>
+    </div></span></td>
+</tr>
+<tr>
+<td class="viewColumn"><span id="j_id150:processoTrfViewView:j_id205">
+	
+    <div class="propertyView ">
+        <div class="name"><label>
+Jurisdição</label>
+        </div>
+        
+        <div class="value col-sm-12 ">
+			Seção Judiciária da Bahia
+        </div>
+    </div></span></td>
+<td><span id="j_id150:processoTrfViewView:j_id216">
+	
+    <div class="propertyView ">
+        <div class="name"><label>
+</label>
+        </div>
+        
+        <div class="value col-sm-12 ">
+		<div class="col-sm-12 "> 
+		</div>
+        </div>
+    </div></span></td>
+<td><span id="j_id150:processoTrfViewView:j_id229">
+	
+    <div class="propertyView ">
+        <div class="name"><label>
+</label>
+        </div>
+        
+        <div class="value col-sm-12 ">
+		<div class="col-sm-12 ">
+			<b>Órgão Julgador</b>
+			<br>
+			1ª Vara Federal Cível da SJBA<div id="j_id150:processoTrfViewView:j_id229:j_id230:j_id236">
+				<br>
+				<b>Endereço</b>
+				<br>
+				Avenida Ulysses Guimarães, 2799, Centro Administrativo da Bahia, Sussuarana, SALVADOR - BA - CEP: 41213-000</div> 
+		</div>
+        </div>
+    </div></span></td>
+<td><span id="j_id150:processoTrfViewView:j_id242">
+	
+    <div class="propertyView ">
+        <div class="name"><label>
+Processo referência</label>
+        </div>
+        
+        <div class="value col-sm-12 ">
+			0000001-64.1970.4.01.3300
+        </div>
+    </div></span></td>
+</tr>
+</tbody>
+</table>
+</div></div><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off">
+<div id="j_id150:j_id284" class="mt-5"></div>
+			</div></form><div id="j_id150:processoPartesPoloAtivoResumidoDiv"><div class="rich-panel col-sm-12" id="j_id150:j_id286"><div class="rich-panel-header " id="j_id150:j_id286_header">Polo ativo</div><div class="rich-panel-body panel" id="j_id150:j_id286_body"><span id="j_id150:processoPartesPoloAtivoResumido">
+					<div class="grid ">
+							<table class="rich-table clearfix" id="j_id150:processoPartesPoloAtivoResumidoTableBinding" border="0" cellpadding="0" cellspacing="0"><colgroup span="2"></colgroup><thead class="rich-table-thead"><tr class="rich-table-subheader "><th class="rich-table-subheadercell  " scope="col" id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id291header"><div id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id291header:sortDiv"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292"><form id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293" name="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293" method="post" action="javascript:A4J.AJAX.SubmitForm('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293',{'similarityGroupingId':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293','actionUrl':'/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam','parameters':{'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293'} } )" target="">Participante<input type="hidden" autocomplete="off" name="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293" value="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id292_3Aj_id293() {
+_clearJSFFormParameters('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293','',['j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293:_link_hidden_','j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293:j_idcl']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id292_3Aj_id293(){clear_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id292_3Aj_id293();}
+function clearFormHiddenParams_j_id150_processoPartesPoloAtivoResumidoTableBinding_j_id292_j_id293(){clear_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id292_3Aj_id293();}
+clear_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id292_3Aj_id293();</script><script type="text/javascript">A4J.setupForm('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id292:j_id293');</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></span></div></th><th class="rich-table-subheadercell  " scope="col" id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id327header"><div id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id327header:sortDiv"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328"><form id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329" name="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329" method="post" action="javascript:A4J.AJAX.SubmitForm('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329',{'similarityGroupingId':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329','actionUrl':'/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam','parameters':{'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329'} } )" target="">Situação<input type="hidden" autocomplete="off" name="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329" value="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id328_3Aj_id329() {
+_clearJSFFormParameters('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329','',['j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329:j_idcl','j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329:_link_hidden_']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id328_3Aj_id329(){clear_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id328_3Aj_id329();}
+function clearFormHiddenParams_j_id150_processoPartesPoloAtivoResumidoTableBinding_j_id328_j_id329(){clear_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id328_3Aj_id329();}
+clear_j_id150_3AprocessoPartesPoloAtivoResumidoTableBinding_3Aj_id328_3Aj_id329();</script><script type="text/javascript">A4J.setupForm('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id328:j_id329');</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></span></div></th></tr></thead><tfoot><tr class="rich-table-footer  "><td class="rich-table-footercell  " colspan="2" scope="colgroup">
+<form id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341" name="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341" method="post" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341" value="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341">
+<div class="rich-datascr " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id342" style=" ; display: none" align="center" onclick="showLoading();;A4J.AJAX.Submit('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341',event,{'similarityGroupingId':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id343','oncomplete':function(request,event,data){hideLoading();},'parameters':{'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id343':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id343'} } )"><script type="text/javascript">new Richfaces.Datascroller('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id342', function(event){A4J.AJAX.Submit('j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341',event,{'similarityGroupingId':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id342','implicitEventsQueue':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id342','parameters':{'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id342':event.memo.page,'ajaxSingle':'j_id150:processoPartesPoloAtivoResumidoTableBinding:j_id341:j_id342'} ,'ignoreDupResponses':true} ); return false;});</script></div><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off">
+</form></td></tr></tfoot><tbody id="j_id150:processoPartesPoloAtivoResumidoTableBinding:tb"><tr class="rich-table-row rich-table-firstrow "><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:0:j_id291"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:0:j_id301">
+		<div class="col-sm-12 "><span class="text-bold">SINDICATO DOS TRABALHADORES TECNICO ADMINISTRATIVOS EM EDUCAÇÃO DAS UNIVERSIDADES PÚBLICAS FEDERAIS DO ESTADO DA BAHIA - CNPJ: 00.088.110/0001-57 (EXEQUENTE)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:0:j_id327"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:0:j_id337">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:1:j_id291"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:1:j_id301">
+		<div class="col-sm-12 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="">HUGO LEONARDO EVANGELISTA CORREIA - OAB BA787B - CPF: 535.010.125-00 (ADVOGADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:1:j_id327"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:1:j_id337">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:2:j_id291"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:2:j_id301">
+		<div class="col-sm-12 "><span class="text-bold">CAIXA ECONOMICA FEDERAL - CEF - CNPJ: 00.360.305/0001-04 (EXEQUENTE)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="tree">
+			<li>
+				<small class="text-muted"><img src="" class="fa fa-users mr-10">
+					<span title="Procuradoria">Advocacia da Caixa Econômica Federal
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:2:j_id327"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:2:j_id337">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:3:j_id291"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:3:j_id301">
+		<div class="col-sm-12 "><span class="text-bold">ANTONIO CARLOS BARBOSA LIMA (EXEQUENTE)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:3:j_id327"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:3:j_id337">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:4:j_id291"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:4:j_id301">
+		<div class="col-sm-12 "><span class="text-bold">JUIZ FEDERAL DA SUBSECAO JUDICIARIA DE LINHARES/ES (EXEQUENTE)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloAtivoResumidoTableBinding:4:j_id327"><span id="j_id150:processoPartesPoloAtivoResumidoTableBinding:4:j_id337">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr></tbody></table><span class="pull-right text-muted">5 resultados encontrados</span>
+					</div></span></div></div></div><div id="j_id150:processoPartesPoloPassivoResumidoDiv"><div class="rich-panel col-sm-12" id="j_id150:j_id351"><div class="rich-panel-header " id="j_id150:j_id351_header">Polo Passivo</div><div class="rich-panel-body panel" id="j_id150:j_id351_body"><span id="j_id150:processoPartesPoloPassivoResumido">
+					<div class="grid ">
+							<table class="rich-table clearfix" id="j_id150:processoPartesPoloPassivoResumidoTableBinding" border="0" cellpadding="0" cellspacing="0"><colgroup span="2"></colgroup><thead class="rich-table-thead"><tr class="rich-table-subheader "><th class="rich-table-subheadercell  " scope="col" id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id356header"><div id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id356header:sortDiv"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357"><form id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358" name="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358" method="post" action="javascript:A4J.AJAX.SubmitForm('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358',{'similarityGroupingId':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358','actionUrl':'/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam','parameters':{'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358'} } )" target="">Participante<input type="hidden" autocomplete="off" name="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358" value="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id357_3Aj_id358() {
+_clearJSFFormParameters('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358','',['j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358:_link_hidden_','j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358:j_idcl']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id357_3Aj_id358(){clear_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id357_3Aj_id358();}
+function clearFormHiddenParams_j_id150_processoPartesPoloPassivoResumidoTableBinding_j_id357_j_id358(){clear_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id357_3Aj_id358();}
+clear_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id357_3Aj_id358();</script><script type="text/javascript">A4J.setupForm('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id357:j_id358');</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></span></div></th><th class="rich-table-subheadercell  " scope="col" id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id392header"><div id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id392header:sortDiv"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393"><form id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394" name="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394" method="post" action="javascript:A4J.AJAX.SubmitForm('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394',{'similarityGroupingId':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394','actionUrl':'/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam','parameters':{'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394'} } )" target="">Situação<input type="hidden" autocomplete="off" name="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394" value="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id393_3Aj_id394() {
+_clearJSFFormParameters('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394','',['j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394:_link_hidden_','j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394:j_idcl']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id393_3Aj_id394(){clear_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id393_3Aj_id394();}
+function clearFormHiddenParams_j_id150_processoPartesPoloPassivoResumidoTableBinding_j_id393_j_id394(){clear_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id393_3Aj_id394();}
+clear_j_id150_3AprocessoPartesPoloPassivoResumidoTableBinding_3Aj_id393_3Aj_id394();</script><script type="text/javascript">A4J.setupForm('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id393:j_id394');</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></span></div></th></tr></thead><tfoot><tr class="rich-table-footer  "><td class="rich-table-footercell  " colspan="2" scope="colgroup">
+<form id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406" name="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406" method="post" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406" value="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406">
+<div class="rich-datascr " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id407" style=" " align="center" onclick="showLoading();;A4J.AJAX.Submit('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406',event,{'similarityGroupingId':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id408','oncomplete':function(request,event,data){hideLoading();},'parameters':{'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id408':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id408'} } )"><table border="0" cellpadding="0" cellspacing="1" class="rich-dtascroller-table " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id407_table" style="text-align:center"><tbody><tr><td class="rich-datascr-button-dsbld rich-datascr-button">««</td><td class="rich-datascr-button-dsbld rich-datascr-button">«</td><td class="rich-datascr-button-dsbld rich-datascr-button"></td><td class="rich-datascr-act ">1</td><td class="rich-datascr-inact " onclick="Event.fire(this, 'rich:datascroller:onscroll', {'page': '2'});">2</td><td class=" rich-datascr-button" onclick="Event.fire(this, 'rich:datascroller:onscroll', {'page': 'next'});"></td><td class=" rich-datascr-button" onclick="Event.fire(this, 'rich:datascroller:onscroll', {'page': 'fastforward'});">»</td><td class=" rich-datascr-button" onclick="Event.fire(this, 'rich:datascroller:onscroll', {'page': 'last'});">»»</td></tr></tbody></table><script type="text/javascript">new Richfaces.Datascroller('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id407', function(event){A4J.AJAX.Submit('j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406',event,{'similarityGroupingId':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id407','implicitEventsQueue':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id407','parameters':{'ajaxSingle':'j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id407','j_id150:processoPartesPoloPassivoResumidoTableBinding:j_id406:j_id407':event.memo.page} ,'ignoreDupResponses':true} ); return false;});</script></div><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off">
+</form></td></tr></tfoot><tbody id="j_id150:processoPartesPoloPassivoResumidoTableBinding:tb"><tr class="rich-table-row rich-table-firstrow "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:0:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:0:j_id366">
+		<div class="col-sm-12 "><span class="text-bold">UNIVERSIDADE FEDERAL DA BAHIA - CNPJ: 15.180.714/0001-04 (EXECUTADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="tree">
+			<li>
+				<small class="text-muted"><img src="" class="fa fa-users mr-10">
+					<span title="Procuradoria">Procuradoria Federal nos Estados e no Distrito Federal
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:0:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:0:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:1:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:1:j_id366">
+		<div class="col-sm-12 "><span class="text-bold">ROSALVA ANDRADE DE OLIVEIRA (EXECUTADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:1:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:1:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:2:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:2:j_id366">
+		<div class="col-sm-12 "><span class="text-bold">EVANGELINA DA SILVA SANTOS - CPF: 444.071.815-91 (EXECUTADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:2:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:2:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:3:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:3:j_id366">
+		<div class="col-sm-12 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="">CRISTIANE BARROS LOPES DE MENEZES - OAB BA14694 - CPF: 699.143.035-87 (ADVOGADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:3:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:3:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:4:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:4:j_id366">
+		<div class="col-sm-12 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="">CARLOS ARTUR CHAGAS RIBEIRO registrado(a) civilmente como CARLOS ARTUR CHAGAS RIBEIRO - OAB BA5677 - CPF: 195.957.865-00 (ADVOGADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:4:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:4:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:5:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:5:j_id366">
+		<div class="col-sm-12 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="">DANIELA MARTINS EVANGELISTA ARAUJO registrado(a) civilmente como DANIELA MARTINS EVANGELISTA ARAUJO - OAB BA17378 - CPF: 929.955.785-34 (ADVOGADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:5:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:5:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:6:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:6:j_id366">
+		<div class="col-sm-12 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="">JOSE LUIZ TORRES FRAGOMENI - OAB BA16089 - CPF: 767.231.355-04 (ADVOGADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:6:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:6:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:7:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:7:j_id366">
+		<div class="col-sm-12 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="">ROBERTO DOREA PESSOA - OAB BA12407 - CPF: 569.225.235-04 (ADVOGADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:7:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:7:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:8:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:8:j_id366">
+		<div class="col-sm-12 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="">THIAGO CALMON DE ARAUJO - OAB BA35365 - CPF: 008.056.595-60 (ADVOGADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:8:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:8:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr><tr class="rich-table-row "><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:9:j_id356"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:9:j_id366">
+		<div class="col-sm-12 ">&nbsp;&nbsp;&nbsp;&nbsp;<span class="">ANA IZABEL JORDAO DE FREITAS PINHEIRO GOMES registrado(a) civilmente como ANA IZABEL JORDAO DE FREITAS PINHEIRO GOMES SCHETTINI - OAB BA19168 - CPF: 794.914.995-72 (ADVOGADO)</span>
+					<div class="col-sm-12 ">
+					</div>
+	
+	<style type="text/css">
+		.none { list-style-type: none; }
+	</style>
+
+		<ul class="none">
+			<li>
+				<small class="text-muted">
+					<span title="Defensoria">
+					</span>
+				</small>
+			</li>
+		</ul>
+			
+		</div></span></td><td class="rich-table-cell " id="j_id150:processoPartesPoloPassivoResumidoTableBinding:9:j_id392"><span id="j_id150:processoPartesPoloPassivoResumidoTableBinding:9:j_id402">
+		<div class="col-sm-12">Ativo
+		</div></span></td></tr></tbody></table><span class="pull-right text-muted">19 resultados encontrados</span>
+					</div></span></div></div></div><div id="j_id150:processoParteOutrosInteressadosResumidoDiv"><div class="rich-panel col-sm-12" id="j_id150:j_id416"><div class="rich-panel-header " id="j_id150:j_id416_header">Outros interessados</div><div class="rich-panel-body panel" id="j_id150:j_id416_body"><span id="j_id150:processoParteOutrosInteressadosResumido">
+					<div class="grid ">
+							<table class="rich-table clearfix" id="j_id150:processoParteOutrosInteressadosResumidoTableBinding" border="0" cellpadding="0" cellspacing="0"><colgroup span="2"></colgroup><thead class="rich-table-thead"><tr class="rich-table-subheader "><th class="rich-table-subheadercell  " scope="col" id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id421header"><div id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id421header:sortDiv"><span id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422"><form id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423" name="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423" method="post" action="javascript:A4J.AJAX.SubmitForm('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423',{'similarityGroupingId':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423','actionUrl':'/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam','parameters':{'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423'} } )" target="">Participante<input type="hidden" autocomplete="off" name="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423" value="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id422_3Aj_id423() {
+_clearJSFFormParameters('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423','',['j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423:_link_hidden_','j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423:j_idcl']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id422_3Aj_id423(){clear_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id422_3Aj_id423();}
+function clearFormHiddenParams_j_id150_processoParteOutrosInteressadosResumidoTableBinding_j_id422_j_id423(){clear_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id422_3Aj_id423();}
+clear_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id422_3Aj_id423();</script><script type="text/javascript">A4J.setupForm('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id422:j_id423');</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></span></div></th><th class="rich-table-subheadercell  " scope="col" id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id457header"><div id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id457header:sortDiv"><span id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458"><form id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459" name="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459" method="post" action="javascript:A4J.AJAX.SubmitForm('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459',{'similarityGroupingId':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459','actionUrl':'/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam','parameters':{'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459'} } )" target="">Situação<input type="hidden" autocomplete="off" name="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459" value="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id458_3Aj_id459() {
+_clearJSFFormParameters('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459','',['j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459:j_idcl','j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459:_link_hidden_']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id458_3Aj_id459(){clear_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id458_3Aj_id459();}
+function clearFormHiddenParams_j_id150_processoParteOutrosInteressadosResumidoTableBinding_j_id458_j_id459(){clear_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id458_3Aj_id459();}
+clear_j_id150_3AprocessoParteOutrosInteressadosResumidoTableBinding_3Aj_id458_3Aj_id459();</script><script type="text/javascript">A4J.setupForm('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id458:j_id459');</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></span></div></th></tr></thead><tfoot><tr class="rich-table-footer  "><td class="rich-table-footercell  " colspan="2" scope="colgroup">
+<form id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471" name="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471" method="post" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471" value="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471">
+<div class="rich-datascr " id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id472" style=" ; display: none" align="center" onclick="showLoading();;A4J.AJAX.Submit('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471',event,{'similarityGroupingId':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id473','oncomplete':function(request,event,data){hideLoading();},'parameters':{'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id473':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id473'} } )"><script type="text/javascript">new Richfaces.Datascroller('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id472', function(event){A4J.AJAX.Submit('j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471',event,{'similarityGroupingId':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id472','implicitEventsQueue':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id472','parameters':{'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id472':event.memo.page,'ajaxSingle':'j_id150:processoParteOutrosInteressadosResumidoTableBinding:j_id471:j_id472'} ,'ignoreDupResponses':true} ); return false;});</script></div><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off">
+</form></td></tr></tfoot><tbody id="j_id150:processoParteOutrosInteressadosResumidoTableBinding:tb"></tbody></table><span class="pull-right text-muted">0 resultados encontrados</span>
+					</div></span></div></div></div><div id="j_id150:processoEventoSearchForm" class="col-sm-3"></div><div class="rich-panel col-sm-12" id="j_id150:processoEventoPanel"><div class="rich-panel-header " id="j_id150:processoEventoPanel_header">Movimentações do Processo</div><div class="rich-panel-body panel" id="j_id150:processoEventoPanel_body">
+				<script type="text/javascript">
+					if ($('processoEventoMessages')) {
+						setTimeout("if ($('processoEventoMessages')) $('processoEventoMessages').style.display='none'", 15000);
+					}
+				</script><table class="rich-table " id="j_id150:processoEvento" border="0" cellpadding="0" cellspacing="0"><colgroup span="2"></colgroup><thead class="rich-table-thead"><tr class="rich-table-subheader "><th class="rich-table-subheadercell  " scope="col" colspan="1" id="j_id150:processoEvento:j_id502header"><div id="j_id150:processoEvento:j_id502header:sortDiv"><form id="j_id150:processoEvento:j_id504" name="j_id150:processoEvento:j_id504" method="post" class="text-left" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam" target=""><span class="ml-5 mr-5 text-left">Movimento</span><input type="hidden" autocomplete="off" name="j_id150:processoEvento:j_id504" value="j_id150:processoEvento:j_id504"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoEvento_3Aj_id504() {
+_clearJSFFormParameters('j_id150:processoEvento:j_id504','',['j_id150:processoEvento:j_id504:_link_hidden_','j_id150:processoEvento:j_id504:j_idcl']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoEvento_3Aj_id504(){clear_j_id150_3AprocessoEvento_3Aj_id504();}
+function clearFormHiddenParams_j_id150_processoEvento_j_id504(){clear_j_id150_3AprocessoEvento_3Aj_id504();}
+clear_j_id150_3AprocessoEvento_3Aj_id504();</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></div></th><th class="rich-table-subheadercell  " scope="col" colspan="1" id="j_id150:processoEvento:j_id530header"><div id="j_id150:processoEvento:j_id530header:sortDiv"><form id="j_id150:processoEvento:j_id532" name="j_id150:processoEvento:j_id532" method="post" class="text-left" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam" target=""><span class="ml-5 mr-5 text-left">Documento</span><input type="hidden" autocomplete="off" name="j_id150:processoEvento:j_id532" value="j_id150:processoEvento:j_id532"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoEvento_3Aj_id532() {
+_clearJSFFormParameters('j_id150:processoEvento:j_id532','',['j_id150:processoEvento:j_id532:j_idcl','j_id150:processoEvento:j_id532:_link_hidden_']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoEvento_3Aj_id532(){clear_j_id150_3AprocessoEvento_3Aj_id532();}
+function clearFormHiddenParams_j_id150_processoEvento_j_id532(){clear_j_id150_3AprocessoEvento_3Aj_id532();}
+clear_j_id150_3AprocessoEvento_3Aj_id532();</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></div></th></tr></thead><tbody id="j_id150:processoEvento:tb"></tbody></table><span class="pull-right text-muted">0 resultados encontrados</span></div></div><div id="j_id150:idEditarModeloDocumento"><div id="j_id150:processoDocumentoGridTabSearchForm" class="col-sm-3"></div><div class="rich-panel col-sm-12" id="j_id150:processoDocumentoGridTabPanel"><div class="rich-panel-header " id="j_id150:processoDocumentoGridTabPanel_header">Documentos juntados ao processo</div><div class="rich-panel-body panel" id="j_id150:processoDocumentoGridTabPanel_body">
+				<script type="text/javascript">
+					if ($('processoDocumentoGridTabMessages')) {
+						setTimeout("if ($('processoDocumentoGridTabMessages')) $('processoDocumentoGridTabMessages').style.display='none'", 15000);
+					}
+				</script><table class="rich-table " id="j_id150:processoDocumentoGridTab" border="0" cellpadding="0" cellspacing="0"><colgroup span="2"></colgroup><thead class="rich-table-thead"><tr class="rich-table-subheader "><th class="rich-table-subheadercell  " scope="col" colspan="1" id="j_id150:processoDocumentoGridTab:j_id591header"><div id="j_id150:processoDocumentoGridTab:j_id591header:sortDiv"><form id="j_id150:processoDocumentoGridTab:j_id593" name="j_id150:processoDocumentoGridTab:j_id593" method="post" class="text-left" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam" target=""><a href="#" id="j_id150:processoDocumentoGridTab:j_id593:j_id594" name="j_id150:processoDocumentoGridTab:j_id593:j_id594" onclick="A4J.AJAX.Submit('j_id150:processoDocumentoGridTab:j_id593',event,{'similarityGroupingId':'j_id150:processoDocumentoGridTab:j_id593:j_id594','containerId':'j_id150:j_id570','parameters':{'j_id150:processoDocumentoGridTab:j_id593:j_id594':'j_id150:processoDocumentoGridTab:j_id593:j_id594','ajaxSingle':'j_id150:processoDocumentoGridTab:j_id593:j_id594'} ,'status':'_viewRoot:status'} );return false;" title="Ordem crescente"><img src="/consultapublica/img/grid/arrow-up.png" class=""></a><span class="ml-5 mr-5 text-left">Documento</span><a href="#" id="j_id150:processoDocumentoGridTab:j_id593:j_id597" name="j_id150:processoDocumentoGridTab:j_id593:j_id597" onclick="A4J.AJAX.Submit('j_id150:processoDocumentoGridTab:j_id593',event,{'similarityGroupingId':'j_id150:processoDocumentoGridTab:j_id593:j_id597','containerId':'j_id150:j_id570','parameters':{'j_id150:processoDocumentoGridTab:j_id593:j_id597':'j_id150:processoDocumentoGridTab:j_id593:j_id597','ajaxSingle':'j_id150:processoDocumentoGridTab:j_id593:j_id597'} ,'status':'_viewRoot:status'} );return false;" title="Ordem decrescente"><img src="/consultapublica/img/grid/arrow-down.png" class=""></a><input type="hidden" autocomplete="off" name="j_id150:processoDocumentoGridTab:j_id593" value="j_id150:processoDocumentoGridTab:j_id593"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoDocumentoGridTab_3Aj_id593() {
+_clearJSFFormParameters('j_id150:processoDocumentoGridTab:j_id593','',['j_id150:processoDocumentoGridTab:j_id593:j_idcl','j_id150:processoDocumentoGridTab:j_id593:_link_hidden_']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoDocumentoGridTab_3Aj_id593(){clear_j_id150_3AprocessoDocumentoGridTab_3Aj_id593();}
+function clearFormHiddenParams_j_id150_processoDocumentoGridTab_j_id593(){clear_j_id150_3AprocessoDocumentoGridTab_3Aj_id593();}
+clear_j_id150_3AprocessoDocumentoGridTab_3Aj_id593();</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></div></th><th class="rich-table-subheadercell  " scope="col" colspan="1" id="j_id150:processoDocumentoGridTab:j_id627header"><div id="j_id150:processoDocumentoGridTab:j_id627header:sortDiv"><form id="j_id150:processoDocumentoGridTab:j_id629" name="j_id150:processoDocumentoGridTab:j_id629" method="post" class="text-left" action="/consultapublica/ConsultaPublica/DetalheProcessoConsultaPublica/listView.seam" target=""><a href="#" id="j_id150:processoDocumentoGridTab:j_id629:j_id630" name="j_id150:processoDocumentoGridTab:j_id629:j_id630" onclick="A4J.AJAX.Submit('j_id150:processoDocumentoGridTab:j_id629',event,{'similarityGroupingId':'j_id150:processoDocumentoGridTab:j_id629:j_id630','containerId':'j_id150:j_id570','parameters':{'j_id150:processoDocumentoGridTab:j_id629:j_id630':'j_id150:processoDocumentoGridTab:j_id629:j_id630','ajaxSingle':'j_id150:processoDocumentoGridTab:j_id629:j_id630'} ,'status':'_viewRoot:status'} );return false;" title="Ordem crescente"><img src="/consultapublica/img/grid/arrow-up.png" class=""></a><span class="ml-5 mr-5 text-left">Certidão</span><a href="#" id="j_id150:processoDocumentoGridTab:j_id629:j_id633" name="j_id150:processoDocumentoGridTab:j_id629:j_id633" onclick="A4J.AJAX.Submit('j_id150:processoDocumentoGridTab:j_id629',event,{'similarityGroupingId':'j_id150:processoDocumentoGridTab:j_id629:j_id633','containerId':'j_id150:j_id570','parameters':{'j_id150:processoDocumentoGridTab:j_id629:j_id633':'j_id150:processoDocumentoGridTab:j_id629:j_id633','ajaxSingle':'j_id150:processoDocumentoGridTab:j_id629:j_id633'} ,'status':'_viewRoot:status'} );return false;" title="Ordem decrescente"><img src="/consultapublica/img/grid/arrow-down.png" class=""></a><input type="hidden" autocomplete="off" name="j_id150:processoDocumentoGridTab:j_id629" value="j_id150:processoDocumentoGridTab:j_id629"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id150_3AprocessoDocumentoGridTab_3Aj_id629() {
+_clearJSFFormParameters('j_id150:processoDocumentoGridTab:j_id629','',['j_id150:processoDocumentoGridTab:j_id629:j_idcl','j_id150:processoDocumentoGridTab:j_id629:_link_hidden_']);
+}
+function clearFormHiddenParams_j_id150_3AprocessoDocumentoGridTab_3Aj_id629(){clear_j_id150_3AprocessoDocumentoGridTab_3Aj_id629();}
+function clearFormHiddenParams_j_id150_processoDocumentoGridTab_j_id629(){clear_j_id150_3AprocessoDocumentoGridTab_3Aj_id629();}
+clear_j_id150_3AprocessoDocumentoGridTab_3Aj_id629();</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></form></div></th></tr></thead><tbody id="j_id150:processoDocumentoGridTab:tb"></tbody></table><span class="pull-right text-muted">0 resultados encontrados</span></div></div></div><script id="j_id150:j_id662" type="text/javascript">//<![CDATA[
+		fRender=function(){A4J.AJAX.Submit('j_id150',null,{'similarityGroupingId':'j_id150:j_id662','parameters':{'j_id150:j_id662':'j_id150:j_id662'} } )};
+		//]]></script>
+			<div class="col-sm-12 text-center"><input class="btn btn-primary" id="j_id150:j_id664" name="j_id150:j_id664" onclick="openPopUp('comprovante', 'reportPDF.seam?idProcessoTrf=5339903');A4J.AJAX.Submit('j_id150',event,{'similarityGroupingId':'j_id150:j_id664','parameters':{'j_id150:j_id664':'j_id150:j_id664'} } );return false;" value="Imprimir" type="button">
+		   	</div>	
+		   	
+		   	<script type="text/javascript">
+				function fRender() {
+					location = location.href;
+				}
+				jQuery("#processoDocumentoGridTabDiv tr:has(td:contains('Não Validado'))").css("background-color", "#DDDDDD");
+				jQuery("#processoDocumentoGridTabDiv tr:has(.inativo)").css("background-color", "#dddddd").addClass("inativo");		
+			</script><input type="hidden" autocomplete="off" name="j_id150" value="j_id150"><input type="hidden" autocomplete="off" name="autoScroll" value=""><input type="hidden" autocomplete="off" name="j_id150:j_idcl" value=""><input type="hidden" autocomplete="off" name="j_id150:_link_hidden_" value=""><script type="text/javascript">function clear_j_id150() {
+_clearJSFFormParameters('j_id150','',['j_id150:j_idcl','j_id150:_link_hidden_']);
+}
+function clearFormHiddenParams_j_id150(){clear_j_id150();}
+function clearFormHiddenParams_j_id150(){clear_j_id150();}
+clear_j_id150();</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" autocomplete="off"></td></tr></tbody></table></td></tr></tbody></table>

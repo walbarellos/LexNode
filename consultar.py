@@ -269,8 +269,21 @@ Exemplos:
                 if novos_resumos:
                     resumos.extend(novos_resumos)
             
-            if not resumos:
-                print_warn("Nenhum processo encontrado com este nome/documento em nenhum dos graus.")
+            resumos_trf1 = []
+            if not args.json:
+                print(f"  Buscando na Justiça Federal (TRF1)...")
+            try:
+                from src.crawler_trf1 import CrawlerTRF1
+                crawler_trf1 = CrawlerTRF1()
+                if args.nome:
+                    resumos_trf1 = crawler_trf1.buscar_por_nome(termo_busca)
+                elif args.doc:
+                    resumos_trf1 = crawler_trf1.buscar_por_documento(termo_busca)
+            except Exception as e:
+                print_warn(f"Erro ao buscar no TRF1: {e}")
+            
+            if not resumos and not resumos_trf1:
+                print_warn("Nenhum processo encontrado com este nome/documento em nenhum dos sistemas.")
                 sys.exit(0)
             
             if args.html:
@@ -298,6 +311,19 @@ Exemplos:
                             print_warn(f"Erro ao baixar detalhes de {r.numero}: {e}")
                             
                 saida_html = gerar_html_lista_busca(termo_busca, resumos, link_local=args.detalhar)
+                if resumos_trf1:
+                    linhas_trf1 = []
+                    for rt in resumos_trf1:
+                        linhas_trf1.append(f'''
+                        <div style="border-bottom: 1px solid #ccc; padding: 15px 0;">
+                            <h3><a href="{rt.link_detalhe}" target="_blank">{rt.numero}</a></h3>
+                            <p><strong>Classe:</strong> {rt.classe} | <strong>Assunto:</strong> {rt.assunto}</p>
+                            <p><strong>Partes:</strong> {rt.partes.replace(chr(10), '<br>')}</p>
+                            <p style="color: #555;"><strong>Última Movimentação:</strong> {rt.ultima_movimentacao}</p>
+                        </div>''')
+                    html_trf1 = f"<div style='max-width: 800px; margin: 30px auto; padding: 0 20px;'><h2>Justiça Federal (TRF1)</h2>{''.join(linhas_trf1)}</div>"
+                    saida_html = saida_html.replace("</body>", f"{html_trf1}</body>")
+                    
                 nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", termo_busca)[:50]
                 saida_dir = Path("saida")
                 saida_dir.mkdir(exist_ok=True)
@@ -308,14 +334,31 @@ Exemplos:
                     print_succ("Detalhes de todos os processos também foram salvos como HTML na pasta 'saida/'.")
             elif args.json:
                 chave_json = "nome" if args.nome else "documento"
-                saida = json.dumps({chave_json: termo_busca, "processos": [r.__dict__ for r in resumos]}, ensure_ascii=False, indent=2)
+                saida = json.dumps({
+                    chave_json: termo_busca, 
+                    "processos": [r.__dict__ for r in resumos],
+                    "processos_trf1": [r.__dict__ for r in resumos_trf1]
+                }, ensure_ascii=False, indent=2)
                 print(saida)
             else:
                 saida = formatar_resumos_processos(resumos, use_colors)
+                if resumos_trf1:
+                    linhas_trf1 = [f"\n  Processos Federais - TRF1 ({len(resumos_trf1)}):\n"]
+                    for i, r in enumerate(resumos_trf1, 1):
+                        num = f"\033[1;36m{r.numero}\033[0m" if use_colors else r.numero
+                        cls_assunto = f"\033[1m{r.classe}\033[0m · \033[2m{r.assunto}\033[0m" if use_colors else f"{r.classe} · {r.assunto}"
+                        linhas_trf1.append(f"    {i}.  {num}")
+                        linhas_trf1.append(f"        {cls_assunto}")
+                        partes_limpas = r.partes.replace(chr(10), ' | ')
+                        linhas_trf1.append(f"        Partes: {partes_limpas}")
+                        linhas_trf1.append(f"        Ultima Mov.: {r.ultima_movimentacao}\n")
+                    saida += "\n".join(linhas_trf1) + "\n"
+                
                 print(saida)
-                if not args.detalhar:
+                if not args.detalhar and (resumos or resumos_trf1):
                     print("\n💡 Dica: Para ver o andamento e as partes completas de um processo, execute:")
-                    print(f"   python consultar.py {resumos[0].numero} --html")
+                    ex_num = resumos[0].numero if resumos else resumos_trf1[0].numero
+                    print(f"   python consultar.py {ex_num} --html")
                 
             if args.salvar and not args.html:
                 nome_arq = re.sub(r"[^a-zA-Z0-9]", "_", termo_busca)[:50]

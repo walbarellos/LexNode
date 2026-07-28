@@ -5,6 +5,7 @@ O LexNode é uma arquitetura de software desenvolvida em Python orientada à col
 ## 🚀 Arquitetura e Funcionalidades
 
 * **Crawler Exaustivo Bidirecional:** Mecanismo de busca simultânea que varre todas as comarcas (1º grau) e câmaras isoladas (2º grau), consolidando o grafo processual do alvo em uma única requisição.
+* **Integração Federal (TRF1):** Motor de busca paralelo no PJe da Justiça Federal, trazendo execuções fiscais federais e ações previdenciárias integradas à mesma busca.
 * **Parser de Jurisprudência (`--juris`):** Motor de indexação focado em Acórdãos, capaz de realizar busca de texto-livre em decisões colegiadas, extraindo ementas, relatores e datas de julgamento.
 * **Extração Direta e Normalização (Padrão CNJ):** O `normalizer.py` mapeia o DOM caótico do e-SAJ para um schema unificado, extraindo metadados críticos (relator, magistrado, classe, assunto, valor da causa) e a cronologia completa de movimentações.
 * **Bypass de Autenticação para PDFs (`--baixar-pdfs`):** Implementação de injeção de cookies via `.env` para autenticação de sessão, permitindo a extração automatizada de peças processuais originais (PDFs) burlando restrições nativas do servidor.
@@ -14,7 +15,6 @@ O LexNode é uma arquitetura de software desenvolvida em Python orientada à col
 ## 🛠️ Roadmap e Melhorias Futuras
 
 * **Integração BNMP (CNJ):** Crawler para o Banco Nacional de Mandados de Prisão, consultando mandados em aberto via API REST do portal (`portalbnmp.cnj.jus.br`).
-* **Integração Justiça Federal (TRF1 - PJe):** Crawler para o Processo Judicial Eletrônico do TRF1 (`pje1g-consultapublica.trf1.jus.br`), cobrindo crimes federais no Acre.
 * **Persistência Relacional (SQLite):** Cache local via `SQLAlchemy` para investigações offline e versionamento de linha do tempo processual.
 * **Automação Headless Avançada:** Migração parcial da engine de requisições para `Playwright` com `stealth plugins`, mitigando desafios de *Cloudflare Turnstile* e captchas dinâmicos.
 

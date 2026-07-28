@@ -1,0 +1,335 @@
+<form id="j_id140" name="j_id140" method="post" action="/consultapublica/ConsultaPublica/listView.seam" target=""><span xmlns="http://www.w3.org/1999/xhtml" style="display:none;" id="j_id140:j_id142"><script type="text/javascript">//<![CDATA[
+A4J.AJAX.Poll('j_id140',{'similarityGroupingId':'j_id140:j_id142','pollId':'j_id140:j_id142','pollinterval':90000,'containerId':'j_id139','parameters':{'j_id140:j_id142':'j_id140:j_id142','ajaxSingle':'j_id140:j_id142'} } );
+//]]>
+</script></span><span style="display:none;" id="j_id140:j_id143"><script type="text/javascript">
+A4J.AJAX.StopPush('tw-wgFiKC1z7r7Iqxf8bOO2CS77E7tuzQukz9Lxj/ConsultaPublica/listView.xhtml:j_id140:j_id143');
+</script></span><input type="hidden" autocomplete="off" name="j_id140" value="j_id140"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_j_id140() {
+_clearJSFFormParameters('j_id140','',['j_id140:_link_hidden_','j_id140:j_idcl']);
+}
+function clearFormHiddenParams_j_id140(){clear_j_id140();}
+function clearFormHiddenParams_j_id140(){clear_j_id140();}
+clear_j_id140();</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" autocomplete="off"></form>
+
+<div id="j_id144" class="principal">
+
+			<div class="content"><div id="pageBody" class="container-fluid scroll-y">
+	<div class="conteudo"><div id="j_id147" class="faixa-superior"></div>
+		<div class="col-xs-12 col-sm-12 pb-80">
+       <script type="text/javascript">
+			(function(){
+				reducePolyfill();
+			})();
+    	</script>
+		<script src="https://hcaptcha.com/1/api.js" async="async" defer="defer"></script><form id="fPP" name="fPP" method="post" action="/consultapublica/ConsultaPublica/listView.seam" target="">
+		<div class="col-sm-3 consulta-filtro">
+
+  <script type="text/javascript">
+		(function(window, $){
+			window.mascaraDocumento = function(id, tipo) {
+				var $input = $("input[id$='" + id + "']");
+				$input.unmask().val("");
+
+	    		if (tipo === 'CPF') {
+	    			$input.mask('999.999.999-99');
+	    		} else if (tipo === 'CNPJ') {
+	    			$input.mask('99.999.999/9999-99');
+	    		} else if (tipo === 'NUN') {
+	    			$input.mask('9999999-99.9999.9.99.9999');
+		    	}
+	    		$input.focus();
+	    	}
+		})(window, jQuery_21);
+
+		function executarReCaptcha() {
+
+			if (false) {
+				hcaptcha.execute();
+				return false;
+			}
+			executarPesquisa();
+		}
+
+		function onSubmit(token) {
+			showLoading();
+			executarPesquisa();
+		}
+    </script><div class="rich-panel rich-panel" id="fPP:consultaSearchFields"><div class="rich-panel-body " id="fPP:consultaSearchFields_body"><div id="fPP:CSF"><div id="fPP:consultaSearchForm" class="edit"><div id="fPP:j_id152" class="campoProcessoConsultaPublica">
+
+	<script type="text/javascript" src="/consultapublica/js/jquery.mask.js"></script>
+
+    <div class="propertyView col-sm-12 "><div id="fPP:numProcesso-inputNumeroProcessoDecoration:fieldnumProcesso-inputNumeroProcessoDiv" class="name"><label for="fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso" class="">
+Processo</label></div>
+        <div class="value col-sm-12 "><input id="fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso" type="text" name="fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso" class="" alt="#(alt)" maxlength="25" onblur="" onchange="" onfocus="" onkeypress="" onkeyup="" size="0" tabindex="" placeholder="_______-__.____.4.01.____">
+    </div>
+    </div>
+
+	<script type="text/javascript">
+		jQuery(
+			function(){
+				var digitoTribunal = "01";
+				var strPlaceHolder = "_______-__.____." + "4" + "." + "01" + ".____";
+
+				jQuery_21("input[id$='numProcesso-inputNumeroProcesso']").mask(
+					"9999999-99.9999.9.99.9999",
+					{
+						placeholder: strPlaceHolder,
+						placeholderOnFocus: true,
+						selectonfocus: true,
+						clearifnotmatch: false,
+						onComplete: function () {
+							var numProcessoInformado = jQuery("input[id$='numProcesso-inputNumeroProcesso']")[0].value;
+							var elemento = jQuery("input[id$='numProcesso-inputNumeroProcesso']").get(0);
+
+							if (!validaNumeroUnico(numProcessoInformado)){
+								jQuery_21(document).trigger('pesquisa:numeroProcesso:invalido', [ elemento, numProcessoInformado ]);
+								// o sistema validará a numeração de qualquer forma, mas só vai lançar o alerta se tiver sido pedido
+								if( true ){
+									alert("Número de processo inválido.");
+								}
+							}else{
+								jQuery_21(document).trigger('pesquisa:numeroProcesso:valido', [ elemento, numProcessoInformado ]);
+							}
+						}
+					}
+				);
+
+				jQuery_21("input[id$='numProcesso-inputNumeroProcesso']").blur( function (){
+					var numProcessoInformado = jQuery("input[id$='numProcesso-inputNumeroProcesso']")[0].value;
+					var elemento = jQuery("input[id$='numProcesso-inputNumeroProcesso']").get(0);
+
+					if(numProcessoInformado.length < 25){
+						if(numProcessoInformado.length == 0){
+							jQuery_21(document).trigger('pesquisa:numeroProcesso:vazio', [ elemento, numProcessoInformado ]);
+						}else{
+							jQuery_21(document).trigger('pesquisa:numeroProcesso:incompleto', [ elemento, numProcessoInformado ]);
+						}
+					}
+				});
+
+			}
+		);
+
+		function validaNumeroUnico(numeroSujo){
+			var num = numeroSujo.replace(/[-\.]/g, '');
+
+			var numeroSequencia = num.substr(0, 7);
+			var numeroDV = num.substr(7, 2);
+			var numeroAno = num.substr(9,4);
+			var numeroRamo = num.substr(13,1);
+			var numeroTribunal = num.substr(14,2);
+			var numeroOrigem = num.substr(16,4);
+
+			var R1 = parseInt(numeroSequencia) % 97;
+			var R2 = parseInt(R1 + "" + numeroAno + "" + numeroRamo + "" + numeroTribunal ) % 97;
+			var R3 = parseInt(R2 + "" + numeroOrigem + "00" ) % 97
+			var digito = 98 - R3;
+
+			return digito == numeroDV;
+		}
+	</script></div>
+
+    <div class="propertyView ">
+        <div class="name"><label for="fPP:j_id166:processoReferenciaInput">
+
+						<p>Processo referência</p>
+						Numeração única <input type="radio" name="mascaraProcessoReferenciaRadio" checked="checked" onclick="mascaraDocumento('processoReferenciaInput', 'NUN')">
+						Livre <input type="radio" name="mascaraProcessoReferenciaRadio" onclick="mascaraDocumento('processoReferenciaInput', 'LIV')"></label>
+        </div>
+
+        <div class="value col-sm-12 "><input id="fPP:j_id166:processoReferenciaInput" type="text" name="fPP:j_id166:processoReferenciaInput" maxlength="25">
+
+	<script type="text/javascript">
+	//<![CDATA[
+	(function($){
+		  $(document).ready(function() {
+			var selector = 'processoReferenciaInput';
+
+			//Seleciona elemento por id
+			var $input = $("input[id$='" + selector + "']");
+
+			if($input.length < 1){
+				//Seleciona elemento por class
+				$input = $("input" + selector);
+			}
+
+			if ('9999999-99.9999.9.99.9999' == '') {
+				$input.unmask();
+			} else {
+				$input.mask('9999999-99.9999.9.99.9999');
+			}
+		 });
+	})(jQuery_21);
+	//]]>
+	</script>
+        </div>
+    </div>
+
+    <div class="propertyView ">
+        <div class="name"><label for="fPP:dnp:nomeParte">
+Nome da Parte</label>
+        </div>
+
+        <div class="value col-sm-12 "><input id="fPP:dnp:nomeParte" type="text" name="fPP:dnp:nomeParte" alt="Nome da parte" maxlength="100">
+        </div>
+    </div>
+
+    <div class="propertyView ">
+        <div class="name"><label for="fPP:j_id184:nomeAdv">
+Nome do advogado</label>
+        </div>
+
+        <div class="value col-sm-12 "><input id="fPP:j_id184:nomeAdv" type="text" name="fPP:j_id184:nomeAdv" alt="Nome do advogado" maxlength="100">
+        </div>
+    </div>
+
+    <div class="propertyView ">
+        <div class="name"><label for="fPP:j_id193:classeJudicial">
+Classe judicial</label>
+        </div>
+
+        <div class="value col-sm-12 "><input id="fPP:j_id193:classeJudicial" type="text" name="fPP:j_id193:classeJudicial" class="form-control" alt="Classe judicial" maxlength="100" autocomplete="off"><div id="fPP:j_id193:sgbClasseJudicial" class="rich-sb-common-container  " style="display:none; z-index: 201;width:600px;height:200px;;;"><div class="rich-sb-ext-decor-1"><div class="rich-sb-ext-decor-2" style=";; border-width: null  null  null  null ;"><table border="0" cellpadding="0" cellspacing="1" class="rich-sb-ext-decor-3"><tbody><tr><td><div class="_suggestion_size_ rich-sb-overflow" style="width:596px;height:196px;"><table width="100%" id="fPP:j_id193:sgbClasseJudicial:suggest" border="0"><tbody><tr style="display:none;"><td></td></tr></tbody></table></div></td></tr></tbody></table></div></div><div class="rich-sb-shadow" style="opacity:0.1; filter:alpha(opacity=10);top: 4px; left: 4px; "></div></div><div id="fPP:j_id193:sgbClasseJudicial_script" style="display:none;"><script type="text/javascript">Richfaces.onAvailable('fPP:j_id193:classeJudicial', function() { new RichFaces.Suggestion('fPP','fPP:j_id193:classeJudicial','fPP:j_id193:sgbClasseJudicial',{'similarityGroupingId':'fPP:j_id193:sgbClasseJudicial','onselect':function(suggestion,event){A4J.AJAX.Submit('fPP',event,{'similarityGroupingId':'fPP:j_id193:sgbClasseJudicial:j_id203','parameters':{'fPP:j_id193:sgbClasseJudicial:j_id203':'fPP:j_id193:sgbClasseJudicial:j_id203','ajaxSingle':'fPP:j_id193:sgbClasseJudicial'} ,'status':'_viewRoot:status'} )},'implicitEventsQueue':'fPP:j_id193:sgbClasseJudicial','width':'600','parameters':{'fPP:j_id193:sgbClasseJudicial':'fPP:j_id193:sgbClasseJudicial','ajaxSingle':'fPP:j_id193:sgbClasseJudicial'} ,'status':'_viewRoot:status','frequency':1.0,'minChars':'3'} );
+});</script></div><iframe src="/consultapublica/a4j/g/3_3_3.Finalorg/richfaces/renderkit/html/images/spacer.gif" id="fPP:j_id193:sgbClasseJudicial_iframe" style="position:absolute;display:none;z-index:200;"></iframe><input type="hidden" autocomplete="off" id="fPP:j_id193:sgbClasseJudicial_selection" name="fPP:j_id193:sgbClasseJudicial_selection">
+        </div>
+    </div>
+
+    <div class="propertyView ">
+        <div class="name"><label for="fPP:dpDec:documentoParte">
+
+						CPF <input type="radio" name="tipoMascaraDocumento" checked="checked" onclick="mascaraDocumento('documentoParte', 'CPF')">
+						CNPJ <input type="radio" name="tipoMascaraDocumento" onclick="mascaraDocumento('documentoParte', 'CNPJ')"></label>
+        </div>
+
+        <div class="value col-sm-12 "><input id="fPP:dpDec:documentoParte" type="text" name="fPP:dpDec:documentoParte" maxlength="14">
+
+	<script type="text/javascript">
+	//<![CDATA[
+	(function($){
+		  $(document).ready(function() {
+			var selector = 'documentoParte';
+
+			//Seleciona elemento por id
+			var $input = $("input[id$='" + selector + "']");
+
+			if($input.length < 1){
+				//Seleciona elemento por class
+				$input = $("input" + selector);
+			}
+
+			if ('999.999.999-99' == '') {
+				$input.unmask();
+			} else {
+				$input.mask('999.999.999-99');
+			}
+		 });
+	})(jQuery_21);
+	//]]>
+	</script>
+        </div>
+    </div>
+
+				<div class="col-sm-12">
+
+    <div class="propertyView col-sm-12 "><div id="fPP:Decoration:fieldDiv" class="name"><label for="fPP:Decoration:numeroOAB" class="">
+OAB (000000 A UF)</label></div>
+        <div class="value col-sm-12 "><input id="fPP:Decoration:numeroOAB" type="text" name="fPP:Decoration:numeroOAB" class="col-sm-4" maxlength="10"><span class="pull-left mt-10"> - </span><input type="text" name="fPP:Decoration:j_id227" class="col-sm-2 text-upper" maxlength="1" onkeyup="apenasTextos(this)"><span class="pull-left mt-10"> - </span><select id="fPP:Decoration:estadoComboOAB" name="fPP:Decoration:estadoComboOAB" class="col-sm-3 select2-hidden-accessible" size="1" tabindex="-1" aria-hidden="true">	<option value="org.jboss.seam.ui.NoSelectionConverter.noSelectionValue" selected="selected">UF</option>
+	<option value="0">AC</option>
+	<option value="1">AL</option>
+	<option value="2">AP</option>
+	<option value="3">AM</option>
+	<option value="4">BA</option>
+	<option value="5">CE</option>
+	<option value="6">DF</option>
+	<option value="7">ES</option>
+	<option value="8">GO</option>
+	<option value="9">MA</option>
+	<option value="10">MT</option>
+	<option value="11">MS</option>
+	<option value="12">MG</option>
+	<option value="13">PR</option>
+	<option value="14">PB</option>
+	<option value="15">PA</option>
+	<option value="16">PE</option>
+	<option value="17">PI</option>
+	<option value="18">RJ</option>
+	<option value="19">RN</option>
+	<option value="20">RS</option>
+	<option value="21">RO</option>
+	<option value="22">RR</option>
+	<option value="23">SC</option>
+	<option value="24">SE</option>
+	<option value="25">SP</option>
+	<option value="26">TO</option>
+</select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-fPP:Decoration:estadoComboOAB-container"><span class="select2-selection__rendered" id="select2-fPP:Decoration:estadoComboOAB-container" title="UF">UF</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+    </div>
+    </div>
+				</div><div id="fPP:dataAutuacaoDiv">
+
+    <div class="propertyView ">
+        <div class="name"><label for="fPP:dataAutuacaoDecoration:dataAutuacaoInicio">
+Data de Autuação</label>
+        </div>
+
+        <div class="value col-sm-12 ">
+
+	<script type="text/javascript">
+	//<![CDATA[
+	(function($){
+		  $(document).ready(function() {
+			var selector = '.maskDate';
+
+			//Seleciona elemento por id
+			var $input = $("input[id$='" + selector + "']");
+
+			if($input.length < 1){
+				//Seleciona elemento por class
+				$input = $("input" + selector);
+			}
+
+			if ('99/99/9999' == '') {
+				$input.unmask();
+			} else {
+				$input.mask('99/99/9999');
+			}
+		 });
+	})(jQuery_21);
+	//]]>
+	</script>
+		<div class="col-sm-6"><label for="fPP:dataAutuacaoDecoration:dataAutuacaoInicio" class="pull-left mt-10 mr-5">
+De </label><span id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioPopup"><input class="rich-calendar-input col-sm-7 text-center maskDate" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioInputDate" name="fPP:dataAutuacaoDecoration:dataAutuacaoInicioInputDate" style="vertical-align: middle; " type="text" maxlength="10"><img alt="" class="rich-calendar-button mt-10" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioPopupButton" style="vertical-align: middle" src="/consultapublica/stylesheet/estilos/richfaces/img/calendar-icon.png"><input autocomplete="off" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioInputCurrentDate" name="fPP:dataAutuacaoDecoration:dataAutuacaoInicioInputCurrentDate" style="display:none" type="hidden" value="07/2026"></span><div id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioIFrame" style="display: none;"></div><table id="fPP:dataAutuacaoDecoration:dataAutuacaoInicio" border="0" cellpadding="0" cellspacing="0" class="rich-calendar-exterior rich-calendar-popup undefined" style="display:none; position:absolute;z-index: 3;" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.skipEventOnCollapse=true;"><tbody><tr><td class="rich-calendar-header" colspan="7" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioHeader"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekDay"><td class="rich-calendar-days rich-calendar-weekends" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekDayCell0">dom.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekDayCell1">seg.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekDayCell2">ter.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekDayCell3">qua.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekDayCell4">qui.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekDayCell5">sex.</td><td class="rich-calendar-days rich-calendar-weekends rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekDayCell6">sáb.</td></tr>
+<tr id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekNum1"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell0" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell1" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell2" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell3" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell4" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell5" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell6" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekNum2"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell7" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell8" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell9" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell10" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell11" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell12" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell13" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekNum3"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell14" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell15" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell16" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell17" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell18" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell19" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell20" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekNum4"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell21" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell22" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell23" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell24" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell25" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell26" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell27" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekNum5"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell28" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell29" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell30" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell31" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell32" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell33" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell34" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioWeekNum6"><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell35" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell36" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell37" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell38" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell39" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell40" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioDayCell41" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoInicio').component.eventCellOnMouseOut(event, this);"></td></tr><tr><td class="rich-calendar-footer" colspan="7" id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioFooter"></td></tr></tbody></table><div id="fPP:dataAutuacaoDecoration:dataAutuacaoInicioScript" style="display: none;"><script type="text/javascript">Richfaces.Calendar.addLocale('pt_BR', {'weekDayLabels':['domingo','segunda\x2Dfeira','terça\x2Dfeira','quarta\x2Dfeira','quinta\x2Dfeira','sexta\x2Dfeira','sábado'] ,'weekDayLabelsShort':['dom.','seg.','ter.','qua.','qui.','sex.','sáb.'] ,'monthLabels':['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'] ,'monthLabelsShort':['jan.','fev.','mar.','abr.','mai.','jun.','jul.','ago.','set.','out.','nov.','dez.'] ,'minDaysInFirstWeek':1,'firstWeekDay':0} );
+new Calendar('fPP:dataAutuacaoDecoration:dataAutuacaoInicio',
+			"pt_BR",{'datePattern':'dd/MM/yyyy','enableManualInput':true,'currentDate':new Date(2026,6,28),'showWeeksBar':false,'direction':'auto','labels':{'cancel':'Cancelar','apply':'Aplicar','today':'Hoje','clean':'Limpar','ok':'OK','close':'Fechar'} } ,{} ).load();</script></div>
+		</div>
+
+		<div class="col-sm-6"><label for="fPP:dataAutuacaoDecoration:dataAutuacaoFim" class="pull-left mt-10 mr-5">
+ Até </label><span id="fPP:dataAutuacaoDecoration:dataAutuacaoFimPopup"><input class="rich-calendar-input col-sm-7 text-center maskDate" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimInputDate" name="fPP:dataAutuacaoDecoration:dataAutuacaoFimInputDate" style="vertical-align: middle; " type="text" maxlength="10"><img alt="" class="rich-calendar-button mt-10" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimPopupButton" style="vertical-align: middle" src="/consultapublica/stylesheet/estilos/richfaces/img/calendar-icon.png"><input autocomplete="off" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimInputCurrentDate" name="fPP:dataAutuacaoDecoration:dataAutuacaoFimInputCurrentDate" style="display:none" type="hidden" value="07/2026"></span><div id="fPP:dataAutuacaoDecoration:dataAutuacaoFimIFrame" style="display: none;"></div><table id="fPP:dataAutuacaoDecoration:dataAutuacaoFim" border="0" cellpadding="0" cellspacing="0" class="rich-calendar-exterior rich-calendar-popup undefined" style="display:none; position:absolute;z-index: 3;" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.skipEventOnCollapse=true;"><tbody><tr><td class="rich-calendar-header" colspan="7" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimHeader"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekDay"><td class="rich-calendar-days rich-calendar-weekends" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekDayCell0">dom.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekDayCell1">seg.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekDayCell2">ter.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekDayCell3">qua.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekDayCell4">qui.</td><td class="rich-calendar-days" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekDayCell5">sex.</td><td class="rich-calendar-days rich-calendar-weekends rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekDayCell6">sáb.</td></tr>
+<tr id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekNum1"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell0" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell1" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell2" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell3" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell4" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell5" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell6" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekNum2"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell7" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell8" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell9" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell10" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell11" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell12" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell13" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekNum3"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell14" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell15" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell16" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell17" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell18" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell19" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell20" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekNum4"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell21" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell22" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell23" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell24" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell25" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell26" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell27" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekNum5"><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell28" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell29" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell30" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell31" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell32" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell33" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell34" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td></tr><tr id="fPP:dataAutuacaoDecoration:dataAutuacaoFimWeekNum6"><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell rich-calendar-holly" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell35" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell36" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell37" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell38" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell39" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell40" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td><td class="rich-bottom-cell rich-calendar-cell-size rich-calendar-cell rich-calendar-holly rich-right-cell" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimDayCell41" onclick="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnClick(event, this);" onmouseover="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOver(event, this);" onmouseout="$('fPP:dataAutuacaoDecoration:dataAutuacaoFim').component.eventCellOnMouseOut(event, this);"></td></tr><tr><td class="rich-calendar-footer" colspan="7" id="fPP:dataAutuacaoDecoration:dataAutuacaoFimFooter"></td></tr></tbody></table><div id="fPP:dataAutuacaoDecoration:dataAutuacaoFimScript" style="display: none;"><script type="text/javascript">new Calendar('fPP:dataAutuacaoDecoration:dataAutuacaoFim',
+			"pt_BR",{'datePattern':'dd/MM/yyyy','enableManualInput':true,'currentDate':new Date(2026,6,28),'showWeeksBar':false,'direction':'auto','labels':{'cancel':'Cancelar','apply':'Aplicar','today':'Hoje','clean':'Limpar','ok':'OK','close':'Fechar'} } ,{} ).load();</script></div>
+		</div>
+        </div>
+    </div></div>
+
+				<div class="propertyView">
+					<div class="value"><script id="fPP:j_id248" type="text/javascript">//<![CDATA[
+		executarPesquisa=function(){A4J.AJAX.Submit('fPP',null,{'similarityGroupingId':'fPP:j_id248','oncomplete':function(request,event,data){hideLoading(); hcaptcha.reset();},'parameters':{'fPP:j_id248':'fPP:j_id248'} } )};
+		//]]></script><script language="JavaScript" type="text/javascript">document.forms['fPP'].onkeypress = new Function("event", "{var keycode;if (window.event) keycode = window.event.keyCode;else if (event) keycode = event.which;else return true;if (keycode == 13) { document.getElementById('fPP:searchProcessos').click();return false; } else return true; }");</script><input class="btn btn-primary" id="fPP:searchProcessos" name="fPP:searchProcessos" onclick="return executarReCaptcha();;A4J.AJAX.Submit('fPP',event,{'similarityGroupingId':'fPP:searchProcessos','parameters':{'fPP:searchProcessos':'fPP:searchProcessos'} } );return false;" value="Pesquisar" type="button">
+					</div>
+				</div></div></div></div></div>
+		</div><div class="rich-panel col-sm-9" id="fPP:processosGridPanel"><div class="rich-panel-body panel" id="fPP:processosGridPanel_body"><dl id="fPP:j_id252" class="rich-messages" style="display: none; "><dt></dt></dl><table class="rich-table " id="fPP:processosTable" border="0" cellpadding="0" cellspacing="0"><colgroup span="3"></colgroup><thead class="rich-table-thead"><tr class="rich-table-subheader "><th class="rich-table-subheadercell  " scope="col" id="fPP:processosTable:j_id257header"><div id="fPP:processosTable:j_id257header:sortDiv"></div></th><th class="rich-table-subheadercell  " scope="col" id="fPP:processosTable:j_id259header"><div id="fPP:processosTable:j_id259header:sortDiv">
+							Processo</div></th><th class="rich-table-subheadercell  " scope="col" id="fPP:processosTable:j_id265header"><div id="fPP:processosTable:j_id265header:sortDiv">
+							Última movimentação</div></th></tr></thead><tfoot><tr class="rich-table-footer  "><td class="rich-table-footercell  " colspan="3" scope="colgroup"><div id="fPP:processosTable:j_id253" class="col-sm-12">
+
+							<div class="pull-right"><span class="text-muted"> resultados encontrados</span>
+							</div></div></td></tr></tfoot><tbody id="fPP:processosTable:tb"></tbody></table><img alt="" class="rich-spacer " height="5" id="fPP:j_id268" src="/consultapublica/a4j/g/3_3_3.Finalimages/spacer.gif" width="1">
+				<div class="alert alert-info">
+				    A presente consulta não retornará qualquer resultado em caso de informações prestadas incorretamente ou de processos sob segredo de justiça, conforme art. 1º, parágrafo único, da
+					<b><a href="http://www.cnj.jus.br/atos-normativos?documento=92" target="_blank">Resolução nº 121 do Conselho Nacional de Justiça</a></b>.
+				</div><img alt="" class="rich-spacer " height="5" id="fPP:j_id270" src="/consultapublica/a4j/g/3_3_3.Finalimages/spacer.gif" width="1"></div></div><input type="hidden" autocomplete="off" name="fPP" value="fPP"><input type="hidden" autocomplete="off" name="autoScroll" value=""><script type="text/javascript">function clear_fPP() {
+_clearJSFFormParameters('fPP','',['fPP:j_idcl','fPP:_link_hidden_']);
+}
+function clearFormHiddenParams_fPP(){clear_fPP();}
+function clearFormHiddenParams_fPP(){clear_fPP();}
+clear_fPP();</script><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id1" autocomplete="off"></form>
+		</div>
+	</div></div>
+			</div></div>

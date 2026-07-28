@@ -1,0 +1,696 @@
+<body><app-root _nghost-c0="" ng-version="5.1.1"><div _ngcontent-c0="" class="layout-wrapper">
+  <ng-progress _ngcontent-c0="" _nghost-c1="">
+  <ng-progress-bar _ngcontent-c1="" _nghost-c3="">
+  <!----><div _ngcontent-c3="" class="ng-progress ng-star-inserted">
+    <div _ngcontent-c3="" class="bar" style="transition: 200ms linear; background-color: rgb(204, 24, 30); margin-left: -100%;">
+      <div _ngcontent-c3="" class="bar-shadow" style="box-shadow: rgb(204, 24, 30) 0px 0px 10px, rgb(204, 24, 30) 0px 0px 5px;"></div>
+    </div>
+    <!----><div _ngcontent-c3="" class="spinner clockwise ng-star-inserted">
+      <div _ngcontent-c3="" class="spinner-icon" style="border-top-color: rgb(204, 24, 30); border-left-color: rgb(204, 24, 30);"></div>
+    </div>
+  </div></ng-progress-bar></ng-progress>
+  <block-ui _ngcontent-c0="">
+    
+    <block-ui-content>
+<!---->
+</block-ui-content>
+  </block-ui>
+  <div _ngcontent-c0="" class="layout-container menu-layout-static menu-layout-horizontal">
+
+    <app-topbar _ngcontent-c0="">
+        <div class="topbar clearfix">
+            <div class="topbar-left">
+                <div class="logo"></div>
+            </div>
+
+            <div class="topbar-right">
+                <a href="#" id="menu-button">
+                    <i></i>
+                </a>
+
+                <a href="#" id="topbar-menu-button">
+                    <i class="material-icons">menu</i>
+                </a>
+
+                <ul class="topbar-items animated fadeInDown">
+                    <li>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </app-topbar>
+
+    <div _ngcontent-c0="" class="layout-menu">
+      <div _ngcontent-c0="" class="nano">
+        <div _ngcontent-c0="" class="nano-content menu-scroll-content" tabindex="0">
+          <!---->
+          <app-menu _ngcontent-c0="">
+    <ul app-submenu="" class="ultima-menu ultima-main-menu clearfix ng-tns-c5-0" root="true" visible="true">
+    <!---->
+      <!----><li class="ng-tns-c5-0 ng-star-inserted">
+        <!---->
+          <!----><a class="ripplelink ng-tns-c5-0 ng-star-inserted active-menuitem-routerlink" routerlinkactive="active-menuitem-routerlink" href="#/pesquisa-peca">
+            <i class="material-icons">extension</i>
+            <span class="ng-tns-c5-0">Pesquisar Mandados</span>
+            <!---->
+            <!---->
+          </a>
+          <div class="layout-menu-tooltip">
+            <div class="layout-menu-tooltip-arrow"></div>
+            <div class="layout-menu-tooltip-text">Pesquisar Mandados</div>
+          </div>
+          <!---->
+      </li>
+    
+      <!----><li class="ng-tns-c5-0 ng-star-inserted">
+        <!---->
+          <!----><a class="ripplelink ng-tns-c5-0 ng-star-inserted" routerlinkactive="active-menuitem-routerlink" href="#/estatisticas">
+            <i class="material-icons">assignment</i>
+            <span class="ng-tns-c5-0">Estatísticas</span>
+            <!---->
+            <!---->
+          </a>
+          <div class="layout-menu-tooltip">
+            <div class="layout-menu-tooltip-arrow"></div>
+            <div class="layout-menu-tooltip-text">Estatísticas</div>
+          </div>
+          <!---->
+      </li>
+    
+      <!----><li class="ng-tns-c5-0 ng-star-inserted">
+        <!---->
+          <!----><a class="ripplelink ng-tns-c5-0 ng-star-inserted" routerlinkactive="active-menuitem-routerlink" href="#/certidao">
+            <i class="material-icons">description</i>
+            <span class="ng-tns-c5-0">Validar Documentos</span>
+            <!---->
+            <!---->
+          </a>
+          <div class="layout-menu-tooltip">
+            <div class="layout-menu-tooltip-arrow"></div>
+            <div class="layout-menu-tooltip-text">Validar Documentos</div>
+          </div>
+          <!---->
+      </li>
+    
+      <!----><li class="ng-tns-c5-0 ng-star-inserted">
+        <!---->
+          <!----><a class="ripplelink ng-tns-c5-0 ng-star-inserted" routerlinkactive="active-menuitem-routerlink" href="#/ajuda">
+            <i class="material-icons">help</i>
+            <span class="ng-tns-c5-0">Contato</span>
+            <!---->
+            <!---->
+          </a>
+          <div class="layout-menu-tooltip">
+            <div class="layout-menu-tooltip-arrow"></div>
+            <div class="layout-menu-tooltip-text">Contato</div>
+          </div>
+          <!---->
+      </li>
+    
+      <!----><li class="ng-tns-c5-0 ng-star-inserted">
+        <!---->
+          <!----><a class="ripplelink ng-tns-c5-0 ng-star-inserted" routerlinkactive="active-menuitem-routerlink" href="#/login">
+            <i class="material-icons">lock</i>
+            <span class="ng-tns-c5-0">Login</span>
+            <!---->
+            <!---->
+          </a>
+          <div class="layout-menu-tooltip">
+            <div class="layout-menu-tooltip-arrow"></div>
+            <div class="layout-menu-tooltip-text">Login</div>
+          </div>
+          <!---->
+      </li>
+    
+  </ul>
+  </app-menu>
+        </div>
+      <div class="nano-pane" style="display: none;"><div class="nano-slider" style="height: 20px; transform: translate(0px);"></div></div></div>
+    </div>
+      
+    <div _ngcontent-c0="" class="layout-main">
+      <div _ngcontent-c0="" class="layout-content">
+        <router-outlet _ngcontent-c0=""></router-outlet><app-pesquisa-peca class="ng-star-inserted"><div class="ui-g ui-fluid">
+    <p-fieldset legend="Pesquisar peças" class="ng-tns-c6-2">
+        <fieldset class="ng-tns-c6-2 ui-fieldset ui-widget ui-widget-content ui-corner-all ui-fieldset-toggleable" id="ui-fieldset-1">
+            <legend class="ui-fieldset-legend ui-corner-all ui-state-default ui-unselectable-text">
+                <a class="ng-tns-c6-2" href="#" aria-controls="ui-fieldset-1-content" aria-expanded="true">
+                    <span class="ui-fieldset-toggler fa fa-w fa-minus"></span>
+                    <span class="ui-fieldset-legend-text">Pesquisar peças</span>
+                    
+                </a>
+            </legend>
+            <div class="ui-fieldset-content-wrapper ng-trigger ng-trigger-fieldsetContent" role="region" id="ui-fieldset-1-content" aria-hidden="false">
+                <div class="ui-fieldset-content">
+                    
+        <form class="ui-g ui-fluid form-group ng-valid ng-touched ng-dirty" novalidate="">
+
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <p-inputmask mask="999999999-99" name="numeroIndividuo" unmask="true" class="ng-valid ng-touched ng-dirty"><input pinputtext="" type="text" name="numeroIndividuo" class="ui-inputtext ui-corner-all ui-state-default ui-widget"></p-inputmask>
+                    <label>Registro Judiciário Individual (RJI)</label>
+                </span>
+            </div>
+
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <p-inputmask mask="999.999.999-99" name="numeroCpf" pinputtext="" type="text" unmask="true" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid"><input pinputtext="" type="text" name="numeroCpf" class="ui-inputtext ui-corner-all ui-state-default ui-widget"></p-inputmask>
+                    <label>CPF</label>
+                </span>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <input maxlength="150" name="nomePessoa" pinputtext="" type="text" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid">
+                    <label>Nome da Pessoa/Outros Nomes</label>
+                </span>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <div class="labeled-dropdown">
+                    <p-dropdown name="idSexo" class="ng-tns-c7-3 ng-untouched ng-pristine ng-valid">
+         <div class="ng-tns-c7-3 ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix">
+            <!---->
+            <div class="ui-helper-hidden-accessible">
+                <input class="ng-tns-c7-3" readonly="" role="listbox" type="text" aria-label="">
+            </div>
+            <!----><label class="ng-tns-c7-3 ui-dropdown-label ui-inputtext ui-corner-all ui-dropdown-label-empty ng-star-inserted" style="">empty</label>
+            <!---->
+            <!---->
+            <div class="ui-dropdown-trigger ui-state-default ui-corner-right">
+                <span class="ui-clickable fa fa-fw fa-caret-down"></span>
+            </div>
+            <div class="ng-tns-c7-3 ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow ng-trigger ng-trigger-panelState" style="display: none; opacity: 0;">
+                <!----><div class="ui-dropdown-filter-container ng-tns-c7-3 ng-star-inserted" style="">
+                    <input class="ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all" autocomplete="off" type="text">
+                    <span class="fa fa-search"></span>
+                </div>
+                <div class="ui-dropdown-items-wrapper" style="max-height: 200px;">
+                    <!---->
+                </div>
+            </div>
+        </div>
+    </p-dropdown>
+                    <label class="float-label">Sexo Biológico</label>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <input maxlength="150" name="alcunha" pinputtext="" type="text" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid">
+                    <label>Alcunha/Outras Alcunhas</label>
+                </span>
+            </div>
+
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <input maxlength="150" name="nomeMae" pinputtext="" type="text" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid">
+                    <label>Nome da mãe/Outros</label>
+                </span>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <input maxlength="150" name="nomeMae" pinputtext="" type="text" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid">
+                    <label>Nome do Pai/Outros</label>
+                </span>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <p-inputmask mask="99/99/9999" name="dataNascimento" pinputtext="" type="text" unmask="true" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid"><input pinputtext="" type="text" name="dataNascimento" class="ui-inputtext ui-corner-all ui-state-default ui-widget"></p-inputmask>
+                    <label>Data Nascimento</label>
+                </span>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <div class="labeled-dropdown">
+                    <p-dropdown name="idTipoDocumento" class="ng-tns-c7-4 ng-untouched ng-pristine ng-valid">
+         <div class="ng-tns-c7-4 ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix">
+            <!---->
+            <div class="ui-helper-hidden-accessible">
+                <input class="ng-tns-c7-4" readonly="" role="listbox" type="text" aria-label="">
+            </div>
+            <!----><label class="ng-tns-c7-4 ui-dropdown-label ui-inputtext ui-corner-all ui-dropdown-label-empty ng-star-inserted" style="">empty</label>
+            <!---->
+            <!---->
+            <div class="ui-dropdown-trigger ui-state-default ui-corner-right">
+                <span class="ui-clickable fa fa-fw fa-caret-down"></span>
+            </div>
+            <div class="ng-tns-c7-4 ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow ng-trigger ng-trigger-panelState" style="display: none; opacity: 0;">
+                <!----><div class="ui-dropdown-filter-container ng-tns-c7-4 ng-star-inserted" style="">
+                    <input class="ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all" autocomplete="off" type="text">
+                    <span class="fa fa-search"></span>
+                </div>
+                <div class="ui-dropdown-items-wrapper" style="max-height: 200px;">
+                    <!---->
+                </div>
+            </div>
+        </div>
+    </p-dropdown>
+                    <label class="float-label">Tipo de documento</label>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <input maxlength="150" name="numeroDocumento" pinputtext="" type="text" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid">
+                    <label>Número do Documento de Identificação</label>
+                    <!---->
+                </span>
+            </div>
+
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <div class="labeled-dropdown">
+                    <p-dropdown name="idEstado" class="ng-tns-c7-5 ng-untouched ng-pristine ng-valid">
+         <div class="ng-tns-c7-5 ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix">
+            <!---->
+            <div class="ui-helper-hidden-accessible">
+                <input class="ng-tns-c7-5" readonly="" role="listbox" type="text" aria-label="">
+            </div>
+            <!----><label class="ng-tns-c7-5 ui-dropdown-label ui-inputtext ui-corner-all ui-dropdown-label-empty ng-star-inserted" style="">empty</label>
+            <!---->
+            <!---->
+            <div class="ui-dropdown-trigger ui-state-default ui-corner-right">
+                <span class="ui-clickable fa fa-fw fa-caret-down"></span>
+            </div>
+            <div class="ng-tns-c7-5 ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow ng-trigger ng-trigger-panelState" style="display: none; opacity: 0;">
+                <!----><div class="ui-dropdown-filter-container ng-tns-c7-5 ng-star-inserted" style="">
+                    <input class="ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all" autocomplete="off" type="text">
+                    <span class="fa fa-search"></span>
+                </div>
+                <div class="ui-dropdown-items-wrapper" style="max-height: 200px;">
+                    <!---->
+                </div>
+            </div>
+        </div>
+    </p-dropdown>
+                    <label class="float-label">Estado</label>
+                </div>
+            </div>
+
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <div class="labeled-dropdown">
+                    <p-dropdown name="idMunicipio" class="ng-tns-c7-6 ng-untouched ng-pristine ng-valid">
+         <div class="ng-tns-c7-6 ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix">
+            <!---->
+            <div class="ui-helper-hidden-accessible">
+                <input class="ng-tns-c7-6" readonly="" role="listbox" type="text" aria-label="">
+            </div>
+            <!----><label class="ng-tns-c7-6 ui-dropdown-label ui-inputtext ui-corner-all ui-dropdown-label-empty ng-star-inserted" style="">empty</label>
+            <!---->
+            <!---->
+            <div class="ui-dropdown-trigger ui-state-default ui-corner-right">
+                <span class="ui-clickable fa fa-fw fa-caret-down"></span>
+            </div>
+            <div class="ng-tns-c7-6 ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow ng-trigger ng-trigger-panelState" style="display: none; opacity: 0;">
+                <!----><div class="ui-dropdown-filter-container ng-tns-c7-6 ng-star-inserted" style="">
+                    <input class="ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all" autocomplete="off" type="text">
+                    <span class="fa fa-search"></span>
+                </div>
+                <div class="ui-dropdown-items-wrapper" style="max-height: 200px;">
+                    <!---->
+                </div>
+            </div>
+        </div>
+    </p-dropdown>
+                    <label class="float-label">Município</label>
+                </div>
+            </div>
+
+            <!----><div class="ui-g-12 ui-md-3 ui-input-container ng-star-inserted" style="">
+                <app-orgao-component label="Órgão Expedidor" name="orgaoExpedidor" _nghost-c8=""><div _ngcontent-c8="" class="ui-g-12 ui-md-12 ui-g-nopad ui-input-container">
+  <span _ngcontent-c8="" class="md-inputfield">
+    <!----><input _ngcontent-c8="" class="opacity-1 ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-star-inserted" name="orgao" pinputtext="" type="text" disabled="">
+    <label _ngcontent-c8="">Órgão Expedidor</label>
+    <button _ngcontent-c8="" class="float-right grid-button button-input-add ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" icon="ui-icon-search" pbutton="" type="button"><span class="ui-button-icon-left ui-clickable fa fa-fw ui-icon-search"></span><span class="ui-button-text ui-clickable">ui-btn</span></button>
+  </span>
+</div>
+
+<p-dialog _ngcontent-c8="" appendto="body" showeffect="fade" class="ng-tns-c11-8">
+        
+    </p-dialog>
+</app-orgao-component>
+            </div>
+            <!---->
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <p-inputmask mask="9999999-99.9999.9.99.9999" name="numeroProcesso" pinputtext="" type="text" unmask="true" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid"><input pinputtext="" type="text" name="numeroProcesso" class="ui-inputtext ui-corner-all ui-state-default ui-widget"></p-inputmask>
+                    <label>N° do Processo</label>
+                </span>
+            </div>
+
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <span class="md-inputfield">
+                    <p-inputmask mask="9999999-99.9999.9.99.9999.99.9999-99" name="numeroPeca" pinputtext="" type="text" unmask="true" class="ui-inputtext ui-corner-all ui-state-default ui-widget ng-untouched ng-pristine ng-valid"><input pinputtext="" type="text" name="numeroPeca" class="ui-inputtext ui-corner-all ui-state-default ui-widget"></p-inputmask>
+                    <label>Número da Peça</label>
+                </span>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <div class="labeled-dropdown">
+                    <p-dropdown name="idTipoPeca" class="ng-tns-c7-7 ng-untouched ng-pristine ng-valid">
+         <div class="ng-tns-c7-7 ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix">
+            <!---->
+            <div class="ui-helper-hidden-accessible">
+                <input class="ng-tns-c7-7" readonly="" role="listbox" type="text" aria-label="">
+            </div>
+            <!----><label class="ng-tns-c7-7 ui-dropdown-label ui-inputtext ui-corner-all ui-dropdown-label-empty ng-star-inserted" style="">empty</label>
+            <!---->
+            <!---->
+            <div class="ui-dropdown-trigger ui-state-default ui-corner-right">
+                <span class="ui-clickable fa fa-fw fa-caret-down"></span>
+            </div>
+            <div class="ng-tns-c7-7 ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow ng-trigger ng-trigger-panelState" style="display: none; opacity: 0;">
+                <!----><div class="ui-dropdown-filter-container ng-tns-c7-7 ng-star-inserted" style="">
+                    <input class="ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all" autocomplete="off" type="text">
+                    <span class="fa fa-search"></span>
+                </div>
+                <div class="ui-dropdown-items-wrapper" style="max-height: 200px;">
+                    <!---->
+                </div>
+            </div>
+        </div>
+    </p-dropdown>
+                    <label class="float-label">Tipo Peça</label>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-input-container">
+                <p-checkbox binary="true" class="font-size-0-7em alling-right ng-untouched ng-pristine ng-valid" label="Buscar Orgãos Vinculados" name="buscaOrgaoRecursivo">
+        <div class="ui-chkbox ui-widget">
+            <div class="ui-helper-hidden-accessible">
+                <input type="checkbox" name="buscaOrgaoRecursivo" value="undefined">
+            </div>
+            <div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default">
+                <span class="ui-chkbox-icon ui-clickable"></span>
+            </div>
+        </div>
+        <!----><label class="ui-chkbox-label ng-star-inserted" style="">Buscar Orgãos Vinculados</label>
+    </p-checkbox>
+            </div>
+
+            <div class="ui-g-12 ui-g-nopad ui-btn-container space-between">
+                <button class="auto-width ui-button-secondary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" icon="ui-icon-clear" label="Limpar" pbutton="" type="button"><span class="ui-button-icon-left ui-clickable fa fa-fw ui-icon-clear"></span><span class="ui-button-text ui-clickable">Limpar</span></button>
+                <button class="auto-width ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" icon="ui-icon-search" label="Pesquisar" pbutton="" type="submit"><span class="ui-button-icon-left ui-clickable fa fa-fw ui-icon-search"></span><span class="ui-button-text ui-clickable">Pesquisar</span></button>
+            </div>
+        </form>
+    
+                </div>
+            </div>
+        </fieldset>
+    </p-fieldset>
+
+    <div class="ui-g-12 ui-md-12 ui-input-container">
+        <h3 class="component-header">Mandados Encontrados</h3>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <p-datatable emptymessage="Nenhum registro encontrado" rows="10" selectionmode="none">
+        <div class="ui-datatable ui-widget ui-datatable-reflow">
+            <!---->
+            <!---->
+            <!---->
+            <!---->
+            <!----><div class="ui-datatable-tablewrapper ng-star-inserted">
+                <table>
+                    <thead class="ui-datatable-thead">
+                        <!----><tr class="ui-state-default ng-star-inserted">
+        <!---->
+            <th class="ui-state-default ui-unselectable-text ui-sortable-column ng-star-inserted" style="width: 350px;" scope="col">
+                <!---->
+                <!----><span class="ui-column-title ng-star-inserted">Número</span>
+                <!---->
+                <!----><span class="ui-sortable-column-icon fa fa-fw fa-sort ng-star-inserted"></span>
+                <!---->
+                <!---->
+                <!---->
+            </th>
+        
+            <th class="ui-state-default ui-unselectable-text ui-sortable-column ng-star-inserted" scope="col">
+                <!---->
+                <!----><span class="ui-column-title ng-star-inserted">Nome</span>
+                <!---->
+                <!----><span class="ui-sortable-column-icon fa fa-fw fa-sort ng-star-inserted"></span>
+                <!---->
+                <!---->
+                <!---->
+            </th>
+        
+            <th class="ui-state-default ui-unselectable-text ui-sortable-column ng-star-inserted" scope="col">
+                <!---->
+                <!----><span class="ui-column-title ng-star-inserted">Situação</span>
+                <!---->
+                <!----><span class="ui-sortable-column-icon fa fa-fw fa-sort ng-star-inserted"></span>
+                <!---->
+                <!---->
+                <!---->
+            </th>
+        
+            <th class="ui-state-default ui-unselectable-text ui-sortable-column ng-star-inserted" scope="col">
+                <!---->
+                <!----><span class="ui-column-title ng-star-inserted">Data</span>
+                <!---->
+                <!----><span class="ui-sortable-column-icon fa fa-fw fa-sort ng-star-inserted"></span>
+                <!---->
+                <!---->
+                <!---->
+            </th>
+        
+            <th class="ui-state-default ui-unselectable-text ng-star-inserted" scope="col">
+                <!---->
+                <!----><span class="ui-column-title ng-star-inserted">Órgão Expedidor</span>
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+            </th>
+        
+            <th class="ui-state-default ui-unselectable-text ui-sortable-column ng-star-inserted" scope="col">
+                <!---->
+                <!----><span class="ui-column-title ng-star-inserted">Peça</span>
+                <!---->
+                <!----><span class="ui-sortable-column-icon fa fa-fw fa-sort ng-star-inserted"></span>
+                <!---->
+                <!---->
+                <!---->
+            </th>
+        
+            <th class="ui-state-default ui-unselectable-text ng-star-inserted" style="width: 150px;" scope="col">
+                <!---->
+                <!---->
+                <!----><span class="ui-column-title ng-star-inserted">
+                    <p-columnheadertemplateloader></p-columnheadertemplateloader>
+                Ações
+            
+                </span>
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+            </th>
+        
+    </tr>
+                        <!---->
+                    </thead>
+                    <!---->
+                    <tbody class="ui-datatable-data ui-widget-content ui-datatable-hoverable-rows">
+        <!---->
+
+        <!----><tr class="ui-widget-content ui-datatable-emptymessage-row ng-star-inserted" style="visibility: visible;">
+            <td class="ui-datatable-emptymessage" colspan="7">
+                <!----><span class="ng-star-inserted">Nenhum registro encontrado</span>
+                <p-templateloader></p-templateloader>
+            </td>
+        </tr>
+    </tbody>
+                </table>
+            </div>
+            
+            <!---->
+            
+            <!----><p-paginator styleclass="ui-paginator-bottom" class="ng-star-inserted">
+        <!----><div class="ui-paginator-bottom ui-paginator ui-widget ui-widget-header ui-unselectable-text ui-helper-clearfix ng-star-inserted">
+            <!---->
+            <a class="ui-paginator-first ui-paginator-element ui-state-default ui-corner-all ui-state-disabled" href="#" tabindex="-1">
+                <span class="fa fa-step-backward"></span>
+            </a>
+            <a class="ui-paginator-prev ui-paginator-element ui-state-default ui-corner-all ui-state-disabled" href="#" tabindex="-1">
+                <span class="fa fa-backward"></span>
+            </a>
+            <span class="ui-paginator-pages">
+                <!----><a class="ui-paginator-page ui-paginator-element ui-state-default ui-corner-all ui-state-active ng-star-inserted" href="#">1</a>
+            </span>
+            <a class="ui-paginator-next ui-paginator-element ui-state-default ui-corner-all ui-state-disabled" href="#" tabindex="-1">
+                <span class="fa fa-forward"></span>
+            </a>
+            <a class="ui-paginator-last ui-paginator-element ui-state-default ui-corner-all ui-state-disabled" href="#" tabindex="-1">
+                <span class="fa fa-step-forward"></span>
+            </a>
+            <!----><p-dropdown class="ng-tns-c7-9 ng-untouched ng-pristine ng-valid ng-star-inserted">
+         <div class="ng-tns-c7-9 ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix">
+            <!---->
+            <div class="ui-helper-hidden-accessible">
+                <input class="ng-tns-c7-9" readonly="" role="listbox" type="text" aria-label="10">
+            </div>
+            <!----><label class="ng-tns-c7-9 ui-dropdown-label ui-inputtext ui-corner-all ng-star-inserted">10</label>
+            <!---->
+            <!---->
+            <div class="ui-dropdown-trigger ui-state-default ui-corner-right">
+                <span class="ui-clickable fa fa-fw fa-caret-down"></span>
+            </div>
+            <div class="ng-tns-c7-9 ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow ng-trigger ng-trigger-panelState" style="display: none; opacity: 0;">
+                <!---->
+                <div class="ui-dropdown-items-wrapper" style="max-height: 200px;">
+                    <!----><ul class="ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset ng-tns-c7-9 ng-star-inserted" style="">
+                        <!----><li class="ng-tns-c7-9 ui-dropdown-item ui-corner-all ui-state-highlight ng-star-inserted">
+                            <!----><span class="ng-tns-c7-9 ng-star-inserted">10</span>
+                            <!---->
+                        </li><li class="ng-tns-c7-9 ui-dropdown-item ui-corner-all ng-star-inserted">
+                            <!----><span class="ng-tns-c7-9 ng-star-inserted">20</span>
+                            <!---->
+                        </li><li class="ng-tns-c7-9 ui-dropdown-item ui-corner-all ng-star-inserted">
+                            <!----><span class="ng-tns-c7-9 ng-star-inserted">30</span>
+                            <!---->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </p-dropdown>
+            <!---->
+        </div>
+    </p-paginator>
+            <!----><div class="ui-datatable-footer ui-widget-header ng-star-inserted">
+                <p-footer>Total de registros: 0</p-footer>
+            </div>
+            
+            <div class="ui-column-resizer-helper ui-state-highlight" style="display:none"></div>
+            <span class="fa fa-arrow-down ui-datatable-reorder-indicator-up" style="position: absolute; display: none;"></span>
+            <span class="fa fa-arrow-up ui-datatable-reorder-indicator-down" style="position: absolute; display: none;"></span>
+        </div>
+    </p-datatable>
+</div>
+<div class="ui-g end-buttons">
+    <app-botoes-exportacao _nghost-c9=""><!---->
+</app-botoes-exportacao>
+</div></app-pesquisa-peca>
+        <app-footer _ngcontent-c0="">
+    <div class="footer">
+        <div class="card clearfix">
+          <span class="footer-text-left">Portal do BNMP.</span>
+          <app-version><span class="cssClass" style="margin-left: 5px;">Versão: 4.0.0</span></app-version>
+          <span class="footer-text-right"><span class="ui-icon ui-icon-copyright"></span>  <span>2026</span></span>
+        </div>
+    </div>
+  </app-footer>
+      </div>
+    </div>
+
+    <app-rightpanel _ngcontent-c0="">
+    <div class="layout-rightpanel">
+      <div class="nano">
+        <div class="nano-content right-panel-scroll-content" tabindex="0">
+          <div class="layout-rightpanel-header">
+            <div class="weather-day">Wednesday</div>
+            <div class="weather-date">Jan 26</div>
+          </div>
+
+          <div class="layout-rightpanel-content">
+            <h1>Weather</h1>
+            <h2>San Francisco, USA</h2>
+
+            <div class="weather-today">
+              <span class="weather-today-value">21℃</span>
+              <img src="assets/layout/images/dashboard/weather-icon-2.svg" width="60">
+            </div>
+
+            <ul class="weekly-weather">
+              <li>
+                Thursday
+                <img src="assets/layout/images/dashboard/weather-icon-1.svg">
+                <span class="weekly-weather-value">24</span>
+              </li>
+              <li>
+                Friday
+                <img src="assets/layout/images/dashboard/weather-icon-3.svg">
+                <span class="weekly-weather-value">19</span>
+              </li>
+              <li>
+                Saturday
+                <img src="assets/layout/images/dashboard/weather-icon-4.svg">
+                <span class="weekly-weather-value">15</span>
+              </li>
+              <li>
+                Sunday
+                <img src="assets/layout/images/dashboard/weather-icon-1.svg">
+                <span class="weekly-weather-value">24</span>
+              </li>
+              <li>
+                Monday
+                <img src="assets/layout/images/dashboard/weather-icon-2.svg">
+                <span class="weekly-weather-value">21</span>
+              </li>
+              <li>
+                Tuesday
+                <img src="assets/layout/images/dashboard/weather-icon-3.svg">
+                <span class="weekly-weather-value">20</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      <div class="nano-pane" style=""><div class="nano-slider" style="height: 141px; transform: translate(0px);"></div></div></div>
+    </div>
+  </app-rightpanel>
+      
+    <div _ngcontent-c0="" class="layout-mask"></div>
+  </div>
+</div></app-root><script type="text/javascript" async="" charset="utf-8" src="https://www.gstatic.com/recaptcha/releases/A7KpaEASfhDcK0nXxgQEyyYv/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-DMJucfgjcmtc4a8x9gFfPgwoWXK+1qozk7K/wTFGVtduYs3wg2BI8Z5lrJXZV+iE"></script><script type="text/javascript" src="inline.80bfacf22e6930cb3222.bundle.js"></script><script type="text/javascript" src="polyfills.dd6bf962cfed44197c77.bundle.js"></script><script type="text/javascript" src="scripts.ebc539176a32d3b7c3c3.bundle.js"></script><script type="text/javascript" src="main.624825d583c8ec984343.bundle.js"></script><script src="https://www.google.com/recaptcha/api.js?onload=reCaptchaOnloadCallback&amp;render=explicit" async="" defer=""></script><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility 0s linear 0.3s, opacity 0.3s linear; opacity: 0; visibility: hidden; z-index: 2000000000; left: 859px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div style="border-width: 11px; border-style: solid; border-color: transparent rgb(204, 204, 204) transparent transparent; border-image: none; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000; top: 257px; right: 100%;" class="g-recaptcha-bubble-arrow"></div><div style="border-width: 10px; border-style: solid; border-color: transparent rgb(255, 255, 255) transparent transparent; border-image: none; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000; top: 257px; right: 100%;" class="g-recaptcha-bubble-arrow"></div><div style="z-index: 2000000000; position: relative; width: 400px; height: 580px;"><iframe title="recaptcha challenge expires in two minutes" style="width: 400px; height: 580px;" name="c-bmg8nbsf9qpr" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="https://www.google.com/recaptcha/api2/bframe?hl=en&amp;v=A7KpaEASfhDcK0nXxgQEyyYv&amp;k=6LcFD2kUAAAAANxbfKI76eMBcv_eU0Y_3cRxEeuz&amp;bft=0dAFcWeA5SKdJH8lzWzg0QGC8QHT0K-5TXAYBXa1E7RM3udJp-bTnebk_8J377Oc_vR3k-VMUOu-Msz5KVnTdoJuya4kqhywj9XA"></iframe></div></div><div class="ng-tns-c11-8 ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-helper-hidden ui-dialog-draggable ng-trigger ng-trigger-dialogState" role="dialog" style="width: 800px; height: 400px; min-width: 800px; opacity: 0;" aria-labelledby="ui-dialog-0-label">
+            <!----><div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top ng-tns-c11-8 ng-star-inserted" style="">
+                <!----><span class="ui-dialog-title ng-tns-c11-8 ng-star-inserted" id="ui-dialog-0-label">Órgão Expedidor</span>
+                <!---->
+                <!----><a href="#" role="button" class="ng-tns-c11-8 ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all ng-star-inserted">
+                    <span class="fa fa-fw fa-close"></span>
+                </a>
+            </div>
+            <div class="ui-dialog-content ui-widget-content">
+                
+  <p-tree _ngcontent-c8="" selectionmode="single">
+        <!----><div class="ui-tree ui-widget ui-widget-content ui-corner-all ui-tree-selectable ng-star-inserted" style="max-height: 245px; overflow-y: auto; width: 100%;">
+            <!---->
+            <!---->
+            <ul class="ui-tree-container">
+                <!----><p-treenode class="ng-star-inserted">
+        <!---->
+            <!---->
+            <!----><li class="ui-treenode ng-star-inserted">
+                <div class="ui-treenode-content ui-treenode-selectable" draggable="false">
+                    <span class="ui-tree-toggler fa fa-fw fa-caret-right"></span><!----><!----><span class="ui-treenode-label ui-corner-all">
+                            <!---->
+                            <!----><span class="ng-star-inserted">
+                                <p-treenodetemplateloader></p-treenodetemplateloader>
+      <!----><p _ngcontent-c8="" class="ng-star-inserted">
+           Conselho Nacional de Justiça
+      </p>
+      <!---->
+  
+                            </span>
+                    </span>
+                </div>
+                <!---->
+            </li>
+            <!---->
+            <!---->
+        
+    </p-treenode>
+            </ul>
+        </div>
+        <!---->
+    </p-tree>
+  
+
+            </div>
+            <!----><div class="ui-dialog-footer ui-widget-content ng-tns-c11-8 ng-star-inserted" style="">
+                <p-footer _ngcontent-c8="">
+    <div _ngcontent-c8="" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button _ngcontent-c8="" icon="fa-check" label="Escolher" pbutton="" type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-check"></span><span class="ui-button-text ui-clickable">Escolher</span></button>
+      <button _ngcontent-c8="" class="float-left ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" icon="fa-close" label="Cancelar" pbutton="" type="button"><span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span class="ui-button-text ui-clickable">Cancelar</span></button>
+    </div>
+  </p-footer>
+            </div>
+            <!----><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ng-tns-c11-8 ng-star-inserted" style="z-index: 90;"></div>
+        </div></body>
