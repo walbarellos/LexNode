@@ -20,6 +20,8 @@ warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 BASE_URL = "https://pje1g-consultapublica.trf1.jus.br/consultapublica/ConsultaPublica/listView.seam"
 DETALHE_BASE = "https://pje1g-consultapublica.trf1.jus.br"
 
+WHITESPACE_RE = re.compile(r"\s+")
+
 
 @dataclass
 class ResumoProcessoFederal:
@@ -176,7 +178,7 @@ class CrawlerTRF1:
             if classe_prefixo:
                 partes = partes.replace(classe_prefixo, "", 1).strip()
             # Limpar lixo visual
-            partes = re.sub(r"\s+", " ", partes).strip()
+            partes = WHITESPACE_RE.sub(" ", partes).strip()
             if partes.startswith("Ver detalhes do processo"):
                 partes = partes.replace("Ver detalhes do processo", "").strip()
 
@@ -242,7 +244,7 @@ class CrawlerTRF1:
                     if cells:
                         span = cells[0].find("span", class_="text-bold")
                         nome = span.get_text(strip=True) if span else cells[0].get_text(" ", strip=True)
-                        nome = re.sub(r"\s+", " ", nome).strip()
+                        nome = WHITESPACE_RE.sub(" ", nome).strip()
                         sit = cells[1].get_text(strip=True) if len(cells) > 1 else ""
                         partes.append({"nome": nome, "situacao": sit})
             return partes
