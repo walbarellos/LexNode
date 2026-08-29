@@ -26,7 +26,10 @@ class CrawlerJurisprudencia:
         resultados = []
         
         # Encontra todos os nós com texto Ementa:
-        ementas = soup.find_all(string=re.compile(r'^\s*Ementa:', re.IGNORECASE))
+        regex_ementa = re.compile(r'^\s*Ementa:', re.IGNORECASE)
+        ementas = []
+        for tr in soup.find_all('tr'):
+            ementas.extend(tr.find_all(string=regex_ementa))
         tables_vistas = set()
         
         for em in ementas:
