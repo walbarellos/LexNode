@@ -1,6 +1,6 @@
-# LexNode (ProcessoLivreAC)
+# JusBrasil (Fork ProcessoLivreAC)
 
-O LexNode é uma arquitetura de software desenvolvida em Python orientada à coleta de inteligência de fontes abertas (OSINT) e raspagem de dados estruturados em sistemas judiciais estaduais (especificamente o e-SAJ do TJAC). O sistema realiza web scraping avançado, contornando limitações de UI para fornecer extração exaustiva em 1º e 2º graus de jurisdição.
+O JusBrasil é uma arquitetura de software desenvolvida em Python orientada a facilitar o acesso à informação, coleta de inteligência de fontes abertas (OSINT) e raspagem de dados estruturados em sistemas judiciais estaduais (especificamente o e-SAJ do TJAC). O sistema realiza web scraping avançado, contornando limitações de UI para fornecer extração exaustiva em 1º e 2º graus de jurisdição de forma fácil, moderna e acessível a usuários finais e advogados.
 
 ## 🚀 Arquitetura e Funcionalidades
 
@@ -27,8 +27,8 @@ O projeto conta com *shell scripts* para provisionamento automático do *virtual
 
 ```bash
 # Clone o repositório
-git clone https://github.com/walbarellos/LexNode.git
-cd LexNode
+git clone https://github.com/walbarellos/JusBrasil.git
+cd JusBrasil
 
 # Conceda permissão de execução aos scripts
 chmod +x install.sh start.sh

@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LexNode - Plataforma de Busca de Inteligência Jurídica em Sistemas Judiciais.">
-    <title>LexNode - Intelligence Search</title>
+    <meta name="description" content="JusBrasil - Plataforma de Busca de Inteligência Jurídica em Sistemas Judiciais.">
+    <title>JusBrasil - Pesquisa Processual</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        darkbg: '#0B0F19',
-                        darkcard: 'rgba(23, 31, 51, 0.7)',
-                        primary: '#3B82F6',
-                        primaryHover: '#2563EB',
-                        accent: '#8B5CF6',
-                        glassborder: 'rgba(255, 255, 255, 0.08)'
+                        primary: '#1E40AF', // dark blue
+                        primaryHover: '#1E3A8A',
+                        secondary: '#10B981', // green
+                        lightbg: '#F3F4F6', // light gray
+                        whitebg: '#FFFFFF',
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.4s ease-out forwards',
@@ -44,37 +42,29 @@
     </script>
     <style>
         body {
-            background-color: #0B0F19;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
-            background-attachment: fixed;
-            color: #E2E8F0;
+            background-color: #F3F4F6;
+            color: #1F2937;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
         }
         
-        .glass {
-            background: rgba(23, 31, 51, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        .header-bg {
+            background: #FFFFFF;
+            border-bottom: 1px solid #E5E7EB;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
-        .glass-card {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.7) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+        .card-bg {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.2s ease;
         }
 
-        .glass-card:hover, .glass-card:focus-within {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.3);
-            border-color: rgba(59, 130, 246, 0.3);
+        .card-bg:hover, .card-bg:focus-within {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #93C5FD;
         }
 
         .tab-btn {
@@ -83,8 +73,8 @@
         }
         
         .tab-btn.active {
-            color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            color: #1E40AF;
+            font-weight: 600;
         }
 
         .tab-btn.active::after {
@@ -94,23 +84,21 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+            background: #1E40AF;
             border-radius: 2px;
-            box-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
         }
 
-        .input-glass {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
+        .input-search {
+            background: #FFFFFF;
+            border: 1px solid #D1D5DB;
+            color: #111827;
             transition: all 0.3s ease;
         }
 
-        .input-glass:focus {
+        .input-search:focus {
             outline: none;
             border-color: #3B82F6;
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-            background: rgba(15, 23, 42, 0.8);
         }
 
         /* Custom Scrollbar */
@@ -119,18 +107,18 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.5); 
+            background: #F3F4F6;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.5); 
+            background: #D1D5DB;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(59, 130, 246, 0.8); 
+            background: #9CA3AF;
         }
 
         .loading-spinner {
-            border: 3px solid rgba(255,255,255,0.1);
+            border: 3px solid #E5E7EB;
             border-top-color: #3B82F6;
             border-radius: 50%;
             width: 24px;
@@ -142,10 +130,11 @@
             to { transform: rotate(360deg); }
         }
 
-        .gradient-text {
-            background: linear-gradient(to right, #60A5FA, #A78BFA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .brand-text {
+            color: #1F2937;
+        }
+        .brand-text-accent {
+            color: #1E40AF;
         }
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -153,21 +142,21 @@
 <body class="antialiased selection:bg-primary selection:text-white pb-20">
 
     <!-- Header -->
-    <header class="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center" role="banner">
+    <header class="header-bg sticky top-0 z-50 px-6 py-4 flex justify-between items-center" role="banner">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30" aria-hidden="true">
-                <i class="fa-solid fa-cube text-white text-xl"></i>
+            <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-md" aria-hidden="true">
+                <i class="fa-solid fa-scale-balanced text-white text-xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-bold tracking-tight text-white leading-none">Lex<span class="gradient-text">Node</span></h1>
-                <p class="text-xs text-gray-400 font-medium tracking-widest uppercase mt-1" aria-hidden="true">OSINT & Legal Intelligence</p>
+                <h1 class="text-2xl font-bold tracking-tight brand-text leading-none">Jus<span class="brand-text-accent">Brasil</span></h1>
+                <p class="text-xs text-gray-500 font-medium tracking-widest uppercase mt-1" aria-hidden="true">Informação Jurídica</p>
             </div>
         </div>
         <nav class="flex gap-4" aria-label="Navegação Principal">
-            <button class="text-gray-400 hover:text-white transition-colors p-2" aria-label="Notificações"><i class="fa-solid fa-bell"></i></button>
-            <button class="text-gray-400 hover:text-white transition-colors p-2" aria-label="Configurações"><i class="fa-solid fa-gear"></i></button>
-            <div class="w-8 h-8 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center" aria-label="Perfil do Usuário">
-                <i class="fa-solid fa-user text-sm text-slate-300" aria-hidden="true"></i>
+            <button class="text-gray-500 hover:text-blue-600 transition-colors p-2" aria-label="Notificações"><i class="fa-solid fa-bell"></i></button>
+            <button class="text-gray-500 hover:text-blue-600 transition-colors p-2" aria-label="Configurações"><i class="fa-solid fa-gear"></i></button>
+            <div class="w-8 h-8 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center" aria-label="Perfil do Usuário">
+                <i class="fa-solid fa-user text-sm text-gray-500" aria-hidden="true"></i>
             </div>
         </nav>
     </header>
@@ -176,19 +165,19 @@
     <main class="max-w-6xl mx-auto mt-12 px-4" role="main">
         
         <!-- Search Section -->
-        <section class="glass rounded-2xl p-6 sm:p-8 mb-12 animate-slide-up" aria-labelledby="search-heading">
-            <h2 id="search-heading" class="text-3xl font-semibold text-white mb-2">Omnibus Search</h2>
-            <p class="text-gray-400 mb-8 text-sm">Busca unificada em tribunais. Encontre processos no TRF1 e TJAC simultaneamente através do nome ou documento.</p>
+        <section class="card-bg rounded-2xl p-6 sm:p-8 mb-12 animate-slide-up" aria-labelledby="search-heading">
+            <h2 id="search-heading" class="text-3xl font-semibold text-gray-800 mb-2">Pesquisa de Processos e Jurisprudência</h2>
+            <p class="text-gray-600 mb-8 text-sm">Busque por nome, CPF/CNPJ ou número do processo. Acesse dados do TRF1 e TJAC simultaneamente.</p>
             
             <!-- Tabs -->
-            <div class="flex border-b border-gray-800 mb-6 gap-6" role="tablist" aria-label="Tipos de Busca">
-                <button onclick="switchTab('nome')" id="tab-nome" class="tab-btn active pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-t-lg px-2" role="tab" aria-selected="true" aria-controls="search-panel">
+            <div class="flex border-b border-gray-200 mb-6 gap-6" role="tablist" aria-label="Tipos de Busca">
+                <button onclick="switchTab('nome')" id="tab-nome" class="tab-btn active pb-3 text-sm font-medium text-gray-500 hover:text-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-t-lg px-2" role="tab" aria-selected="true" aria-controls="search-panel">
                     <i class="fa-solid fa-users" aria-hidden="true"></i> Nome / Documento
                 </button>
-                <button onclick="switchTab('processo')" id="tab-processo" class="tab-btn pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-t-lg px-2" role="tab" aria-selected="false" aria-controls="search-panel">
+                <button onclick="switchTab('processo')" id="tab-processo" class="tab-btn pb-3 text-sm font-medium text-gray-500 hover:text-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-t-lg px-2" role="tab" aria-selected="false" aria-controls="search-panel">
                     <i class="fa-solid fa-gavel" aria-hidden="true"></i> Número do Processo
                 </button>
-                <button onclick="switchTab('jurisprudencia')" id="tab-jurisprudencia" class="tab-btn pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-t-lg px-2" role="tab" aria-selected="false" aria-controls="search-panel">
+                <button onclick="switchTab('jurisprudencia')" id="tab-jurisprudencia" class="tab-btn pb-3 text-sm font-medium text-gray-500 hover:text-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-t-lg px-2" role="tab" aria-selected="false" aria-controls="search-panel">
                     <i class="fa-solid fa-book-open" aria-hidden="true"></i> Jurisprudência
                 </button>
             </div>
@@ -199,17 +188,17 @@
                     <i class="fa-solid fa-magnifying-glass absolute left-4 text-gray-400" aria-hidden="true"></i>
                     <label for="search-input" class="sr-only">Termo de Busca</label>
                     <input type="text" id="search-input" 
-                        class="input-glass w-full rounded-xl py-4 pl-12 pr-32 text-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="input-search w-full rounded-xl py-4 pl-12 pr-32 text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Nome da parte, CPF ou CNPJ (Busca simultânea TRF1 e TJAC)..." required aria-required="true">
                     
                     <!-- Grau selector for Processo (TJAC only fallback) -->
                     <label for="grau-select" class="sr-only">Instância</label>
-                    <select id="grau-select" class="absolute right-36 bg-slate-800 border border-slate-700 text-sm rounded-lg px-3 py-2 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 hidden" aria-hidden="true">
+                    <select id="grau-select" class="absolute right-36 bg-white border border-gray-300 text-sm rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 hidden" aria-hidden="true">
                         <option value="1">1º Grau</option>
                         <option value="2">2º Grau</option>
                     </select>
 
-                    <button type="submit" id="search-btn" class="absolute right-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium py-2 px-6 rounded-lg transition-all shadow-lg hover:shadow-blue-500/25 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-300" aria-label="Realizar Busca">
+                    <button type="submit" id="search-btn" class="absolute right-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-sm flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2" aria-label="Realizar Busca">
                         <span>Buscar</span>
                     </button>
                 </form>
@@ -219,13 +208,13 @@
         <!-- Results Section -->
         <div id="loading-indicator" class="hidden flex-col items-center justify-center py-12 animate-fade-in" aria-live="polite">
             <div class="loading-spinner mb-4"></div>
-            <p class="text-blue-400 font-medium tracking-wide">Varrendo sistemas judiciais (TRF1 & TJAC)...</p>
+            <p class="text-blue-600 font-medium tracking-wide">Varrendo sistemas judiciais (TRF1 & TJAC)...</p>
         </div>
 
-        <div id="error-message" class="hidden glass border-red-500/30 bg-red-900/10 p-4 rounded-xl text-red-400 mb-8 animate-fade-in flex items-start gap-3" role="alert" aria-live="assertive">
+        <div id="error-message" class="hidden card-bg border-red-300 bg-red-50 p-4 rounded-xl text-red-700 mb-8 animate-fade-in flex items-start gap-3" role="alert" aria-live="assertive">
             <i class="fa-solid fa-triangle-exclamation mt-1"></i>
             <div>
-                <h4 class="font-bold text-red-300">Consulta Falhou</h4>
+                <h4 class="font-bold text-red-800">Consulta Falhou</h4>
                 <p id="error-text" class="text-sm mt-1"></p>
             </div>
         </div>
@@ -338,14 +327,14 @@
                 
                 if (results.length === 0) {
                     container.innerHTML = `
-                        <div class="glass-card p-8 rounded-2xl text-center">
-                            <i class="fa-regular fa-folder-open text-4xl text-gray-500 mb-4" aria-hidden="true"></i>
-                            <h3 class="text-xl font-medium text-gray-300">Nenhum resultado encontrado</h3>
+                        <div class="card-bg p-8 rounded-2xl text-center">
+                            <i class="fa-regular fa-folder-open text-4xl text-gray-400 mb-4" aria-hidden="true"></i>
+                            <h3 class="text-xl font-medium text-gray-700">Nenhum resultado encontrado</h3>
                             <p class="text-gray-500 mt-2">Tente modificar seus termos de busca.</p>
                         </div>
                     `;
                 } else {
-                    const header = `<div class="text-sm text-gray-400 mb-4 flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-400" aria-hidden="true"></i> ${results.length} registros recuperados em todos os sistemas</div>`;
+                    const header = `<div class="text-sm text-gray-600 mb-4 flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-500" aria-hidden="true"></i> ${results.length} registros recuperados em todos os sistemas</div>`;
                     
                     let cards = '';
                     if (type === 'nome') {
@@ -363,7 +352,7 @@
 
         function getSistemaBadge(sistema) {
             if (!sistema) return '';
-            const colorClass = sistema.includes('TRF1') ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+            const colorClass = sistema.includes('TRF1') ? 'bg-green-100 text-green-700 border-green-200' : 'bg-blue-100 text-blue-700 border-blue-200';
             return `<span class="px-2 py-0.5 ${colorClass} border rounded text-xs font-medium tracking-wide uppercase">${sistema}</span>`;
         }
 
@@ -372,15 +361,15 @@
             let partesHtml = '';
             if (p.partes && p.partes.length > 0) {
                 partesHtml = `
-                    <div class="mt-6 border-t border-gray-800 pt-6">
-                        <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <div class="mt-6 border-t border-gray-200 pt-6">
+                        <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-users" aria-hidden="true"></i> Sujeitos do Processo
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             ${p.partes.map(parte => `
-                                <div class="bg-gray-900/50 rounded-lg p-3 border border-gray-800/50">
-                                    <span class="text-xs text-blue-400 font-medium">${parte.tipo}</span>
-                                    <p class="text-gray-200 font-medium text-sm mt-1">${parte.nome}</p>
+                                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                                    <span class="text-xs text-blue-600 font-medium">${parte.tipo}</span>
+                                    <p class="text-gray-800 font-medium text-sm mt-1">${parte.nome}</p>
                                 </div>
                             `).join('')}
                         </div>
@@ -392,16 +381,16 @@
             let movHtml = '';
             if (p.movimentacoes && p.movimentacoes.length > 0) {
                 movHtml = `
-                    <div class="mt-6 border-t border-gray-800 pt-6">
-                        <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <div class="mt-6 border-t border-gray-200 pt-6">
+                        <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-timeline" aria-hidden="true"></i> Últimas Movimentações
                         </h4>
-                        <div class="space-y-4 pl-2 border-l-2 border-gray-800">
+                        <div class="space-y-4 pl-2 border-l-2 border-gray-200">
                             ${p.movimentacoes.slice(0, 5).map(m => `
                                 <div class="relative pl-4">
-                                    <div class="absolute w-2 h-2 bg-blue-500 rounded-full -left-[5px] top-1.5 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
+                                    <div class="absolute w-2 h-2 bg-blue-500 rounded-full -left-[5px] top-1.5 shadow-sm"></div>
                                     <span class="text-xs text-gray-500 font-mono">${m.data}</span>
-                                    <p class="text-gray-300 text-sm mt-0.5">${m.descricao}</p>
+                                    <p class="text-gray-700 text-sm mt-0.5">${m.descricao}</p>
                                 </div>
                             `).join('')}
                         </div>
@@ -412,49 +401,49 @@
             let extraActions = '';
             if (p.link_detalhe) {
                 extraActions = `
-                    <a href="${p.link_detalhe}" target="_blank" rel="noopener noreferrer" class="mt-6 block text-center w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-lg transition-colors border border-slate-700">
+                    <a href="${p.link_detalhe}" target="_blank" rel="noopener noreferrer" class="mt-6 block text-center w-full bg-white hover:bg-gray-50 text-blue-600 font-medium py-2 px-4 rounded-lg transition-colors border border-gray-300">
                         Abrir Processo Original (TRF1) <i class="fa-solid fa-external-link-alt ml-2 text-xs"></i>
                     </a>
                 `;
             }
 
             return `
-                <article class="glass-card rounded-2xl p-6 sm:p-8 animate-fade-in relative overflow-hidden" aria-labelledby="proc-${p.numero_processo}">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none" aria-hidden="true">
-                        <i class="fa-solid fa-scale-balanced text-9xl"></i>
+                <article class="card-bg rounded-2xl p-6 sm:p-8 animate-fade-in relative overflow-hidden" aria-labelledby="proc-${p.numero_processo}">
+                    <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none" aria-hidden="true">
+                        <i class="fa-solid fa-scale-balanced text-9xl text-gray-300"></i>
                     </div>
                     
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                         <div>
                             ${getSistemaBadge(p.sistema)}
-                            <h3 id="proc-${p.numero_processo}" class="text-2xl font-bold text-white mt-3 font-mono">${p.numero_processo}</h3>
-                            <p class="text-gray-400 text-sm mt-1">${p.classe || 'Classe não informada'}</p>
+                            <h3 id="proc-${p.numero_processo}" class="text-2xl font-bold text-gray-800 mt-3 font-mono">${p.numero_processo}</h3>
+                            <p class="text-gray-500 text-sm mt-1">${p.classe || 'Classe não informada'}</p>
                         </div>
                         <div class="text-right">
                             <div class="text-sm text-gray-500 mb-1">Status</div>
-                            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-800/50 rounded-lg border border-gray-700">
-                                <div class="w-2 h-2 rounded-full ${p.situacao?.toLowerCase().includes('baixado') ? 'bg-red-500' : 'bg-green-500 animate-pulse'}" aria-hidden="true"></div>
-                                <span class="text-gray-300 font-medium text-sm">${p.situacao || 'Desconhecido'}</span>
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-200">
+                                <div class="w-2 h-2 rounded-full ${p.situacao?.toLowerCase().includes('baixado') ? 'bg-red-500' : 'bg-green-500'}" aria-hidden="true"></div>
+                                <span class="text-gray-700 font-medium text-sm">${p.situacao || 'Desconhecido'}</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 bg-gray-900/30 p-5 rounded-xl border border-gray-800/50">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
                         <div>
                             <span class="text-xs text-gray-500 block mb-1">Assunto</span>
-                            <span class="text-sm text-gray-300 font-medium">${p.assunto || '-'}</span>
+                            <span class="text-sm text-gray-800 font-medium">${p.assunto || '-'}</span>
                         </div>
                         <div>
                             <span class="text-xs text-gray-500 block mb-1">Magistrado</span>
-                            <span class="text-sm text-gray-300 font-medium">${p.juiz || p.relator || '-'}</span>
+                            <span class="text-sm text-gray-800 font-medium">${p.juiz || p.relator || '-'}</span>
                         </div>
                         <div>
                             <span class="text-xs text-gray-500 block mb-1">Órgão Julgador</span>
-                            <span class="text-sm text-gray-300 font-medium">${p.vara || p.orgao_julgador || p.foro || '-'}</span>
+                            <span class="text-sm text-gray-800 font-medium">${p.vara || p.orgao_julgador || p.foro || '-'}</span>
                         </div>
                         <div>
                             <span class="text-xs text-gray-500 block mb-1">Distribuição</span>
-                            <span class="text-sm text-gray-300 font-medium">${p.distribuicao || '-'}</span>
+                            <span class="text-sm text-gray-800 font-medium">${p.distribuicao || '-'}</span>
                         </div>
                     </div>
 
@@ -467,23 +456,23 @@
 
         function renderResumoCard(r) {
             return `
-                <article class="glass-card p-5 rounded-xl animate-fade-in flex flex-col h-full cursor-pointer hover:bg-slate-800/50 group focus-within:ring-2 focus-within:ring-blue-500" tabindex="0" onkeypress="if(event.key === 'Enter'){document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))}" onclick="document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))" aria-label="Processo ${r.numero}">
+                <article class="card-bg p-5 rounded-xl animate-fade-in flex flex-col h-full cursor-pointer hover:bg-blue-50 group focus-within:ring-2 focus-within:ring-blue-500" tabindex="0" onkeypress="if(event.key === 'Enter'){document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))}" onclick="document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))" aria-label="Processo ${r.numero}">
                     <div class="flex justify-between items-start mb-3">
-                        <span class="font-mono text-blue-400 group-hover:text-blue-300 transition-colors">${r.numero}</span>
+                        <span class="font-mono text-blue-600 group-hover:text-blue-700 transition-colors">${r.numero}</span>
                         ${getSistemaBadge(r.sistema)}
                     </div>
                     <div class="mb-3 flex-grow">
-                        <h4 class="text-white font-medium text-sm leading-snug">${r.classe}</h4>
-                        <p class="text-gray-400 text-xs mt-1 line-clamp-2">${r.assunto}</p>
+                        <h4 class="text-gray-800 font-medium text-sm leading-snug">${r.classe}</h4>
+                        <p class="text-gray-500 text-xs mt-1 line-clamp-2">${r.assunto}</p>
                     </div>
-                    <div class="mt-auto border-t border-gray-800/50 pt-3 flex flex-col gap-2">
+                    <div class="mt-auto border-t border-gray-100 pt-3 flex flex-col gap-2">
                         <div class="text-xs flex justify-between">
-                            <span class="text-gray-500">Última movimentação/Data:</span> 
-                            <span class="text-gray-400 font-medium text-right line-clamp-1 max-w-[50%]">${r.data_local || 'N/A'}</span>
+                            <span class="text-gray-500">Última mov.:</span>
+                            <span class="text-gray-700 font-medium text-right line-clamp-1 max-w-[50%]">${r.data_local || 'N/A'}</span>
                         </div>
                         <div class="text-xs flex justify-between items-end">
-                            <span class="text-gray-500">Partes envolvidas:</span> 
-                            <span class="text-gray-300 font-medium text-right line-clamp-2 max-w-[65%]">${r.participacao || '-'}</span>
+                            <span class="text-gray-500">Partes:</span>
+                            <span class="text-gray-700 font-medium text-right line-clamp-2 max-w-[65%]">${r.participacao || '-'}</span>
                         </div>
                     </div>
                 </article>
@@ -492,26 +481,26 @@
 
         function renderJurisprudenciaCard(j) {
             return `
-                <article class="glass-card p-6 rounded-xl animate-fade-in flex flex-col h-full group relative overflow-hidden" tabindex="0" onkeypress="if(event.key === 'Enter'){document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))}">
+                <article class="card-bg p-6 rounded-xl animate-fade-in flex flex-col h-full group relative overflow-hidden" tabindex="0" onkeypress="if(event.key === 'Enter'){document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))}">
                     <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity" aria-hidden="true">
-                        <i class="fa-solid fa-book-open text-6xl"></i>
+                        <i class="fa-solid fa-book-open text-6xl text-gray-300"></i>
                     </div>
                     
                     <div class="flex justify-between items-start mb-4">
                         <div>
-                            <span class="font-mono text-purple-400 text-lg group-hover:text-purple-300 transition-colors block cursor-pointer focus:outline-none focus:underline" onclick="document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))">${j.numero}</span>
-                            <span class="text-xs text-gray-400 font-medium mt-1 block">${j.orgao}</span>
+                            <span class="font-mono text-purple-600 text-lg group-hover:text-purple-700 transition-colors block cursor-pointer focus:outline-none focus:underline" onclick="document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))">${j.numero}</span>
+                            <span class="text-xs text-gray-500 font-medium mt-1 block">${j.orgao}</span>
                         </div>
-                        <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded-md border border-gray-700">${j.data}</span>
+                        <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-md border border-gray-200">${j.data}</span>
                     </div>
                     
-                    <div class="text-sm text-gray-300 bg-gray-900/40 p-4 rounded-lg border border-gray-800 mb-4 line-clamp-6 font-serif italic flex-grow">
+                    <div class="text-sm text-gray-700 bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4 line-clamp-6 font-serif italic flex-grow">
                         "${j.ementa}"
                     </div>
                     
                     <div class="mt-auto pt-3 flex items-center gap-2">
-                        <i class="fa-solid fa-user-pen text-gray-500 text-xs" aria-hidden="true"></i>
-                        <span class="text-xs text-gray-400"><strong class="text-gray-300 font-medium">Relator:</strong> ${j.relator}</span>
+                        <i class="fa-solid fa-user-pen text-gray-400 text-xs" aria-hidden="true"></i>
+                        <span class="text-xs text-gray-500"><strong class="text-gray-700 font-medium">Relator:</strong> ${j.relator}</span>
                     </div>
                 </article>
             `;
