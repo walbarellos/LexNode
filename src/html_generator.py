@@ -440,6 +440,8 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
 """
     return html
 
+_NUMERO_TRANS_TABLE = str.maketrans(".-/", "___")
+
 def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local: bool = False) -> str:
     """Gera um HTML apresentando os resultados de busca por nome."""
     
@@ -447,7 +449,7 @@ def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local:
     if resumos:
         for p in resumos:
             if link_local:
-                num_sanitizado = p.numero.replace(".", "_").replace("-", "_").replace("/", "_")
+                num_sanitizado = p.numero.translate(_NUMERO_TRANS_TABLE)
                 href = f"{num_sanitizado}.html"
                 target = ""
                 aria = f'aria-label="Ver detalhes locais do Processo {p.numero}"'
