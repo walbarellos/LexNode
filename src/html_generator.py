@@ -306,7 +306,6 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
     """Gera um HTML completo estilizado apresentando os dados do processo."""
     
     # Prepara Partes agrupadas
-    partes_html = ""
     if processo.partes:
         # Agrupa principais com seus advogados
         # No e-SAJ, geralmente vem [Parte Principal], [Advogado 1], [Advogado 2]...
@@ -326,23 +325,25 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
         if grupo_atual:
             grupos.append(grupo_atual)
             
+        partes_list = []
         for g in grupos:
             prin = g['principal']
             advs = "".join([f'<div class="parte-advogado"><span class="sr-only">Advogado: </span>{a.nome}</div>' for a in g['advogados']])
             
-            partes_html += f"""
+            partes_list.append(f"""
             <div class="parte-group" role="group" aria-label="Participante do processo">
                 <div class="parte-role">{prin.tipo}</div>
                 <div class="parte-name">{prin.nome}</div>
                 {advs}
             </div>
-            """
+            """)
+        partes_html = "".join(partes_list)
     else:
         partes_html = "<p class='text-muted'>Nenhuma parte encontrada.</p>"
 
     # Prepara Movimentações
-    movs_html = ""
     if processo.movimentacoes:
+        movs_list = []
         for m in processo.movimentacoes:
             # Separa titulo e descricao da movimentacao se houver quebra de linha
             linhas = m.descricao.split('\n', 1) if m.descricao else ["", ""]
@@ -351,14 +352,15 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
             
             desc_html = f'<div class="timeline-desc">{desc}</div>' if desc else ""
             
-            movs_html += f"""
+            movs_list.append(f"""
             <div class="timeline-item">
                 <div class="timeline-marker" aria-hidden="true"></div>
                 <div class="timeline-date"><time>{m.data}</time></div>
                 <div class="timeline-title">{titulo}</div>
                 {desc_html}
             </div>
-            """
+            """)
+        movs_html = "".join(movs_list)
     else:
         movs_html = "<p class='text-muted'>Nenhuma movimentação encontrada.</p>"
         
@@ -445,8 +447,8 @@ _NUMERO_TRANS_TABLE = str.maketrans(".-/", "___")
 def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local: bool = False) -> str:
     """Gera um HTML apresentando os resultados de busca por nome."""
     
-    itens_html = ""
     if resumos:
+        itens_list = []
         for p in resumos:
             if link_local:
                 num_sanitizado = p.numero.translate(_NUMERO_TRANS_TABLE)
@@ -458,7 +460,7 @@ def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local:
                 target = 'target="_blank"'
                 aria = f'aria-label="Processo {p.numero} no site do tribunal"'
                 
-            itens_html += f"""
+            itens_list.append(f"""
             <article class="card" style="margin-bottom: 1rem;">
                 <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem;">
                     <a href="{href}" {target} {aria}>
@@ -480,7 +482,8 @@ def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local:
                     </div>
                 </div>
             </article>
-            """
+            """)
+        itens_html = "".join(itens_list)
     else:
         itens_html = "<div class='card'><p>Nenhum processo encontrado para este nome.</p></div>"
         
