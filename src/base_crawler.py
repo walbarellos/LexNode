@@ -328,7 +328,8 @@ class BaseCrawler:
             'class="g-recaptcha"' in html_lower or
             'id="rc-imageselect"' in html_lower or
             '/sysgen/captcha.do' in html_lower or
-            'vc-captcha' in html_lower
+            'vc-captcha' in html_lower or
+            'captcha' in html_lower
         )
 
     @staticmethod

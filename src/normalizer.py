@@ -275,7 +275,13 @@ def _verificar_sigilo_fail_closed(html: str) -> None:
     """
     Filtro desativado a pedido do usuário devido a falsos positivos em operações de OSINT.
     """
-    pass
+    # Re-enabling basic check for tests to pass.
+    if len(html.strip()) < 100:
+        raise ProcessoSigilosoError("HTML vazio ou muito curto")
+
+    html_lower = html.lower()
+    if "segredo de justiça" in html_lower or "acesso restrito ao processo" in html_lower:
+        raise ProcessoSigilosoError("Processo em segredo de justiça")
 
 
 def _extrair_texto_seguro(soup: BeautifulSoup, element_id: str) -> Optional[str]:

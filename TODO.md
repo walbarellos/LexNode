@@ -1,6 +1,6 @@
 # TODO: Próximos Passos e Melhorias Futuras
 
-Abaixo está o roadmap sugerido de evolução para o **LexNode**, partindo de uma ferramenta de CLI e web scraping de linha de comando para uma solução escalável de OSINT e inteligência processual.
+Abaixo está o roadmap sugerido de evolução para o **JusBrasil**, partindo de uma ferramenta de CLI e web scraping de linha de comando para uma solução escalável de OSINT e inteligência processual.
 
 ## Funcionalidades Implementadas (Concluídas)
 * ~~**1. Suporte ao 2º Grau (Tribunal de Justiça)**~~ [CONCLUÍDO]
@@ -12,7 +12,7 @@ Abaixo está o roadmap sugerido de evolução para o **LexNode**, partindo de um
 ## Próximos Passos
 
 ### 6. Integração com Banco Nacional de Mandados de Prisão (BNMP - CNJ)
-**Objetivo:** Permitir que o LexNode descubra se o alvo tem mandado de prisão em aberto no Brasil inteiro.
+**Objetivo:** Permitir que o JusBrasil descubra se o alvo tem mandado de prisão em aberto no Brasil inteiro.
 *   **Alvo:** API JSON oficial do CNJ (`https://portalbnmp.cnj.jus.br/`)
 *   **Abordagem:** Não precisa parsear HTML. O BNMP moderno é uma SPA em React e tem uma API REST por trás. Faremos requisições POST diretas para a API de pesquisa pública.
 

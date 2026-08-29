@@ -1,5 +1,5 @@
 """
-crawler_trf1.py — LexNode
+crawler_trf1.py — JusBrasil
 
 Crawler para o PJe (Processo Judicial Eletrônico) do TRF1 (Justiça Federal).
 Cobre crimes federais, execuções fiscais, ações contra o INSS, CEF, etc.
