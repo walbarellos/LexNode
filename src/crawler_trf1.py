@@ -20,6 +20,11 @@ warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 BASE_URL = "https://pje1g-consultapublica.trf1.jus.br/consultapublica/ConsultaPublica/listView.seam"
 DETALHE_BASE = "https://pje1g-consultapublica.trf1.jus.br"
 
+# Pre-compiled regex patterns for performance optimization
+RE_OPEN_POP_UP = re.compile(r"openPopUp\([^,]+,\s*'([^']+)'\)")
+RE_NUM_PROCESSO = re.compile(r"(\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4})")
+RE_WHITESPACE = re.compile(r"\s+")
+
 
 @dataclass
 class ResumoProcessoFederal:
@@ -133,7 +138,7 @@ class CrawlerTRF1:
             link_detalhe = ""
             if link_tag:
                 onclick = link_tag.get("onclick", "")
-                match = re.search(r"openPopUp\([^,]+,\s*'([^']+)'\)", onclick)
+                match = RE_OPEN_POP_UP.search(onclick)
                 if match:
                     link_detalhe = DETALHE_BASE + match.group(1)
 
@@ -147,7 +152,7 @@ class CrawlerTRF1:
             if b_tag:
                 texto_b = b_tag.get_text(strip=True)
                 # Formato: "ExTiEx 0000001-64.1970.4.01.3300 - Mútuo"
-                match_num = re.search(r"(\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4})", texto_b)
+                match_num = RE_NUM_PROCESSO.search(texto_b)
                 if match_num:
                     numero = match_num.group(1)
                 
@@ -176,7 +181,7 @@ class CrawlerTRF1:
             if classe_prefixo:
                 partes = partes.replace(classe_prefixo, "", 1).strip()
             # Limpar lixo visual
-            partes = re.sub(r"\s+", " ", partes).strip()
+            partes = RE_WHITESPACE.sub(" ", partes).strip()
             if partes.startswith("Ver detalhes do processo"):
                 partes = partes.replace("Ver detalhes do processo", "").strip()
 
