@@ -22,7 +22,7 @@ class CrawlerJurisprudencia:
         r = self.crawler._session.post('https://esaj.tjac.jus.br/cjsg/resultadoCompleta.do', data=params, verify=False, timeout=15)
         r.raise_for_status()
         
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
         resultados = []
         
         # Encontra todos os nós com texto Ementa:
