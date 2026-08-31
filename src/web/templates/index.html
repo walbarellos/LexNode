@@ -198,7 +198,7 @@
                         <option value="2">2º Grau</option>
                     </select>
 
-                    <button type="submit" id="search-btn" class="absolute right-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-sm flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2" aria-label="Realizar Busca">
+                    <button type="submit" id="search-btn" class="absolute right-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-sm flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2" aria-label="Realizar Busca">
                         <span>Buscar</span>
                     </button>
                 </form>
@@ -281,7 +281,7 @@
             loadingIndicator.classList.remove('hidden');
             loadingIndicator.classList.add('flex');
             btn.disabled = true;
-            btn.classList.add('opacity-70');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Buscando...</span>';
 
             try {
                 let url = '';
@@ -312,7 +312,7 @@
                 loadingIndicator.classList.add('hidden');
                 loadingIndicator.classList.remove('flex');
                 btn.disabled = false;
-                btn.classList.remove('opacity-70');
+                btn.innerHTML = '<span>Buscar</span>';
             }
         }
 
