@@ -254,7 +254,6 @@ def extrair_resumos_pesquisa_2grau(html: str) -> list[ResumoProcesso]:
     
     # Fallback: extrai números CNJ via regex do HTML bruto
     import re as _re
-    soup = BeautifulSoup(html, "html.parser")
     numeros = _re.findall(r'\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}', html)
     numeros_unicos = list(dict.fromkeys(numeros))
     
