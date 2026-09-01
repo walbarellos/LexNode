@@ -1,0 +1,3 @@
+## 2024-09-01 - Reducing Friction During Context Switching
+**Learning:** Users often click through different tabs to figure out the right search mode. Requiring an extra click to focus the input field after changing a tab creates micro-friction. Localizing loading states to the action button (instead of relying solely on an external loading indicator) helps keep users focused on their immediate action area.
+**Action:** Always auto-focus primary inputs when dynamically changing form context, and replace submit button content with loading states to give immediate, localized feedback on interaction.

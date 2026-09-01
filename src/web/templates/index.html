@@ -261,6 +261,9 @@
                 grauSelect.style.display = 'none';
                 grauSelect.setAttribute('aria-hidden', 'true');
             }
+
+            // UX Enhancement: Auto-focus input after switching tabs
+            input.focus();
         }
 
         async function handleSearch(e) {
@@ -280,8 +283,12 @@
             errorMsg.classList.add('hidden');
             loadingIndicator.classList.remove('hidden');
             loadingIndicator.classList.add('flex');
+
+            // UX Enhancement: Localized loading feedback
             btn.disabled = true;
-            btn.classList.add('opacity-70');
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+            const originalBtnContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Buscando</span>';
 
             try {
                 let url = '';
@@ -311,8 +318,11 @@
             } finally {
                 loadingIndicator.classList.add('hidden');
                 loadingIndicator.classList.remove('flex');
+
+                // UX Enhancement: Restore button state
                 btn.disabled = false;
-                btn.classList.remove('opacity-70');
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                btn.innerHTML = originalBtnContent;
             }
         }
 
