@@ -27,11 +27,15 @@ class CrawlerJurisprudencia:
         
         # Encontra todos os nós com texto Ementa:
         regex_ementa = re.compile(r'^\s*Ementa:', re.IGNORECASE)
-        ementas = []
-        for tr in soup.find_all('tr'):
-            ementas.extend(tr.find_all(string=regex_ementa))
+        # O(1) lookup in tree without looping over tr
+        ementas = soup.find_all(string=regex_ementa)
         tables_vistas = set()
         
+        # Pre-compile regex patterns for metadata to avoid doing it inside the loop
+        re_relator = re.compile(r'^\s*Relator\(a\):')
+        re_orgao = re.compile(r'^\s*Órgão julgador:')
+        re_data_julg = re.compile(r'^\s*Data do julgamento:')
+
         for em in ementas:
             table = em.find_parent('table')
             if not table or id(table) in tables_vistas:
@@ -49,17 +53,17 @@ class CrawlerJurisprudencia:
             ementa_texto = link_ementa.text.strip() if link_ementa else ''
             
             # 3. Metadados
-            def get_meta(label):
-                el = table.find(string=re.compile(r'^\s*' + label))
+            def get_meta(regex_pattern):
+                el = table.find(string=regex_pattern)
                 if el:
                     td = el.find_parent('td')
                     if td:
                         return td.text.replace(el, '').strip()
                 return ''
                 
-            relator = get_meta(r'Relator\(a\):')
-            orgao = get_meta(r'Órgão julgador:')
-            data_julg = get_meta(r'Data do julgamento:')
+            relator = get_meta(re_relator)
+            orgao = get_meta(re_orgao)
+            data_julg = get_meta(re_data_julg)
             
             link_download = table.find('a', class_='downloadEmenta')
             cd_acordao = link_download.get('cdacordao', '') if link_download else ''
