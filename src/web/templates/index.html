@@ -456,7 +456,7 @@
 
         function renderResumoCard(r) {
             return `
-                <article class="card-bg p-5 rounded-xl animate-fade-in flex flex-col h-full cursor-pointer hover:bg-blue-50 group focus-within:ring-2 focus-within:ring-blue-500" tabindex="0" onkeypress="if(event.key === 'Enter'){document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))}" onclick="document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))" aria-label="Processo ${r.numero}">
+                <article role="button" class="card-bg p-5 rounded-xl animate-fade-in flex flex-col h-full cursor-pointer hover:bg-blue-50 group focus-within:ring-2 focus-within:ring-blue-500" tabindex="0" onkeypress="if(event.key === 'Enter'){document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))}" onclick="document.getElementById('search-input').value='${r.numero}'; switchTab('processo'); handleSearch(new Event('submit'))" aria-label="Processo ${r.numero}">
                     <div class="flex justify-between items-start mb-3">
                         <span class="font-mono text-blue-600 group-hover:text-blue-700 transition-colors">${r.numero}</span>
                         ${getSistemaBadge(r.sistema)}
@@ -481,14 +481,14 @@
 
         function renderJurisprudenciaCard(j) {
             return `
-                <article class="card-bg p-6 rounded-xl animate-fade-in flex flex-col h-full group relative overflow-hidden" tabindex="0" onkeypress="if(event.key === 'Enter'){document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))}">
+                <article role="button" class="card-bg p-6 rounded-xl animate-fade-in flex flex-col h-full group relative overflow-hidden cursor-pointer hover:bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500" tabindex="0" onclick="document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))" onkeypress="if(event.key === 'Enter'){document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))}">
                     <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity" aria-hidden="true">
                         <i class="fa-solid fa-book-open text-6xl text-gray-300"></i>
                     </div>
                     
                     <div class="flex justify-between items-start mb-4">
                         <div>
-                            <span class="font-mono text-purple-600 text-lg group-hover:text-purple-700 transition-colors block cursor-pointer focus:outline-none focus:underline" onclick="document.getElementById('search-input').value='${j.numero}'; document.getElementById('grau-select').value='2'; switchTab('processo'); handleSearch(new Event('submit'))">${j.numero}</span>
+                            <span class="font-mono text-purple-600 text-lg group-hover:text-purple-700 transition-colors block">${j.numero}</span>
                             <span class="text-xs text-gray-500 font-medium mt-1 block">${j.orgao}</span>
                         </div>
                         <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-md border border-gray-200">${j.data}</span>
