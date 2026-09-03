@@ -1,6 +1,7 @@
 import os
 import re
 import asyncio
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 
@@ -27,7 +28,22 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # Thread pool for concurrent synchronous crawler calls
 executor = ThreadPoolExecutor(max_workers=10)
-crawler_juris = CrawlerJurisprudencia()
+_thread_local = threading.local()
+
+def get_base_crawler():
+    if not hasattr(_thread_local, "base_crawler"):
+        _thread_local.base_crawler = BaseCrawler()
+    return _thread_local.base_crawler
+
+def get_crawler_trf1():
+    if not hasattr(_thread_local, "crawler_trf1"):
+        _thread_local.crawler_trf1 = CrawlerTRF1()
+    return _thread_local.crawler_trf1
+
+def get_crawler_juris():
+    if not hasattr(_thread_local, "crawler_juris"):
+        _thread_local.crawler_juris = CrawlerJurisprudencia()
+    return _thread_local.crawler_juris
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -42,7 +58,7 @@ async def buscar_processo(numero: str, grau: int = Query(1)):
     
     def fetch_processo():
         if is_trf1:
-            crawler = CrawlerTRF1()
+            crawler = get_crawler_trf1()
             resumos = crawler.buscar_por_numero(numero)
             if resumos:
                 # Convert the TRF1 resumo format to match the detailed TJAC format enough for the frontend
@@ -60,7 +76,7 @@ async def buscar_processo(numero: str, grau: int = Query(1)):
                 }
             raise ProcessoNaoEncontradoError()
         else:
-            crawler = BaseCrawler()
+            crawler = get_base_crawler()
             if grau == 2:
                 resposta = crawler.consultar_processo_2grau(numero)
                 processo = normalizar_html_2grau(numero, resposta.html)
@@ -95,7 +111,7 @@ async def buscar_nome(nome: str, foro: str = Query("-1"), doc: bool = Query(Fals
         termo_busca = re.sub(r'[^0-9]', '', termo_busca)
 
     def fetch_tjac(g: int):
-        crawler = BaseCrawler()
+        crawler = get_base_crawler()
         if g == 2:
             params = {
                 'conversationId': '',
@@ -141,7 +157,7 @@ async def buscar_nome(nome: str, foro: str = Query("-1"), doc: bool = Query(Fals
         return formatted
 
     def fetch_trf1():
-        crawler = CrawlerTRF1()
+        crawler = get_crawler_trf1()
         if doc:
             resumos = crawler.buscar_por_documento(termo_busca)
         else:
@@ -184,7 +200,8 @@ async def buscar_jurisprudencia(termo: str):
     """Search for case law based on a term"""
     def fetch_juris():
         # Using a new instance for safety or sharing crawler_juris is fine since it's just one endpoint
-        return crawler_juris.buscar_jurisprudencia(termo)
+        crawler = get_crawler_juris()
+        return crawler.buscar_jurisprudencia(termo)
         
     loop = asyncio.get_running_loop()
     try:

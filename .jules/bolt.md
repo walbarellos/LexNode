@@ -1,0 +1,3 @@
+## 2024-05-18 - Threading and Crawlers
+**Learning:** `requests.Session` inside crawlers is re-created on each request, causing unnecessary connection setup overhead when crawlers are created inside thread pool tasks.
+**Action:** Use thread-local storage or connection pooling effectively across concurrent requests to reuse sessions where appropriate, as indicated by the memory note: "The application uses `ThreadPoolExecutor` in FastAPI for concurrent synchronous crawler calls. To safely leverage connection pooling via `requests.Session()` across threads without race conditions, crawler instances (e.g., `BaseCrawler`, `CrawlerTRF1`) should be stored and lazily initialized using `threading.local()`."
