@@ -1,0 +1,3 @@
+## 2024-10-27 - Consistency in Interactive Cards Affordance
+**Learning:** Found that when mixing interactive cards driven by keyboard events (`tabindex="0"`, `onkeypress`) with mouse events (`onclick`), having the `onclick` on an inner text element breaks the expected affordance for mouse users. Keyboard users trigger the whole card, while mouse users must hunt for the text span.
+**Action:** When creating interactive cards (e.g., using `<article>` with `tabindex="0"`), always add `role="button"` for screen readers and ensure `onclick` handlers are placed on the outer element to provide consistent affordances for both mouse and keyboard users.
