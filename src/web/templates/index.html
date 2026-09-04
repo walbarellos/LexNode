@@ -281,7 +281,8 @@
             loadingIndicator.classList.remove('hidden');
             loadingIndicator.classList.add('flex');
             btn.disabled = true;
-            btn.classList.add('opacity-70');
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> <span>Buscando...</span>';
 
             try {
                 let url = '';
@@ -312,7 +313,8 @@
                 loadingIndicator.classList.add('hidden');
                 loadingIndicator.classList.remove('flex');
                 btn.disabled = false;
-                btn.classList.remove('opacity-70');
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                btn.innerHTML = '<span>Buscar</span>';
             }
         }
 
