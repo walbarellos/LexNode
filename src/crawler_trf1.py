@@ -61,7 +61,7 @@ class CrawlerTRF1:
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
         r = self._session.get(BASE_URL, verify=False, timeout=15)
         r.raise_for_status()
-        soup = BeautifulSoup(r.text, "html.parser")
+        soup = BeautifulSoup(r.text, "lxml")
         vs = soup.find("input", {"name": "javax.faces.ViewState"})
         if vs:
             self._view_state = vs["value"]
@@ -115,7 +115,7 @@ class CrawlerTRF1:
         return self._parsear_resultados(r.text)
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
-        soup = BeautifulSoup(html, "html.parser")
+        soup = BeautifulSoup(html, "lxml")
         table = soup.find("table", id="fPP:processosTable")
         if not table:
             return []
@@ -201,7 +201,7 @@ class CrawlerTRF1:
         """Extrai os dados completos da página de detalhes do processo no TRF1."""
         r = self._session.get(link_detalhe, verify=False, timeout=15)
         r.raise_for_status()
-        soup = BeautifulSoup(r.text, "html.parser")
+        soup = BeautifulSoup(r.text, "lxml")
         
         # Helper to extract text from a property block
         def get_prop(label_start):
