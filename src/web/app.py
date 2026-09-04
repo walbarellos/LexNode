@@ -7,7 +7,6 @@ from dataclasses import asdict
 from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
 
 from src.base_crawler import BaseCrawler, ProcessoNaoEncontradoError, ConsultaFalhouError
 from src.normalizer import (
