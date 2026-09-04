@@ -59,6 +59,11 @@ class CrawlerTRF1:
 
     def _iniciar_sessao(self):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
+        # ⚡ Bolt: Cache ViewState para evitar requisições redundantes de inicialização.
+        # Impacto: Pula 1 requisição HTTP inteira (~800ms) para buscas subsequentes na mesma instância.
+        if self._view_state is not None:
+            return
+
         r = self._session.get(BASE_URL, verify=False, timeout=15)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
@@ -110,9 +115,20 @@ class CrawlerTRF1:
         }
 
     def _executar_busca(self, data: dict) -> list[ResumoProcessoFederal]:
-        r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
-        r.raise_for_status()
-        return self._parsear_resultados(r.text)
+        try:
+            r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
+            r.raise_for_status()
+            return self._parsear_resultados(r.text)
+        except requests.HTTPError:
+            # Em caso de ViewExpiredException do JSF, o servidor retorna erro HTTP (geralmente 500).
+            # Limpamos o estado cacheado, renovamos a sessão e tentamos novamente.
+            self._view_state = None
+            self._iniciar_sessao()
+            # Atualizar o payload com o novo ViewState
+            data["javax.faces.ViewState"] = self._view_state
+            r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
+            r.raise_for_status()
+            return self._parsear_resultados(r.text)
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
         soup = BeautifulSoup(html, "lxml")
