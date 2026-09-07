@@ -24,7 +24,6 @@ from src.base_crawler import (
     ProcessoNaoEncontradoError,
 )
 from src.normalizer import (
-    ProcessoNormalizado,
     ProcessoSigilosoError,
     normalizar_html_1grau,
     normalizar_html_2grau,
@@ -271,7 +270,7 @@ Exemplos:
             
             resumos_trf1 = []
             if not args.json:
-                print(f"  Buscando na Justiça Federal (TRF1)...")
+                print("  Buscando na Justiça Federal (TRF1)...")
             try:
                 from src.crawler_trf1 import CrawlerTRF1
                 crawler_trf1 = CrawlerTRF1()
