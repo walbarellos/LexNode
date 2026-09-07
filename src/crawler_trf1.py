@@ -59,6 +59,9 @@ class CrawlerTRF1:
 
     def _iniciar_sessao(self):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
+        if self._view_state is not None:
+            return
+
         r = self._session.get(BASE_URL, verify=False, timeout=15)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
@@ -110,8 +113,22 @@ class CrawlerTRF1:
         }
 
     def _executar_busca(self, data: dict) -> list[ResumoProcessoFederal]:
-        r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
-        r.raise_for_status()
+        try:
+            r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
+            r.raise_for_status()
+        except requests.HTTPError as e:
+            if e.response.status_code in (500,): # JSF view expired exception is often a 500 error
+                # ⚡ Bolt: Server-side session expiration (e.g. JSF ViewExpiredException).
+                # Clear state, fetch a new ViewState, update payload and retry once.
+                self._view_state = None
+                self._iniciar_sessao()
+                data["javax.faces.ViewState"] = self._view_state
+
+                r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
+                r.raise_for_status()
+            else:
+                raise
+
         return self._parsear_resultados(r.text)
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
