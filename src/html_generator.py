@@ -1,5 +1,4 @@
-import re
-from typing import List, Optional
+from typing import List
 
 try:
     from src.normalizer import ProcessoNormalizado, ResumoProcesso
