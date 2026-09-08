@@ -57,8 +57,10 @@ class CrawlerTRF1:
         })
         self._view_state = None
 
-    def _iniciar_sessao(self):
+    def _iniciar_sessao(self, force: bool = False):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
+        if self._view_state is not None and not force:
+            return
         r = self._session.get(BASE_URL, verify=False, timeout=15)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
@@ -110,8 +112,16 @@ class CrawlerTRF1:
         }
 
     def _executar_busca(self, data: dict) -> list[ResumoProcessoFederal]:
-        r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
-        r.raise_for_status()
+        # ⚡ Bolt: Caching ViewState can lead to ViewExpiredException
+        # which manifests as 500/HTTPError on POST. Catching it and retrying.
+        try:
+            r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
+            r.raise_for_status()
+        except requests.HTTPError:
+            self._iniciar_sessao(force=True)
+            data["javax.faces.ViewState"] = self._view_state
+            r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
+            r.raise_for_status()
         return self._parsear_resultados(r.text)
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
