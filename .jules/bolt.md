@@ -1,3 +1,6 @@
 ## 2024-05-24 - HTML Parser Optimization
 **Learning:** The application uses BeautifulSoup with the default 'html.parser' in several places. Since the application performs heavy web scraping of large judicial HTML pages, switching to 'lxml' provides a significant performance boost (up to 35-50% faster parsing times) without losing functionality. Also found an unused BeautifulSoup parsing in the fallback regex extraction.
 **Action:** Replace 'html.parser' with 'lxml' where BeautifulSoup is used. Add 'lxml' to requirements.txt. Remove the unnecessary BeautifulSoup instantiation in `extrair_resumos_pesquisa_2grau` since it extracts via regex anyway.
+## 2024-05-24 - TRF1 Crawler JSF ViewState Caching
+**Learning:** The TRF1 crawler interacts with a JSF application. A naive implementation fetches the `javax.faces.ViewState` on every single request using a GET request before issuing the POST request with the search payload. Since `ViewState` can be reused across multiple requests within the same session, caching it avoids the redundant GET request, saving ~0.8-1.0s per concurrent TRF1 sub-request.
+**Action:** When scraping JSF-based targets, cache the `javax.faces.ViewState` to avoid redundant GET requests. Always implement a retry mechanism catching `requests.HTTPError` on subsequent POSTs to gracefully handle server-side `ViewExpiredException`s.
