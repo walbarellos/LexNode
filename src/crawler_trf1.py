@@ -57,8 +57,11 @@ class CrawlerTRF1:
         })
         self._view_state = None
 
-    def _iniciar_sessao(self):
+    def _iniciar_sessao(self, forcar_renovacao=False):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
+        if self._view_state and not forcar_renovacao:
+            return
+
         r = self._session.get(BASE_URL, verify=False, timeout=15)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
@@ -109,10 +112,18 @@ class CrawlerTRF1:
             "autoScroll": "",
         }
 
-    def _executar_busca(self, data: dict) -> list[ResumoProcessoFederal]:
-        r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
-        r.raise_for_status()
-        return self._parsear_resultados(r.text)
+    def _executar_busca(self, data: dict, retry=True) -> list[ResumoProcessoFederal]:
+        try:
+            r = self._session.post(BASE_URL, data=data, verify=False, timeout=20)
+            r.raise_for_status()
+            return self._parsear_resultados(r.text)
+        except requests.HTTPError as e:
+            # Handle ViewExpiredException typically resulting in 500 or other HTTP errors
+            if retry:
+                self._iniciar_sessao(forcar_renovacao=True)
+                data["javax.faces.ViewState"] = self._view_state
+                return self._executar_busca(data, retry=False)
+            raise e
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
         soup = BeautifulSoup(html, "lxml")
