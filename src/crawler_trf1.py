@@ -13,7 +13,7 @@ import re
 import warnings
 import requests
 from dataclasses import dataclass
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
@@ -57,38 +57,57 @@ class CrawlerTRF1:
         })
         self._view_state = None
 
-    def _iniciar_sessao(self):
+    def _iniciar_sessao(self, force: bool = False):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
+        if self._view_state and not force:
+            return
+
         r = self._session.get(BASE_URL, verify=False, timeout=15)
         r.raise_for_status()
-        soup = BeautifulSoup(r.text, "lxml")
+        strainer = SoupStrainer("input", {"name": "javax.faces.ViewState"})
+        soup = BeautifulSoup(r.text, "lxml", parse_only=strainer)
         vs = soup.find("input", {"name": "javax.faces.ViewState"})
         if vs:
             self._view_state = vs["value"]
         else:
             raise RuntimeError("Não foi possível obter o ViewState do PJe/TRF1.")
 
+    def _executar_busca_com_retry(self, data_builder) -> list[ResumoProcessoFederal]:
+        """Executa a busca, renovando a sessão em caso de erro no ViewState."""
+        self._iniciar_sessao()
+        try:
+            return self._executar_busca(data_builder())
+        except requests.HTTPError as e:
+            # Erro 500 ou 403 muitas vezes indicam ViewExpiredException no JSF
+            if e.response.status_code in (403, 500):
+                self._iniciar_sessao(force=True)
+                return self._executar_busca(data_builder())
+            raise
+
     def buscar_por_nome(self, nome: str) -> list[ResumoProcessoFederal]:
         """Busca processos federais pelo nome da parte."""
-        self._iniciar_sessao()
-        data = self._montar_payload()
-        data["fPP:dnp:nomeParte"] = nome
-        return self._executar_busca(data)
+        def builder():
+            data = self._montar_payload()
+            data["fPP:dnp:nomeParte"] = nome
+            return data
+        return self._executar_busca_com_retry(builder)
 
     def buscar_por_documento(self, documento: str) -> list[ResumoProcessoFederal]:
         """Busca processos federais por CPF ou CNPJ."""
-        self._iniciar_sessao()
-        doc_limpo = re.sub(r"[^0-9]", "", documento)
-        data = self._montar_payload()
-        data["fPP:dpDec:documentoParte"] = doc_limpo
-        return self._executar_busca(data)
+        def builder():
+            doc_limpo = re.sub(r"[^0-9]", "", documento)
+            data = self._montar_payload()
+            data["fPP:dpDec:documentoParte"] = doc_limpo
+            return data
+        return self._executar_busca_com_retry(builder)
 
     def buscar_por_numero(self, numero: str) -> list[ResumoProcessoFederal]:
         """Busca por número de processo unificado (CNJ)."""
-        self._iniciar_sessao()
-        data = self._montar_payload()
-        data["fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso"] = numero
-        return self._executar_busca(data)
+        def builder():
+            data = self._montar_payload()
+            data["fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso"] = numero
+            return data
+        return self._executar_busca_com_retry(builder)
 
     def _montar_payload(self) -> dict:
         return {
@@ -115,8 +134,15 @@ class CrawlerTRF1:
         return self._parsear_resultados(r.text)
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
-        soup = BeautifulSoup(html, "lxml")
+        strainer = SoupStrainer("table", id="fPP:processosTable")
+        soup = BeautifulSoup(html, "lxml", parse_only=strainer)
         table = soup.find("table", id="fPP:processosTable")
+        if not table:
+            # fallback if strainer makes soup the table itself
+            if soup.name == "table" and soup.get("id") == "fPP:processosTable":
+                table = soup
+            else:
+                return []
         if not table:
             return []
 

@@ -1,3 +1,7 @@
 ## 2024-05-24 - HTML Parser Optimization
 **Learning:** The application uses BeautifulSoup with the default 'html.parser' in several places. Since the application performs heavy web scraping of large judicial HTML pages, switching to 'lxml' provides a significant performance boost (up to 35-50% faster parsing times) without losing functionality. Also found an unused BeautifulSoup parsing in the fallback regex extraction.
 **Action:** Replace 'html.parser' with 'lxml' where BeautifulSoup is used. Add 'lxml' to requirements.txt. Remove the unnecessary BeautifulSoup instantiation in `extrair_resumos_pesquisa_2grau` since it extracts via regex anyway.
+
+## 2024-10-27 - Large HTML Payload Parsing and JSF ViewState Caching
+**Learning:** Parsing large HTML tables (like the 6KB+ ones from TRF1) with standard BeautifulSoup creates massive DOM structures that are extremely slow to initialize. Also, repeating GET requests just to scrape a JSF ViewState adds redundant network latency per search. Using `bs4.SoupStrainer` dramatically cuts parsing time (e.g. 1.5x to 3x speedup on targeted extraction), and caching the ViewState saves the time of the GET request. However, cached JSF ViewStates can expire, throwing 403 or 500 `ViewExpiredException`s.
+**Action:** When working with large responses in BeautifulSoup, use `SoupStrainer` via `parse_only=` parameter to scope parsing only to necessary nodes. When caching JSF ViewStates, always implement a retry logic wrapper that gracefully traps HTTP errors and attempts a fresh GET request to renew the token.
