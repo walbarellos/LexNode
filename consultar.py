@@ -24,7 +24,6 @@ from src.base_crawler import (
     ProcessoNaoEncontradoError,
 )
 from src.normalizer import (
-    ProcessoNormalizado,
     ProcessoSigilosoError,
     normalizar_html_1grau,
     normalizar_html_2grau,
@@ -206,7 +205,8 @@ Exemplos:
                 saida_dir.mkdir(exist_ok=True)
                 arquivo_saida = saida_dir / f"juris_{nome_arq}.{ext}"
                 arquivo_saida.write_text(saida if args.json else json.dumps(resumos, ensure_ascii=False, indent=2), encoding="utf-8")
-                if not args.json: print_succ(f"Salvo em {arquivo_saida}")
+                if not args.json:
+                    print_succ(f"Salvo em {arquivo_saida}")
                 
             sys.exit(0)
 
@@ -260,7 +260,8 @@ Exemplos:
                 
                 texto_lower = resp.text.lower()
                 if "muitos processos" in texto_lower or "refine sua busca" in texto_lower:
-                    if not args.json: print_warn(f"Muitos processos no {g}º Grau. Refine a busca.")
+                    if not args.json:
+                        print_warn(f"Muitos processos no {g}º Grau. Refine a busca.")
                     continue
                 elif "não existem informações disponíveis" in texto_lower:
                     continue
@@ -271,7 +272,7 @@ Exemplos:
             
             resumos_trf1 = []
             if not args.json:
-                print(f"  Buscando na Justiça Federal (TRF1)...")
+                print("  Buscando na Justiça Federal (TRF1)...")
             try:
                 from src.crawler_trf1 import CrawlerTRF1
                 crawler_trf1 = CrawlerTRF1()
