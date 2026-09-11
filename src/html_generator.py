@@ -1,5 +1,4 @@
-import re
-from typing import List, Optional
+from typing import List
 
 try:
     from src.normalizer import ProcessoNormalizado, ResumoProcesso
@@ -368,8 +367,10 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
     sit = processo.situacao or "Desconhecida"
     sit_lower = sit.lower()
     badge_class = "badge-status"
-    if 'baixado' in sit_lower: badge_class = "badge-success"
-    if 'urgente' in sit_lower or 'sigilo' in sit_lower: badge_class = "badge-danger"
+    if 'baixado' in sit_lower:
+        badge_class = "badge-success"
+    if 'urgente' in sit_lower or 'sigilo' in sit_lower:
+        badge_class = "badge-danger"
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
