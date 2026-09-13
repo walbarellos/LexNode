@@ -23,7 +23,6 @@ IMPORTANTE: Use apenas números de processos PÚBLICOS para teste.
 from __future__ import annotations
 
 import argparse
-import os
 import re
 import sys
 import time
@@ -180,7 +179,7 @@ def buscar_por_nome(sessao: requests.Session, nome: str, foro: str = "0001") -> 
         print(f"📋 Processos encontrados ({len(processos_encontrados)}):")
         for i, num in enumerate(sorted(processos_encontrados), 1):
             print(f"  {i}. {num}")
-        print(f"\n💡 Para inspecionar um deles:")
+        print("\n💡 Para inspecionar um deles:")
         primeiro = sorted(processos_encontrados)[0]
         print(f'   python scripts/inspecionar_html.py --processo "{primeiro}"')
     else:
@@ -250,7 +249,6 @@ def consultar_processo(sessao: requests.Session, numero: str, force_salvar: bool
     # Remove elementos de UI (formulários, menus) que contêm 'segredo de
     # justiça' como label de dropdown, evitando falsos positivos.
     if not force_salvar:
-        from copy import copy
         soup_check = BeautifulSoup(resp.text, "html.parser")
         for tag in soup_check.find_all(
             ["form", "select", "option", "nav", "aside",
@@ -323,7 +321,7 @@ def analisar_html(caminho: Path) -> None:
         print(f"  <{tag}> id={eid!r}  texto={texto!r}")
 
     # Listar classes únicas
-    print(f"\n--- Classes CSS únicas (top 30) ---")
+    print("\n--- Classes CSS únicas (top 30) ---")
     classes = {}
     for el in soup.find_all(class_=True):
         for cls in el.get("class", []):
@@ -332,7 +330,7 @@ def analisar_html(caminho: Path) -> None:
         print(f"  .{cls} ({count}x)")
 
     # Estrutura de tabelas
-    print(f"\n--- Tabelas encontradas ---")
+    print("\n--- Tabelas encontradas ---")
     for i, tabela in enumerate(soup.find_all("table")):
         tid = tabela.get("id", "(sem id)")
         tcls = " ".join(tabela.get("class", []))
@@ -340,7 +338,7 @@ def analisar_html(caminho: Path) -> None:
         print(f"  Tabela #{i+1}: id={tid!r} class={tcls!r} rows={rows}")
 
     # Verificar se há indicadores de "processo não encontrado"
-    print(f"\n--- Verificações adicionais ---")
+    print("\n--- Verificações adicionais ---")
     texto_pagina = soup.get_text().lower()
     checks = [
         ("Processo não encontrado", "processo não encontrado" in texto_pagina),
