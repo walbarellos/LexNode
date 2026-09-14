@@ -1,24 +1,28 @@
+import asyncio
 import os
 import re
-import asyncio
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 
-from fastapi import FastAPI, HTTPException, Request, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
-import threading
-from src.base_crawler import BaseCrawler, ProcessoNaoEncontradoError, ConsultaFalhouError
-from src.normalizer import (
-    normalizar_html_1grau, 
-    normalizar_html_2grau, 
-    ProcessoSigilosoError,
-    extrair_resumos_pesquisa,
-    extrair_resumos_pesquisa_2grau
+from src.base_crawler import (
+    BaseCrawler,
+    ConsultaFalhouError,
+    ProcessoNaoEncontradoError,
 )
 from src.crawler_jurisprudencia import CrawlerJurisprudencia
 from src.crawler_trf1 import CrawlerTRF1
+from src.normalizer import (
+    ProcessoSigilosoError,
+    extrair_resumos_pesquisa,
+    extrair_resumos_pesquisa_2grau,
+    normalizar_html_1grau,
+    normalizar_html_2grau,
+)
 
 app = FastAPI(title="JusBrasil API")
 
@@ -148,9 +152,7 @@ async def buscar_nome(nome: str, foro: str = Query("-1"), doc: bool = Query(Fals
         resp.raise_for_status()
         
         texto_lower = resp.text.lower()
-        if "muitos processos" in texto_lower or "refine sua busca" in texto_lower:
-            return []
-        elif "não existem informações disponíveis" in texto_lower:
+        if "muitos processos" in texto_lower or "refine sua busca" in texto_lower or "não existem informações disponíveis" in texto_lower:
             return []
             
         resumos = extrair_resumos_pesquisa_2grau(resp.text) if g == 2 else extrair_resumos_pesquisa(resp.text)
