@@ -29,9 +29,7 @@ from __future__ import annotations
 
 import logging
 import re
-import copy
 from dataclasses import dataclass, field
-from typing import Optional
 
 from bs4 import BeautifulSoup
 
@@ -91,22 +89,22 @@ class ProcessoNormalizado:
     Campos confirmados contra HTML real em 2026-07-27.
     """
     numero_processo: str
-    classe: Optional[str] = None
-    assunto: Optional[str] = None
-    foro: Optional[str] = None
-    vara: Optional[str] = None
-    juiz: Optional[str] = None
-    situacao: Optional[str] = None        # ex: "Baixado", "Em andamento"
-    area: Optional[str] = None            # ex: "Cível", "Criminal"
-    valor_acao: Optional[str] = None      # ex: "R$ 10.000.000,00"
-    distribuicao: Optional[str] = None    # ex: "28/06/2013 às 13:00 - Sorteio"
-    numero_controle: Optional[str] = None # ex: "2013/000461"
+    classe: str | None = None
+    assunto: str | None = None
+    foro: str | None = None
+    vara: str | None = None
+    juiz: str | None = None
+    situacao: str | None = None        # ex: "Baixado", "Em andamento"
+    area: str | None = None            # ex: "Cível", "Criminal"
+    valor_acao: str | None = None      # ex: "R$ 10.000.000,00"
+    distribuicao: str | None = None    # ex: "28/06/2013 às 13:00 - Sorteio"
+    numero_controle: str | None = None # ex: "2013/000461"
     # Campos específicos do 2º Grau
     grau: int = 1                         # 1 = 1º Grau, 2 = 2º Grau
-    relator: Optional[str] = None         # Desembargador relator (2º Grau)
-    secao: Optional[str] = None           # ex: "Tribunal de Justiça"
-    orgao_julgador: Optional[str] = None  # ex: "Câmara Criminal"
-    volume_apenso: Optional[str] = None   # ex: "1 / 0"
+    relator: str | None = None         # Desembargador relator (2º Grau)
+    secao: str | None = None           # ex: "Tribunal de Justiça"
+    orgao_julgador: str | None = None  # ex: "Câmara Criminal"
+    volume_apenso: str | None = None   # ex: "1 / 0"
     partes: list[Parte] = field(default_factory=list)
     movimentacoes: list[Movimentacao] = field(default_factory=list)
 
@@ -283,7 +281,7 @@ def _verificar_sigilo_fail_closed(html: str) -> None:
         raise ProcessoSigilosoError("Processo em segredo de justiça")
 
 
-def _extrair_texto_seguro(soup: BeautifulSoup, element_id: str) -> Optional[str]:
+def _extrair_texto_seguro(soup: BeautifulSoup, element_id: str) -> str | None:
     el = soup.find(id=element_id)
     if el is None:
         return None
