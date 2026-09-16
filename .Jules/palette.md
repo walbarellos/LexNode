@@ -1,3 +1,7 @@
 ## 2024-10-27 - Consistent Affordances on Interactive Cards
 **Learning:** When using full elements (like `<article>`) as clickable cards for both mouse and keyboard users, two things are essential: 1) they must have `role="button"` for screen readers to recognize them properly, and 2) the interaction boundaries must be unified. In this app, one card allowed keyboard activation on the full card but restricted mouse clicks to a small inner span, confusing mouse users.
 **Action:** Always ensure that when `tabindex="0"` and keyboard events are added to a card, the `onclick` handler and visual hover states (like `hover:bg-gray-50`) apply to the same outer element, and always include `role="button"`.
+
+## 2024-10-28 - Action-oriented aria-labels and focus styles on Interactive Cards
+**Learning:** When using `tabindex="0"` on full elements to make them clickable cards, `focus-within:` can cause unintended focus styles to trigger when inner non-interactive elements are clicked or receive focus by other means. Additionally, `aria-label`s on clickable cards should be action-oriented (e.g., "Ver detalhes do processo...") rather than just describing the content (e.g., "Processo..."), to provide clear context to screen reader users about what activating the element will do.
+**Action:** Always use `focus:` styling (e.g., `focus:outline-none focus:ring-2`) instead of `focus-within:` to indicate keyboard focus properly and avoid misfiring on child elements, and use action-oriented `aria-label`s on custom interactive elements.
