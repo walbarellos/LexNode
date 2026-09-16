@@ -17,7 +17,6 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass
-from typing import Optional
 
 import requests
 
@@ -93,7 +92,7 @@ class BaseCrawler:
         self.base_url = base_url
         self.min_interval = min_interval
         self.max_retries = max_retries
-        self._last_request_ts: Optional[float] = None
+        self._last_request_ts: float | None = None
         self._session = requests.Session()
         self._session.headers.update({"User-Agent": USER_AGENT})
         self._sessao_iniciada = False
@@ -162,7 +161,7 @@ class BaseCrawler:
         }
 
         url = f"{self.base_url}{ESAJ_CPOPG_SEARCH_PATH}"
-        last_error: Optional[Exception] = None
+        last_error: Exception | None = None
 
         for attempt in range(1, self.max_retries + 1):
             self.iniciar_sessao()
@@ -237,7 +236,7 @@ class BaseCrawler:
         }
 
         url = f"{self.base_url}{ESAJ_CPOSG5_SEARCH_PATH}"
-        last_error: Optional[Exception] = None
+        last_error: Exception | None = None
 
         for attempt in range(1, self.max_retries + 1):
             self.iniciar_sessao(grau=2)
