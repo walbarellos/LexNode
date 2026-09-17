@@ -17,7 +17,6 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass
-from typing import Optional
 
 import requests
 
@@ -93,7 +92,7 @@ class BaseCrawler:
         self.base_url = base_url
         self.min_interval = min_interval
         self.max_retries = max_retries
-        self._last_request_ts: Optional[float] = None
+        self._last_request_ts: float | None = None
         self._session = requests.Session()
         self._session.headers.update({"User-Agent": USER_AGENT})
         self._sessao_iniciada = False
@@ -111,7 +110,7 @@ class BaseCrawler:
             if self._sessao_2grau_iniciada:
                 return
             url = f"{self.base_url}/cposg5/open.do"
-            
+
         self._respeitar_intervalo()
         try:
             self._session.get(url, timeout=15)
@@ -162,7 +161,7 @@ class BaseCrawler:
         }
 
         url = f"{self.base_url}{ESAJ_CPOPG_SEARCH_PATH}"
-        last_error: Optional[Exception] = None
+        last_error: Exception | None = None
 
         for attempt in range(1, self.max_retries + 1):
             self.iniciar_sessao()
@@ -216,7 +215,7 @@ class BaseCrawler:
     def consultar_processo_2grau(self, numero_processo: str) -> RespostaConsulta:
         """
         Consulta um processo por número no e-SAJ, 2º grau (cposg5).
-        
+
         NOTA: o e-SAJ pode responder com um captcha em vez do conteúdo
         esperado. Este método NÃO tenta resolver o captcha — apenas
         detecta essa condição e levanta ConsultaFalhouError, deixando a
@@ -237,7 +236,7 @@ class BaseCrawler:
         }
 
         url = f"{self.base_url}{ESAJ_CPOSG5_SEARCH_PATH}"
-        last_error: Optional[Exception] = None
+        last_error: Exception | None = None
 
         for attempt in range(1, self.max_retries + 1):
             self.iniciar_sessao(grau=2)
@@ -325,11 +324,11 @@ class BaseCrawler:
         html_lower = html.lower()
         # Procura por elementos estruturais típicos de um desafio ativo
         return (
-            'class="g-recaptcha"' in html_lower or
-            'id="rc-imageselect"' in html_lower or
-            '/sysgen/captcha.do' in html_lower or
-            'vc-captcha' in html_lower or
-            'captcha' in html_lower
+            'class="g-recaptcha"' in html_lower
+            or 'id="rc-imageselect"' in html_lower
+            or "/sysgen/captcha.do" in html_lower
+            or "vc-captcha" in html_lower
+            or "captcha" in html_lower
         )
 
     @staticmethod

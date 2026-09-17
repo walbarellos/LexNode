@@ -29,9 +29,7 @@ from __future__ import annotations
 
 import logging
 import re
-import copy
 from dataclasses import dataclass, field
-from typing import Optional
 
 from bs4 import BeautifulSoup
 
@@ -90,46 +88,49 @@ class ProcessoNormalizado:
 
     Campos confirmados contra HTML real em 2026-07-27.
     """
+
     numero_processo: str
-    classe: Optional[str] = None
-    assunto: Optional[str] = None
-    foro: Optional[str] = None
-    vara: Optional[str] = None
-    juiz: Optional[str] = None
-    situacao: Optional[str] = None        # ex: "Baixado", "Em andamento"
-    area: Optional[str] = None            # ex: "Cível", "Criminal"
-    valor_acao: Optional[str] = None      # ex: "R$ 10.000.000,00"
-    distribuicao: Optional[str] = None    # ex: "28/06/2013 às 13:00 - Sorteio"
-    numero_controle: Optional[str] = None # ex: "2013/000461"
+    classe: str | None = None
+    assunto: str | None = None
+    foro: str | None = None
+    vara: str | None = None
+    juiz: str | None = None
+    situacao: str | None = None  # ex: "Baixado", "Em andamento"
+    area: str | None = None  # ex: "Cível", "Criminal"
+    valor_acao: str | None = None  # ex: "R$ 10.000.000,00"
+    distribuicao: str | None = None  # ex: "28/06/2013 às 13:00 - Sorteio"
+    numero_controle: str | None = None  # ex: "2013/000461"
     # Campos específicos do 2º Grau
-    grau: int = 1                         # 1 = 1º Grau, 2 = 2º Grau
-    relator: Optional[str] = None         # Desembargador relator (2º Grau)
-    secao: Optional[str] = None           # ex: "Tribunal de Justiça"
-    orgao_julgador: Optional[str] = None  # ex: "Câmara Criminal"
-    volume_apenso: Optional[str] = None   # ex: "1 / 0"
+    grau: int = 1  # 1 = 1º Grau, 2 = 2º Grau
+    relator: str | None = None  # Desembargador relator (2º Grau)
+    secao: str | None = None  # ex: "Tribunal de Justiça"
+    orgao_julgador: str | None = None  # ex: "Câmara Criminal"
+    volume_apenso: str | None = None  # ex: "1 / 0"
     partes: list[Parte] = field(default_factory=list)
     movimentacoes: list[Movimentacao] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
-            'numero_processo': self.numero_processo,
-            'classe': self.classe,
-            'assunto': self.assunto,
-            'foro': self.foro,
-            'vara': self.vara,
-            'juiz': self.juiz,
-            'situacao': self.situacao,
-            'area': self.area,
-            'valor_acao': self.valor_acao,
-            'distribuicao': self.distribuicao,
-            'numero_controle': self.numero_controle,
-            'grau': self.grau,
-            'relator': self.relator,
-            'secao': self.secao,
-            'orgao_julgador': self.orgao_julgador,
-            'volume_apenso': self.volume_apenso,
-            'partes': [{'nome': p.nome, 'tipo': p.tipo} for p in self.partes],
-            'movimentacoes': [{'data': m.data, 'descricao': m.descricao} for m in self.movimentacoes],
+            "numero_processo": self.numero_processo,
+            "classe": self.classe,
+            "assunto": self.assunto,
+            "foro": self.foro,
+            "vara": self.vara,
+            "juiz": self.juiz,
+            "situacao": self.situacao,
+            "area": self.area,
+            "valor_acao": self.valor_acao,
+            "distribuicao": self.distribuicao,
+            "numero_controle": self.numero_controle,
+            "grau": self.grau,
+            "relator": self.relator,
+            "secao": self.secao,
+            "orgao_julgador": self.orgao_julgador,
+            "volume_apenso": self.volume_apenso,
+            "partes": [{"nome": p.nome, "tipo": p.tipo} for p in self.partes],
+            "movimentacoes": [
+                {"data": m.data, "descricao": m.descricao} for m in self.movimentacoes
+            ],
         }
 
 
@@ -156,12 +157,8 @@ def normalizar_html_1grau(numero_processo: str, html: str) -> ProcessoNormalizad
     # Campos secundários (dentro de #maisDetalhes, colapsado por padrão)
     processo.area = _extrair_texto_seguro(soup, "areaProcesso")
     processo.valor_acao = _extrair_texto_seguro(soup, "valorAcaoProcesso")
-    processo.distribuicao = _extrair_texto_seguro(
-        soup, "dataHoraDistribuicaoProcesso"
-    )
-    processo.numero_controle = _extrair_texto_seguro(
-        soup, "numeroControleProcesso"
-    )
+    processo.distribuicao = _extrair_texto_seguro(soup, "dataHoraDistribuicaoProcesso")
+    processo.numero_controle = _extrair_texto_seguro(soup, "numeroControleProcesso")
 
     # Partes e movimentações — stubs, pendente HTML real dessas seções
     processo.partes = _extrair_partes(soup)
@@ -172,7 +169,7 @@ def normalizar_html_1grau(numero_processo: str, html: str) -> ProcessoNormalizad
 
 def normalizar_html_2grau(numero_processo: str, html: str) -> ProcessoNormalizado:
     """Normaliza HTML de processo do 2º Grau (cposg5).
-    
+
     Mesma lógica fail-closed de sigilo do 1º Grau.
     Campos específicos: relator, seção, órgão julgador.
     Campos ausentes vs 1º Grau: foro, vara, juiz, distribuição, controle.
@@ -207,43 +204,45 @@ def extrair_resumos_pesquisa(html: str) -> list[ResumoProcesso]:
     """Extrai uma lista de resumos de processo da página de resultados de busca por nome."""
     soup = BeautifulSoup(html, "lxml")
     resumos = []
-    
+
     blocos = soup.find_all("div", class_="home__lista-de-processos")
     for bloco in blocos:
         link = bloco.find("a", class_="linkProcesso")
         if not link:
             continue
         numero = link.get_text(strip=True)
-        
+
         classe_div = bloco.find("div", class_="classeProcesso")
         classe = classe_div.get_text(strip=True) if classe_div else ""
-        
+
         assunto_div = bloco.find("div", class_="assuntoPrincipalProcesso")
         assunto = assunto_div.get_text(strip=True) if assunto_div else ""
-        
+
         data_div = bloco.find("div", class_="dataLocalDistribuicaoProcesso")
         data_local = data_div.get_text(strip=True) if data_div else ""
-        
+
         tipo_label = bloco.find("label", class_="tipoDeParticipacao")
         tipo = tipo_label.get_text(strip=True).strip(":") if tipo_label else ""
-        
+
         nome_div = bloco.find("div", class_="nomeParte")
         nome = nome_div.get_text(strip=True) if nome_div else ""
-        
-        resumos.append(ResumoProcesso(
-            numero=numero,
-            classe=classe,
-            assunto=assunto,
-            data_local=data_local,
-            participacao=tipo,
-            nome_parte=nome
-        ))
+
+        resumos.append(
+            ResumoProcesso(
+                numero=numero,
+                classe=classe,
+                assunto=assunto,
+                data_local=data_local,
+                participacao=tipo,
+                nome_parte=nome,
+            )
+        )
     return resumos
 
 
 def extrair_resumos_pesquisa_2grau(html: str) -> list[ResumoProcesso]:
     """Extrai resumos da página de resultados de busca por nome no 2º Grau.
-    
+
     A estrutura do 2º Grau usa a mesma classe 'home__lista-de-processos',
     porém como fallback também tenta extrair via padrão CNJ do HTML.
     """
@@ -251,22 +250,25 @@ def extrair_resumos_pesquisa_2grau(html: str) -> list[ResumoProcesso]:
     resumos = extrair_resumos_pesquisa(html)
     if resumos:
         return resumos
-    
+
     # Fallback: extrai números CNJ via regex do HTML bruto
     import re as _re
-    numeros = _re.findall(r'\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}', html)
+
+    numeros = _re.findall(r"\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}", html)
     numeros_unicos = list(dict.fromkeys(numeros))
-    
+
     resumos_fallback = []
     for num in numeros_unicos:
-        resumos_fallback.append(ResumoProcesso(
-            numero=num,
-            classe="",
-            assunto="",
-            data_local="",
-            participacao="",
-            nome_parte="",
-        ))
+        resumos_fallback.append(
+            ResumoProcesso(
+                numero=num,
+                classe="",
+                assunto="",
+                data_local="",
+                participacao="",
+                nome_parte="",
+            )
+        )
     return resumos_fallback
 
 
@@ -279,11 +281,14 @@ def _verificar_sigilo_fail_closed(html: str) -> None:
         raise ProcessoSigilosoError("HTML vazio ou muito curto")
 
     html_lower = html.lower()
-    if "segredo de justiça" in html_lower or "acesso restrito ao processo" in html_lower:
+    if (
+        "segredo de justiça" in html_lower
+        or "acesso restrito ao processo" in html_lower
+    ):
         raise ProcessoSigilosoError("Processo em segredo de justiça")
 
 
-def _extrair_texto_seguro(soup: BeautifulSoup, element_id: str) -> Optional[str]:
+def _extrair_texto_seguro(soup: BeautifulSoup, element_id: str) -> str | None:
     el = soup.find(id=element_id)
     if el is None:
         return None
@@ -299,27 +304,33 @@ def _extrair_partes(soup: BeautifulSoup) -> list[Parte]:
     tabela = soup.find(id="tablePartesPrincipais") or soup.find(id="tableTodasPartes")
     if tabela is None:
         return partes
-    
+
     for tr in tabela.find_all("tr"):
         label_td = tr.find("td", class_="label")
         # 1º Grau usa class="nome", 2º Grau usa class="nomeParteEAdvogado"
-        nome_td = tr.find("td", class_="nome") or tr.find("td", class_="nomeParteEAdvogado")
-        
+        nome_td = tr.find("td", class_="nome") or tr.find(
+            "td", class_="nomeParteEAdvogado"
+        )
+
         if label_td and nome_td:
             tipo_principal = label_td.get_text(strip=True).strip(":").strip()
-            
-            linhas = nome_td.get_text('\n', strip=True).split('\n')
+
+            linhas = nome_td.get_text("\n", strip=True).split("\n")
             if linhas:
                 nome_principal = linhas[0].strip()
                 partes.append(Parte(nome=nome_principal, tipo=tipo_principal))
-                
+
                 current_tipo_rep = None
                 for linha in linhas[1:]:
                     linha = linha.strip()
                     if not linha:
                         continue
-                    
-                    match = re.match(r'^(Advogado|Advogada|Representante|Curador)s?:?(.*)', linha, re.IGNORECASE)
+
+                    match = re.match(
+                        r"^(Advogado|Advogada|Representante|Curador)s?:?(.*)",
+                        linha,
+                        re.IGNORECASE,
+                    )
                     if match:
                         current_tipo_rep = match.group(1).strip()
                         resto = match.group(2).strip()
@@ -329,7 +340,7 @@ def _extrair_partes(soup: BeautifulSoup) -> list[Parte]:
                     elif current_tipo_rep:
                         partes.append(Parte(nome=linha, tipo=current_tipo_rep))
                         current_tipo_rep = None
-                        
+
     return partes
 
 
@@ -339,22 +350,33 @@ def _extrair_movimentacoes(soup: BeautifulSoup) -> list[Movimentacao]:
     Itera sobre as linhas da tabela considerando as classes do e-SAJ.
     """
     movimentacoes: list[Movimentacao] = []
-    tabela = soup.find(id="tabelaTodasMovimentacoes") or soup.find(id="tabelaUltimasMovimentacoes")
+    tabela = soup.find(id="tabelaTodasMovimentacoes") or soup.find(
+        id="tabelaUltimasMovimentacoes"
+    )
     if tabela is None:
         return movimentacoes
-        
+
     for tr in tabela.find_all("tr"):
         classes = tr.get("class", [])
-        if "containerMovimentacao" in classes or "movimentacaoProcesso" in classes or "fundoClaro" in classes or "fundoEscuro" in classes:
+        if (
+            "containerMovimentacao" in classes
+            or "movimentacaoProcesso" in classes
+            or "fundoClaro" in classes
+            or "fundoEscuro" in classes
+        ):
             # 1º Grau usa class="dataMovimentacao", 2º Grau usa class="dataMovimentacaoProcesso"
-            data_td = tr.find("td", class_="dataMovimentacao") or tr.find("td", class_="dataMovimentacaoProcesso")
-            desc_td = tr.find("td", class_="descricaoMovimentacao") or tr.find("td", class_="descricaoMovimentacaoProcesso")
-            
+            data_td = tr.find("td", class_="dataMovimentacao") or tr.find(
+                "td", class_="dataMovimentacaoProcesso"
+            )
+            desc_td = tr.find("td", class_="descricaoMovimentacao") or tr.find(
+                "td", class_="descricaoMovimentacaoProcesso"
+            )
+
             if data_td and desc_td:
                 data = data_td.get_text(strip=True)
                 descricao = desc_td.get_text(" ", strip=True)
-                
+
                 if data and descricao:
                     movimentacoes.append(Movimentacao(data=data, descricao=descricao))
-                    
+
     return movimentacoes
