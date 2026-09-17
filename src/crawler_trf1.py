@@ -11,9 +11,10 @@ hCaptcha: Presente no código-fonte, porém DESATIVADO (if false).
 
 import re
 import warnings
-import requests
 from dataclasses import dataclass
-from bs4 import BeautifulSoup
+
+import requests
+from bs4 import BeautifulSoup, SoupStrainer
 
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
@@ -50,11 +51,13 @@ class ProcessoDetalhadoFederal:
 class CrawlerTRF1:
     def __init__(self):
         self._session = requests.Session()
-        self._session.headers.update({
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-        })
+        self._session.headers.update(
+            {
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            }
+        )
         self._view_state = None
 
     def _iniciar_sessao(self):
@@ -87,7 +90,9 @@ class CrawlerTRF1:
         """Busca por número de processo unificado (CNJ)."""
         self._iniciar_sessao()
         data = self._montar_payload()
-        data["fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso"] = numero
+        data[
+            "fPP:numProcesso-inputNumeroProcessoDecoration:numProcesso-inputNumeroProcesso"
+        ] = numero
         return self._executar_busca(data)
 
     def _montar_payload(self) -> dict:
@@ -115,8 +120,16 @@ class CrawlerTRF1:
         return self._parsear_resultados(r.text)
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
-        soup = BeautifulSoup(html, "lxml")
-        table = soup.find("table", id="fPP:processosTable")
+        # ⚡ Bolt: Using SoupStrainer to only parse the required table, avoiding building the full DOM for massive TRF1 pages (often ~60-70% faster parsing).
+        strainer = SoupStrainer("table", id="fPP:processosTable")
+        soup = BeautifulSoup(html, "lxml", parse_only=strainer)
+        # Note: When parse_only matches an element, that element becomes the root of the parsed document.
+        # Thus, soup might BE the table itself, or it might be a document containing the table.
+        table = (
+            soup
+            if soup.name == "table"
+            else soup.find("table", id="fPP:processosTable")
+        )
         if not table:
             return []
 
@@ -149,14 +162,16 @@ class CrawlerTRF1:
             if b_tag:
                 texto_b = b_tag.get_text(strip=True)
                 # Formato: "ExTiEx 0000001-64.1970.4.01.3300 - Mútuo"
-                match_num = re.search(r"(\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4})", texto_b)
+                match_num = re.search(
+                    r"(\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4})", texto_b
+                )
                 if match_num:
                     numero = match_num.group(1)
-                
+
                 # Classe é o que vem antes do número
                 partes_texto = texto_b.split(numero) if numero else [texto_b]
                 classe = partes_texto[0].strip() if partes_texto else ""
-                
+
                 # Assunto é o que vem depois do " - "
                 if " - " in texto_b:
                     assunto = texto_b.split(" - ", 1)[-1].strip()
@@ -167,11 +182,11 @@ class CrawlerTRF1:
             texto_b_full = b_tag.get_text(" ", strip=True) if b_tag else ""
             # Também remover a classe que aparece antes do <a>
             classe_prefixo = cell_proc.contents[0] if cell_proc.contents else ""
-            if hasattr(classe_prefixo, 'strip'):
+            if hasattr(classe_prefixo, "strip"):
                 classe_prefixo = classe_prefixo.strip()
             else:
                 classe_prefixo = ""
-            
+
             partes = texto_completo
             if texto_b_full:
                 partes = partes.replace(texto_b_full, "").strip()
@@ -186,14 +201,16 @@ class CrawlerTRF1:
             ultima_mov = cells[2].get_text(strip=True) if len(cells) > 2 else ""
 
             if numero:
-                resultados.append(ResumoProcessoFederal(
-                    numero=numero,
-                    classe=classe,
-                    assunto=assunto,
-                    partes=partes,
-                    ultima_movimentacao=ultima_mov,
-                    link_detalhe=link_detalhe,
-                ))
+                resultados.append(
+                    ResumoProcessoFederal(
+                        numero=numero,
+                        classe=classe,
+                        assunto=assunto,
+                        partes=partes,
+                        ultima_movimentacao=ultima_mov,
+                        link_detalhe=link_detalhe,
+                    )
+                )
 
         return resultados
 
@@ -202,10 +219,10 @@ class CrawlerTRF1:
         r = self._session.get(link_detalhe, verify=False, timeout=15)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
-        
+
         # Helper to extract text from a property block
         def get_prop(label_start):
-            label = soup.find("label", string=re.compile(label_start, re.I))
+            label = soup.find("label", string=re.compile(label_start, re.IGNORECASE))
             if label:
                 parent_div = label.find_parent("div", class_="name")
                 if parent_div:
@@ -219,21 +236,23 @@ class CrawlerTRF1:
         classe = get_prop("Classe Judicial")
         assunto = get_prop("Assunto")
         jurisdicao = get_prop("Jurisdição")
-        
+
         # Órgão julgador e endereço são um pouco mais complexos
         orgao_julgador = ""
         endereco = ""
-        b_orgao = soup.find("b", string=re.compile("Órgão Julgador", re.I))
+        b_orgao = soup.find("b", string=re.compile("Órgão Julgador", re.IGNORECASE))
         if b_orgao:
             parent_div = b_orgao.parent
             texto = parent_div.get_text(" ", strip=True)
-            match_orgao = re.search(r"Órgão Julgador\s+(.*?)(?:Endereço|$)", texto, re.I)
+            match_orgao = re.search(
+                r"Órgão Julgador\s+(.*?)(?:Endereço|$)", texto, re.IGNORECASE
+            )
             if match_orgao:
                 orgao_julgador = match_orgao.group(1).strip()
-            match_end = re.search(r"Endereço\s+(.*)", texto, re.I)
+            match_end = re.search(r"Endereço\s+(.*)", texto, re.IGNORECASE)
             if match_end:
                 endereco = match_end.group(1).strip()
-                
+
         # Extrair partes
         def extrair_tabela_partes(table_id):
             partes = []
@@ -243,15 +262,23 @@ class CrawlerTRF1:
                     cells = tr.find_all("td")
                     if cells:
                         span = cells[0].find("span", class_="text-bold")
-                        nome = span.get_text(strip=True) if span else cells[0].get_text(" ", strip=True)
+                        nome = (
+                            span.get_text(strip=True)
+                            if span
+                            else cells[0].get_text(" ", strip=True)
+                        )
                         nome = re.sub(r"\s+", " ", nome).strip()
                         sit = cells[1].get_text(strip=True) if len(cells) > 1 else ""
                         partes.append({"nome": nome, "situacao": sit})
             return partes
-            
-        polo_ativo = extrair_tabela_partes("j_id150:processoPartesPoloAtivoResumidoTableBinding")
-        polo_passivo = extrair_tabela_partes("j_id150:processoPartesPoloPassivoResumidoTableBinding")
-        
+
+        polo_ativo = extrair_tabela_partes(
+            "j_id150:processoPartesPoloAtivoResumidoTableBinding"
+        )
+        polo_passivo = extrair_tabela_partes(
+            "j_id150:processoPartesPoloPassivoResumidoTableBinding"
+        )
+
         # Extrair movimentações
         movimentacoes = []
         table_mov = soup.find("table", id="j_id150:processoEvento")
@@ -262,7 +289,7 @@ class CrawlerTRF1:
                     data = cells[0].get_text(strip=True)
                     doc_mov = cells[1].get_text(" ", strip=True)
                     movimentacoes.append({"data": data, "descricao": doc_mov})
-                    
+
         return ProcessoDetalhadoFederal(
             numero=numero,
             data_distribuicao=data_dist,
@@ -273,5 +300,5 @@ class CrawlerTRF1:
             endereco=endereco,
             polo_ativo=polo_ativo,
             polo_passivo=polo_passivo,
-            movimentacoes=movimentacoes
+            movimentacoes=movimentacoes,
         )

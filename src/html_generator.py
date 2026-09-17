@@ -1,10 +1,8 @@
-import re
-from typing import List, Optional
-
 try:
     from src.normalizer import ProcessoNormalizado, ResumoProcesso
 except ImportError:
     from normalizer import ProcessoNormalizado, ResumoProcesso
+
 
 def _gerar_estilo() -> str:
     return """
@@ -281,30 +279,32 @@ def _gerar_estilo() -> str:
     }
     """
 
+
 def _campos_sidebar(processo: ProcessoNormalizado) -> list[tuple[str, str]]:
     """Retorna pares (label, valor) para a sidebar, adaptado ao grau."""
     campos = []
-    if getattr(processo, 'grau', 1) == 2:
-        campos.append(('Relator', processo.relator or '-'))
-        campos.append(('Seção', processo.secao or '-'))
-        campos.append(('Órgão Julgador', processo.orgao_julgador or '-'))
-        campos.append(('Área', processo.area or '-'))
-        campos.append(('Assunto', processo.assunto or '-'))
-        campos.append(('Valor da Ação', processo.valor_acao or '-'))
-        campos.append(('Volume / Apenso', processo.volume_apenso or '-'))
+    if getattr(processo, "grau", 1) == 2:
+        campos.append(("Relator", processo.relator or "-"))
+        campos.append(("Seção", processo.secao or "-"))
+        campos.append(("Órgão Julgador", processo.orgao_julgador or "-"))
+        campos.append(("Área", processo.area or "-"))
+        campos.append(("Assunto", processo.assunto or "-"))
+        campos.append(("Valor da Ação", processo.valor_acao or "-"))
+        campos.append(("Volume / Apenso", processo.volume_apenso or "-"))
     else:
-        campos.append(('Juiz', processo.juiz or '-'))
-        campos.append(('Área', processo.area or '-'))
-        campos.append(('Assunto', processo.assunto or '-'))
-        campos.append(('Distribuição', processo.distribuicao or '-'))
-        campos.append(('Valor da Ação', processo.valor_acao or '-'))
-        campos.append(('Vara', processo.vara or '-'))
-        campos.append(('Controle', processo.numero_controle or '-'))
+        campos.append(("Juiz", processo.juiz or "-"))
+        campos.append(("Área", processo.area or "-"))
+        campos.append(("Assunto", processo.assunto or "-"))
+        campos.append(("Distribuição", processo.distribuicao or "-"))
+        campos.append(("Valor da Ação", processo.valor_acao or "-"))
+        campos.append(("Vara", processo.vara or "-"))
+        campos.append(("Controle", processo.numero_controle or "-"))
     return campos
+
 
 def gerar_html_processo(processo: ProcessoNormalizado) -> str:
     """Gera um HTML completo estilizado apresentando os dados do processo."""
-    
+
     # Prepara Partes agrupadas
     if processo.partes:
         # Agrupa principais com seus advogados
@@ -312,24 +312,29 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
         grupos = []
         grupo_atual = None
         for p in processo.partes:
-            if p.tipo and ('advogad' in p.tipo.lower() or 'defensor' in p.tipo.lower()):
+            if p.tipo and ("advogad" in p.tipo.lower() or "defensor" in p.tipo.lower()):
                 if grupo_atual:
-                    grupo_atual['advogados'].append(p)
+                    grupo_atual["advogados"].append(p)
                 else:
                     # Advogado sem parte associada
-                    grupos.append({'principal': p, 'advogados': []})
+                    grupos.append({"principal": p, "advogados": []})
             else:
                 if grupo_atual:
                     grupos.append(grupo_atual)
-                grupo_atual = {'principal': p, 'advogados': []}
+                grupo_atual = {"principal": p, "advogados": []}
         if grupo_atual:
             grupos.append(grupo_atual)
-            
+
         partes_list = []
         for g in grupos:
-            prin = g['principal']
-            advs = "".join([f'<div class="parte-advogado"><span class="sr-only">Advogado: </span>{a.nome}</div>' for a in g['advogados']])
-            
+            prin = g["principal"]
+            advs = "".join(
+                [
+                    f'<div class="parte-advogado"><span class="sr-only">Advogado: </span>{a.nome}</div>'
+                    for a in g["advogados"]
+                ]
+            )
+
             partes_list.append(f"""
             <div class="parte-group" role="group" aria-label="Participante do processo">
                 <div class="parte-role">{prin.tipo}</div>
@@ -346,12 +351,12 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
         movs_list = []
         for m in processo.movimentacoes:
             # Separa titulo e descricao da movimentacao se houver quebra de linha
-            linhas = m.descricao.split('\n', 1) if m.descricao else ["", ""]
+            linhas = m.descricao.split("\n", 1) if m.descricao else ["", ""]
             titulo = linhas[0].strip()
             desc = linhas[1].strip() if len(linhas) > 1 else ""
-            
+
             desc_html = f'<div class="timeline-desc">{desc}</div>' if desc else ""
-            
+
             movs_list.append(f"""
             <div class="timeline-item">
                 <div class="timeline-marker" aria-hidden="true"></div>
@@ -363,13 +368,15 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
         movs_html = "".join(movs_list)
     else:
         movs_html = "<p class='text-muted'>Nenhuma movimentação encontrada.</p>"
-        
+
     # Badge de Situação
     sit = processo.situacao or "Desconhecida"
     sit_lower = sit.lower()
     badge_class = "badge-status"
-    if 'baixado' in sit_lower: badge_class = "badge-success"
-    if 'urgente' in sit_lower or 'sigilo' in sit_lower: badge_class = "badge-danger"
+    if "baixado" in sit_lower:
+        badge_class = "badge-success"
+    if "urgente" in sit_lower or "sigilo" in sit_lower:
+        badge_class = "badge-danger"
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -377,7 +384,9 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Processo {processo.numero_processo} - ProcessoLivreAC</title>
-    <meta name="description" content="Acompanhamento do processo {processo.numero_processo} - {processo.classe}">
+    <meta name="description" content="Acompanhamento do processo {
+        processo.numero_processo
+    } - {processo.classe}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         {_gerar_estilo()}
@@ -398,12 +407,18 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
             <div class="content-column">
                 <article>
                     <header style="margin-bottom: 2rem;">
-                        <h1 class="process-title">{processo.numero_processo or 'Número indisponível'}</h1>
+                        <h1 class="process-title">{
+        processo.numero_processo or "Número indisponível"
+    }</h1>
                         <div class="process-subtitle">
-                            <span class="badge {badge_class}" aria-label="Situação do processo">{sit}</span>
+                            <span class="badge {
+        badge_class
+    }" aria-label="Situação do processo">{sit}</span>
                             <span>{processo.classe}</span>
                             <span aria-hidden="true">·</span>
-                            <span>{processo.orgao_julgador or processo.foro or '-'}</span>
+                            <span>{
+        processo.orgao_julgador or processo.foro or "-"
+    }</span>
                         </div>
                     </header>
 
@@ -427,11 +442,16 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
                 <div class="card" style="position: sticky; top: 80px;">
                     <h2 style="font-size: 1.1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Detalhes do Processo</h2>
                     <ul class="detail-list">
-                        {''.join(f'''
+                        {
+        "".join(
+            f'''
                         <li class="detail-item">
                             <div class="detail-label">{label}</div>
                             <div class="detail-value">{valor}</div>
-                        </li>''' for label, valor in _campos_sidebar(processo))}
+                        </li>'''
+            for label, valor in _campos_sidebar(processo)
+        )
+    }
                     </ul>
                 </div>
             </aside>
@@ -442,11 +462,15 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
 """
     return html
 
+
 _NUMERO_TRANS_TABLE = str.maketrans(".-/", "___")
 
-def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local: bool = False) -> str:
+
+def gerar_html_lista_busca(
+    nome: str, resumos: list[ResumoProcesso], link_local: bool = False
+) -> str:
     """Gera um HTML apresentando os resultados de busca por nome."""
-    
+
     if resumos:
         itens_list = []
         for p in resumos:
@@ -459,7 +483,7 @@ def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local:
                 href = f"https://esaj.tjac.jus.br/cpopg/search.do?cbPesquisa=NUMPROC&dadosConsulta.valorConsultaNuUnificado={p.numero}"
                 target = 'target="_blank"'
                 aria = f'aria-label="Processo {p.numero} no site do tribunal"'
-                
+
             itens_list.append(f"""
             <article class="card" style="margin-bottom: 1rem;">
                 <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem;">
@@ -485,8 +509,10 @@ def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local:
             """)
         itens_html = "".join(itens_list)
     else:
-        itens_html = "<div class='card'><p>Nenhum processo encontrado para este nome.</p></div>"
-        
+        itens_html = (
+            "<div class='card'><p>Nenhum processo encontrado para este nome.</p></div>"
+        )
+
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
