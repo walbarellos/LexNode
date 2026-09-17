@@ -1,5 +1,4 @@
 import re
-import requests
 from bs4 import BeautifulSoup
 from src.base_crawler import BaseCrawler
 

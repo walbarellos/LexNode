@@ -44,7 +44,6 @@ def formatar_texto(processo: ProcessoNormalizado, colorido: bool = True) -> str:
     Returns:
         String formatada.
     """
-    WIDTH = 67
     
     # Cores
     c_box = _Cor.DIM if colorido else ''
@@ -80,13 +79,18 @@ def formatar_texto(processo: ProcessoNormalizado, colorido: bool = True) -> str:
     
     # Classe, Vara, Foro
     partes_header = []
-    if processo.classe: partes_header.append(processo.classe)
+    if processo.classe:
+        partes_header.append(processo.classe)
     if getattr(processo, 'grau', 1) == 2:
-        if processo.orgao_julgador: partes_header.append(processo.orgao_julgador)
-        if processo.secao: partes_header.append(processo.secao)
+        if processo.orgao_julgador:
+            partes_header.append(processo.orgao_julgador)
+        if processo.secao:
+            partes_header.append(processo.secao)
     else:
-        if processo.vara: partes_header.append(processo.vara)
-        if processo.foro: partes_header.append(processo.foro)
+        if processo.vara:
+            partes_header.append(processo.vara)
+        if processo.foro:
+            partes_header.append(processo.foro)
     header_text = ' · '.join(partes_header)
     
     if len(header_text) > 63:
