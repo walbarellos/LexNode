@@ -5,7 +5,8 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 
 from fastapi import FastAPI, HTTPException, Request, Query
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 import threading
@@ -29,6 +30,10 @@ app = FastAPI(title="LexNode")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+ASSETS_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "..", "assets"))
+if os.path.isdir(ASSETS_DIR):
+    app.mount("/assets", StaticFiles(directory=ASSETS_DIR), name="assets")
 
 executor = ThreadPoolExecutor(max_workers=10)
 
@@ -127,6 +132,13 @@ async def buscar_processo(numero: str, grau: int = Query(1)):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+@app.get("/favicon.ico")
+async def favicon():
+    fav_path = os.path.join(ASSETS_DIR, "favcon.jpg")
+    if os.path.isfile(fav_path):
+        return FileResponse(fav_path, media_type="image/jpeg")
+    return JSONResponse(status_code=404, content={"detail": "Not found"})
 
 @app.get("/undefined")
 async def handle_undefined():

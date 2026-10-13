@@ -1,7 +1,7 @@
 # LexNode — Engenharia de Dados & Inteligência Processual Pública
 
 <p align="center">
-  <img width="180" height="180" src="https://raw.githubusercontent.com/walbarellos/LexNode/main/src/web/templates/index.html" alt="LexNode Logo" style="display:none;" />
+  <img src="./assets/banner.jpg" alt="LexNode Banner" width="100%" style="border-radius: 8px; max-width: 900px;" />
 </p>
 
 <p align="center">
@@ -152,6 +152,9 @@ O LexNode adota o paradigma **Privacy by Design** formulado pela Dra. Ann Cavouk
 | [`src/web/templates/index.html`](./src/web/templates/index.html) | Frontend | Interface editorial inspirada em periódicos jurídicos, semântica WCAG AAA, navegação por teclado e cards de captcha. |
 | [`tests/test_base_crawler.py`](./tests/test_base_crawler.py) | Test Suite | Testes unitários para formatação CNJ e testes de detecção de desafios de segurança. |
 | [`tests/test_normalizer_sigilo.py`](./tests/test_normalizer_sigilo.py) | Test Suite | Testes de integridade do filtro de sigilo fail-closed e integridade de extração. |
+| [`assets/banner.jpg`](./assets/banner.jpg) | Asset Visual | Banner horizontal do projeto (1168x784) para o topo do repositório e OpenGraph. |
+| [`assets/logo.jpg`](./assets/logo.jpg) | Asset Visual | Logotipo oficial do LexNode (784x1168) aplicado no masthead editorial e perfil. |
+| [`assets/favcon.jpg`](./assets/favcon.jpg) | Asset Visual | Ícone e favicon para abas do navegador e atalhos de tela (`/favicon.ico`). |
 | [`TODO.md`](./TODO.md) | Documentação | Roadmap de engenharia futura (BNMP, TRT14, SQLite persistente e Playwright Headless). |
 
 ---
