@@ -9,51 +9,48 @@ except ImportError:
 def _gerar_estilo() -> str:
     return """
     :root {
-        --primary-color: #0b4b8a; /* JusBrasil-like blue */
-        --primary-light: #e6f0fa;
-        --secondary-color: #f7f9fa;
-        --text-main: #333333;
-        --text-muted: #666666;
-        --border-color: #e0e0e0;
-        --success-color: #27ae60;
-        --warning-color: #f39c12;
-        --danger-color: #c0392b;
-        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --primary-color: #1c3554;
+        --primary-light: #e7eef5;
+        --secondary-color: #f7f3ea;
+        --text-main: #1b1916;
+        --text-muted: #3e3a34;
+        --border-color: #d4cbbd;
+        --success-color: #14532d;
+        --danger-color: #7f1d1d;
+        --paper: #f3efe6;
+        --sheet: #fffcf6;
+        --serif: "Literata", Palatino, "Palatino Linotype", "Times New Roman", serif;
+        --sans: "Source Sans 3", "Segoe UI", sans-serif;
     }
 
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+    * { box-sizing: border-box; }
 
     body {
-        font-family: var(--font-family);
-        background-color: #f1f3f5;
+        margin: 0;
+        background: var(--paper);
         color: var(--text-main);
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
+        font-family: var(--sans);
+        font-size: 1.0625rem;
+        line-height: 1.55;
     }
 
-    /* Typography & Accessibility */
-    h1, h2, h3, h4, h5, h6 {
-        font-weight: 600;
-        color: #1a1a1a;
-        margin-bottom: 0.5rem;
-    }
-    
-    a {
-        color: var(--primary-color);
-        text-decoration: none;
-    }
-    
-    a:hover, a:focus {
-        text-decoration: underline;
-        outline: 2px solid var(--primary-color);
-        outline-offset: 2px;
+    h1, h2, h3, h4 {
+        font-family: var(--serif);
+        font-weight: 650;
+        color: var(--text-main);
+        line-height: 1.25;
     }
 
-    .sr-only {
+    a { color: var(--primary-color); }
+    a:hover { text-decoration-thickness: 2px; }
+
+    :focus { outline: none; }
+    :focus-visible {
+        outline: 3px solid var(--primary-color);
+        outline-offset: 3px;
+    }
+
+    .sr-only, .vh {
         position: absolute;
         width: 1px;
         height: 1px;
@@ -61,225 +58,162 @@ def _gerar_estilo() -> str:
         margin: -1px;
         overflow: hidden;
         clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
         border: 0;
     }
 
-    /* Layout */
+    .text-muted { color: var(--text-muted); }
+
     .header {
-        background-color: #ffffff;
-        border-bottom: 1px solid var(--border-color);
-        padding: 1rem 0;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        background: var(--sheet);
+        border-bottom: 3px solid var(--text-main);
+        box-shadow: 0 1px 0 var(--text-main);
     }
 
     .container {
-        max-width: 1024px;
+        max-width: 64rem;
         margin: 0 auto;
-        padding: 0 1.5rem;
+        padding: 0 1.25rem;
     }
 
     .header .container {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        min-height: 4.25rem;
     }
 
     .brand {
-        font-size: 1.25rem;
+        font-family: var(--serif);
+        font-size: 1.35rem;
         font-weight: 700;
-        color: var(--primary-color);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-main);
     }
 
     .main-grid {
         display: grid;
-        grid-template-columns: 1fr 300px;
+        grid-template-columns: 1fr 18rem;
         gap: 2rem;
-        margin-top: 2rem;
-        margin-bottom: 4rem;
+        margin: 2rem 0 4rem;
     }
-    
+
     @media (max-width: 768px) {
-        .main-grid {
-            grid-template-columns: 1fr;
-        }
+        .main-grid { grid-template-columns: 1fr; }
     }
 
-    /* Cards */
     .card {
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid transparent;
-        transition: box-shadow 0.2s ease;
-    }
-    
-    .card:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        background: var(--sheet);
+        border: 1px solid var(--border-color);
+        padding: 1.25rem 1.35rem;
+        margin-bottom: 1.25rem;
     }
 
-    /* Headers / Meta */
     .process-title {
-        font-size: 1.5rem;
-        letter-spacing: -0.5px;
-        margin-bottom: 0.25rem;
+        font-size: clamp(1.45rem, 3vw, 1.85rem);
+        margin: 0 0 0.35rem;
+        overflow-wrap: anywhere;
     }
-    
+
     .process-subtitle {
         color: var(--text-muted);
-        font-size: 0.95rem;
-        margin-bottom: 1.25rem;
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 0.4rem 0.6rem;
         align-items: center;
+        margin-bottom: 1.25rem;
     }
-    
+
     .badge {
         display: inline-block;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        border-radius: 4px;
+        padding: 0.15rem 0.45rem;
+        font-family: var(--sans);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
     }
-    
-    .badge-status { background-color: var(--primary-light); color: var(--primary-color); }
-    .badge-success { background-color: #e8f8f5; color: var(--success-color); }
-    .badge-danger { background-color: #fdedec; color: var(--danger-color); }
 
-    /* Partes */
+    .badge-status { background: var(--primary-light); color: var(--primary-color); }
+    .badge-success { background: #e7f2ea; color: var(--success-color); }
+    .badge-danger { background: #f8e8e6; color: var(--danger-color); }
+
     .parte-group {
-        margin-bottom: 1.25rem;
-        padding-bottom: 1.25rem;
+        padding: 0.85rem 0;
         border-bottom: 1px solid var(--border-color);
     }
-    
-    .parte-group:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-    
+
+    .parte-group:last-child { border-bottom: 0; padding-bottom: 0; }
+
     .parte-role {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
         color: var(--text-muted);
-        font-weight: 600;
-        margin-bottom: 0.25rem;
+        font-weight: 700;
     }
-    
+
     .parte-name {
-        font-weight: 600;
+        font-weight: 700;
         color: var(--primary-color);
-        font-size: 1.05rem;
-        margin-bottom: 0.25rem;
+        margin-top: 0.15rem;
     }
-    
+
     .parte-advogado {
-        font-size: 0.9rem;
+        margin-top: 0.2rem;
         color: var(--text-muted);
-        display: flex;
-        align-items: flex-start;
-        margin-top: 0.25rem;
-    }
-    
-    .parte-advogado::before {
-        content: "↳";
-        margin-right: 0.5rem;
-        color: #adb5bd;
     }
 
-    /* Movimentações Timeline */
-    .timeline {
-        position: relative;
-        padding-left: 1.5rem;
-    }
-    
-    .timeline::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background-color: var(--border-color);
-    }
-    
+    .parte-advogado::before { content: "Advogado: "; font-weight: 700; }
+
+    .timeline { margin: 0; }
+
     .timeline-item {
-        position: relative;
-        margin-bottom: 1.5rem;
-    }
-    
-    .timeline-item:last-child {
-        margin-bottom: 0;
-    }
-    
-    .timeline-marker {
-        position: absolute;
-        left: -1.85rem;
-        top: 0.25rem;
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        background-color: #ffffff;
-        border: 3px solid var(--primary-color);
-        z-index: 1;
-    }
-    
-    .timeline-date {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-    }
-    
-    .timeline-title {
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-        color: #1a1a1a;
-    }
-    
-    .timeline-desc {
-        font-size: 0.95rem;
-        color: #444;
-        white-space: pre-wrap;
-        background-color: var(--secondary-color);
-        padding: 0.75rem;
-        border-radius: 4px;
-        border: 1px solid #f0f0f0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.15rem;
+        padding: 0.85rem 0;
+        border-bottom: 1px solid var(--border-color);
     }
 
-    /* Detalhes (Sidebar) */
-    .detail-list {
-        list-style: none;
+    @media (min-width: 560px) {
+        .timeline-item { grid-template-columns: 8.5rem 1fr; gap: 0.75rem; }
     }
-    
-    .detail-item {
-        margin-bottom: 1rem;
+
+    .timeline-marker { display: none; }
+
+    .timeline-date {
+        color: var(--text-muted);
+        font-weight: 700;
     }
-    
+
+    .timeline-title { font-weight: 700; }
+
+    .timeline-desc {
+        margin-top: 0.35rem;
+        white-space: pre-wrap;
+        font-family: var(--serif);
+    }
+
+    .detail-list { list-style: none; margin: 0; padding: 0; }
+
+    .detail-item { margin-bottom: 0.9rem; }
+
     .detail-label {
-        font-size: 0.8rem;
+        font-size: 0.82rem;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
         color: var(--text-muted);
-        font-weight: 600;
-        margin-bottom: 0.15rem;
+        font-weight: 700;
     }
-    
-    .detail-value {
-        font-size: 0.95rem;
-        font-weight: 500;
+
+    .detail-value { margin-top: 0.12rem; overflow-wrap: anywhere; }
+
+    @media (prefers-reduced-motion: reduce) {
+        * { scroll-behavior: auto !important; transition: none !important; }
     }
     """
+
 
 def _campos_sidebar(processo: ProcessoNormalizado) -> list[tuple[str, str]]:
     """Retorna pares (label, valor) para a sidebar, adaptado ao grau."""
@@ -376,9 +310,9 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Processo {processo.numero_processo} - ProcessoLivreAC</title>
+    <title>Processo {processo.numero_processo} - LexNode</title>
     <meta name="description" content="Acompanhamento do processo {processo.numero_processo} - {processo.classe}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         {_gerar_estilo()}
     </style>
@@ -386,10 +320,7 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
 <body>
     <header class="header" role="banner">
         <div class="container">
-            <div class="brand">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                ProcessoLivreAC
-            </div>
+            <div class="brand">LexNode</div>
         </div>
     </header>
 
@@ -492,9 +423,9 @@ def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Busca: {nome} - ProcessoLivreAC</title>
+    <title>Busca: {nome} - LexNode</title>
     <meta name="description" content="Resultados da busca de processos para {nome}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         {_gerar_estilo()}
     </style>
@@ -502,10 +433,7 @@ def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local:
 <body>
     <header class="header" role="banner">
         <div class="container">
-            <div class="brand">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                ProcessoLivreAC
-            </div>
+            <div class="brand">LexNode</div>
         </div>
     </header>
 

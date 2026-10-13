@@ -9,7 +9,7 @@ O JusBrasil é uma arquitetura de software desenvolvida em Python orientada a fa
 * **Parser de Jurisprudência (`--juris`):** Motor de indexação focado em Acórdãos, capaz de realizar busca de texto-livre em decisões colegiadas, extraindo ementas, relatores e datas de julgamento.
 * **Extração Direta e Normalização (Padrão CNJ):** O `normalizer.py` mapeia o DOM caótico do e-SAJ para um schema unificado, extraindo metadados críticos (relator, magistrado, classe, assunto, valor da causa) e a cronologia completa de movimentações.
 * **Bypass de Autenticação para PDFs (`--baixar-pdfs`):** Implementação de injeção de cookies via `.env` para autenticação de sessão, permitindo a extração automatizada de peças processuais originais (PDFs) burlando restrições nativas do servidor.
-* **Painel Web Analítico (FastAPI + Tailwind):** Além da CLI, o sistema embarca um servidor assíncrono (`uvicorn`) provendo uma API RESTful completa e um dashboard de inteligência em Glassmorphism responsivo.
+* **Painel de consulta (FastAPI):** Servidor assíncrono com API REST e interface em tema claro, no registro de um periódico jurídico: tipografia editorial, rótulos visíveis, foco visível, contraste WCAG AAA e navegação por teclado. Sem o visual de dashboard.
 * **Privacy by Design:** O sistema só opera sobre dados classificados como públicos pelo próprio Tribunal. Processos protegidos por Segredo de Justiça são omitidos na origem pelo servidor do e-SAJ, antes de qualquer raspagem.
 
 ## 🛠️ Roadmap e Melhorias Futuras
