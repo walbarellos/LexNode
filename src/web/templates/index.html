@@ -454,9 +454,9 @@
                     } else if (currentTab === "nome") {
                         const digits = query.replace(/\D/g, "");
                         const isDoc = /^[\d.\-\/]+$/.test(query) && digits.length >= 11;
-                        url = "/api/buscar/nome/" + encodeURIComponent(query) + "?doc=" + (isDoc ? "true" : "false");
+                        url = "/api/buscar/nome?q=" + encodeURIComponent(query) + "&doc=" + (isDoc ? "true" : "false");
                     } else {
-                        url = "/api/buscar/jurisprudencia/" + encodeURIComponent(query);
+                        url = "/api/buscar/jurisprudencia?q=" + encodeURIComponent(query);
                     }
 
                     const response = await fetch(url);

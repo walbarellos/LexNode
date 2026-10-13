@@ -100,9 +100,10 @@ async def buscar_processo(numero: str, grau: int = Query(1)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/buscar/nome/{nome}")
-async def buscar_nome(nome: str, foro: str = Query("-1"), doc: bool = Query(False)):
-    termo_busca = nome
+@app.get("/api/buscar/nome")
+async def buscar_nome(q: str = Query(..., min_length=1), foro: str = Query("-1"), doc: bool = Query(False)):
+    # Query string evita 404 com CNPJ (barras) e nomes com caracteres especiais.
+    termo_busca = q
     tipo_pesquisa = 'DOCPARTE' if doc else 'NMPARTE'
 
     if doc:
@@ -200,10 +201,10 @@ async def buscar_nome(nome: str, foro: str = Query("-1"), doc: bool = Query(Fals
 
     return JSONResponse(content={"resultados": todos_resumos, "avisos": avisos})
 
-@app.get("/api/buscar/jurisprudencia/{termo}")
-async def buscar_jurisprudencia(termo: str):
+@app.get("/api/buscar/jurisprudencia")
+async def buscar_jurisprudencia(q: str = Query(..., min_length=1)):
     def fetch_juris():
-        return crawler_juris.buscar_jurisprudencia(termo)
+        return crawler_juris.buscar_jurisprudencia(q)
 
     loop = asyncio.get_running_loop()
     try:
