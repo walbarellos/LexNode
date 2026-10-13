@@ -135,9 +135,10 @@ async def health():
 
 @app.get("/favicon.ico")
 async def favicon():
-    fav_path = os.path.join(ASSETS_DIR, "favcon.jpg")
-    if os.path.isfile(fav_path):
-        return FileResponse(fav_path, media_type="image/jpeg")
+    for fname, mime in [("favicon.ico", "image/x-icon"), ("favicon.png", "image/png"), ("favcon.jpg", "image/jpeg")]:
+        fav_path = os.path.join(ASSETS_DIR, fname)
+        if os.path.isfile(fav_path):
+            return FileResponse(fav_path, media_type=mime)
     return JSONResponse(status_code=404, content={"detail": "Not found"})
 
 @app.get("/undefined")

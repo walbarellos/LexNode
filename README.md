@@ -21,6 +21,10 @@
 
 ## 👨‍💻 Autor e Engenharia Principal
 
+<p align="center">
+  <img src="./assets/logo.jpg" alt="LexNode Logo" width="220" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);" />
+</p>
+
 * **Engenheiro de Software & Autor:** **Willian Albarello**
 * **GitHub Oficial:** [@walbarellos](https://github.com/walbarellos)
 * **Repositório:** [https://github.com/walbarellos/LexNode](https://github.com/walbarellos/LexNode)
