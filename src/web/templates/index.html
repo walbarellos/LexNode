@@ -275,6 +275,48 @@
             color: var(--muted);
             font-size: 0.95rem;
         }
+        .section-title {
+            margin: 1.5rem 0 0.6rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+            font-size: 1.2rem;
+        }
+        .partes, .moves {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .partes li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .parte-tipo {
+            display: block;
+            color: var(--navy);
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+        .moves li {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.15rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--line);
+        }
+        @media (min-width: 560px) {
+            .moves li {
+                grid-template-columns: 8.5rem 1fr;
+                gap: 0.75rem;
+            }
+        }
+        .moves time { color: var(--muted); font-weight: 600; }
+        .moves p { margin: 0; }
+        .external {
+            color: var(--navy);
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+        }
         .sr-only {
             position: absolute;
             width: 1px;
@@ -464,6 +506,10 @@
                     try { data = await response.json(); } catch (parseError) { data = {}; }
 
                     if (!response.ok) {
+                        if (response.status === 428 || data.captcha_necessario) {
+                            renderCaptchaCard(data);
+                            return;
+                        }
                         throw new Error(data.detail || "O tribunal não respondeu a esta consulta.");
                     }
 
@@ -479,6 +525,39 @@
                     button.removeAttribute("aria-busy");
                 }
             });
+
+            function renderCaptchaCard(data) {
+                const results = $("results-container");
+                const url = data.url || "https://esaj.tjac.jus.br/cpopg/open.do";
+                results.innerHTML = `
+                    <div class="notice" style="border-left: 4px solid var(--accent); background: #fdfaf2; padding: 1.25rem 1.5rem; margin-top: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; margin-top: 0; margin-bottom: 0.5rem; color: var(--ink);">
+                            🛡️ Verificação de Segurança do Tribunal (Captcha)
+                        </h3>
+                        <p style="margin-bottom: 0.75rem;">
+                            O portal do Tribunal de Justiça solicitou uma verificação humana temporária para liberar o acesso a este processo.
+                        </p>
+                        <div style="margin: 1.25rem 0; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                            <a href="${esc(url)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; text-decoration: none; padding: 0.55rem 1.1rem; background: var(--navy); color: #fff; font-weight: 600; border-radius: 2px;">
+                                Validar no Tribunal Oficial ↗
+                            </a>
+                            <button type="button" id="captcha-retry-btn" style="padding: 0.55rem 1.1rem; font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer; border: 1px solid var(--ink); background: transparent;">
+                                🔄 Já validei, tentar novamente
+                            </button>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--muted); margin: 0;">
+                            💡 <strong>Evolução do Jusbrasil, 100% gratuita:</strong> o LexNode conecta você diretamente às fontes públicas sem cobrar assinaturas.
+                        </p>
+                    </div>
+                `;
+                results.hidden = false;
+                const retryBtn = $("captcha-retry-btn");
+                if (retryBtn) {
+                    retryBtn.addEventListener("click", () => {
+                        $("search-form").requestSubmit();
+                    });
+                }
+            }
 
             async function openProcesso(numero, grau) {
                 switchTab("processo", { keepValue: true });
@@ -538,6 +617,21 @@
                 focusHeading();
             }
 
+            function safeUrl(url) {
+                if (!url || typeof url !== "string" || url.trim() === "" || url === "undefined" || url === "null") {
+                    return "";
+                }
+                try {
+                    const parsed = new URL(url);
+                    if (parsed.protocol === "https:" || parsed.protocol === "http:") {
+                        return parsed.href;
+                    }
+                } catch (err) {
+                    return "";
+                }
+                return "";
+            }
+
             function renderProcesso(p) {
                 const numero = esc(p.numero_processo || "Número não informado");
                 const sistema = esc(p.sistema || "Fonte não informada");
@@ -554,13 +648,55 @@
                         <dt>${esc(label)}</dt>
                         <dd>${esc(value || "Não informado")}</dd>
                     </div>`).join("");
+
+                let partesHtml = "";
+                if (p.partes && p.partes.length) {
+                    partesHtml = `
+                        <h3 class="section-title">Partes</h3>
+                        <ul class="partes">
+                            ${p.partes.map((parte) => `
+                                <li>
+                                    <span class="parte-tipo">${esc(parte.tipo || "Parte")}</span>
+                                    ${esc(parte.nome || "Nome não informado")}
+                                </li>`).join("")}
+                        </ul>`;
+                }
+
+                let movsHtml = "";
+                if (p.movimentacoes && p.movimentacoes.length) {
+                    movsHtml = `
+                        <h3 class="section-title">Movimentações recentes</h3>
+                        <ol class="moves">
+                            ${p.movimentacoes.slice(0, 15).map((m) => `
+                                <li>
+                                    <time>${esc(m.data || "Sem data")}</time>
+                                    <p>${esc(m.descricao || "Sem descrição")}</p>
+                                </li>`).join("")}
+                        </ol>`;
+                }
+
+                let linkExternoHtml = "";
+                const href = safeUrl(p.link_detalhe);
+                if (href) {
+                    const labelTribunal = sistema.includes("TRF1") ? "no sítio do TRF1" : "no sítio oficial do tribunal";
+                    linkExternoHtml = `
+                        <p class="footnote" style="margin-top: 1.5rem;">
+                            <a class="external" href="${esc(href)}" target="_blank" rel="noopener noreferrer">
+                                Abrir o processo ${labelTribunal} (abre em nova aba) ↗
+                            </a>
+                        </p>`;
+                }
+
                 return `
-                    <article>
+                    <article class="processo" aria-labelledby="results-heading">
                         <p class="kicker">${sistema}</p>
                         <h2 id="results-heading" class="numero">${numero}</h2>
                         <p class="classe">${classe}</p>
                         <p class="situacao">Situação: <strong>${situacao}</strong></p>
                         <dl class="meta">${meta}</dl>
+                        ${partesHtml}
+                        ${movsHtml}
+                        ${linkExternoHtml}
                     </article>`;
             }
 

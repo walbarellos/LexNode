@@ -5,11 +5,16 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 
 from fastapi import FastAPI, HTTPException, Request, Query
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 import threading
-from src.base_crawler import BaseCrawler, ProcessoNaoEncontradoError, ConsultaFalhouError
+from src.base_crawler import (
+    BaseCrawler,
+    ProcessoNaoEncontradoError,
+    ConsultaFalhouError,
+    CaptchaNecessarioError,
+)
 from src.normalizer import (
     normalizar_html_1grau, 
     normalizar_html_2grau, 
@@ -54,7 +59,16 @@ async def buscar_processo(numero: str, grau: int = Query(1)):
             crawler = get_crawler_trf1()
             resumos = crawler.buscar_por_numero(numero)
             if resumos:
-                detalhe = crawler.detalhar_processo(resumos[0].link_detalhe)
+                link_detalhe = resumos[0].link_detalhe
+                detalhe = crawler.detalhar_processo(link_detalhe)
+                partes_lista = []
+                if isinstance(detalhe.polo_ativo, list):
+                    for p in detalhe.polo_ativo:
+                        partes_lista.append({"nome": p.get("nome", "") if isinstance(p, dict) else str(p), "tipo": "Polo Ativo"})
+                if isinstance(detalhe.polo_passivo, list):
+                    for p in detalhe.polo_passivo:
+                        partes_lista.append({"nome": p.get("nome", "") if isinstance(p, dict) else str(p), "tipo": "Polo Passivo"})
+
                 return {
                     "numero_processo": detalhe.numero or resumos[0].numero,
                     "sistema": "TRF1",
@@ -67,24 +81,23 @@ async def buscar_processo(numero: str, grau: int = Query(1)):
                     "orgao_julgador": detalhe.orgao_julgador,
                     "foro": detalhe.jurisdicao,
                     "distribuicao": detalhe.data_distribuicao,
-                    "partes": {
-                        "ativo": detalhe.polo_ativo,
-                        "passivo": detalhe.polo_passivo,
-                    },
+                    "partes": partes_lista,
                     "movimentacoes": detalhe.movimentacoes,
+                    "link_detalhe": link_detalhe,
                 }
             raise ProcessoNaoEncontradoError("Processo não encontrado no TRF1")
 
         crawler = get_base_crawler()
         if grau == 2:
             resp = crawler.consultar_processo_2grau(numero)
-            dados = normalizar_html_2grau(resp.html)
+            dados = normalizar_html_2grau(numero, resp.html)
         else:
             resp = crawler.consultar_processo_1grau(numero)
-            dados = normalizar_html_1grau(resp.html)
+            dados = normalizar_html_1grau(numero, resp.html)
         d = asdict(dados) if hasattr(dados, '__dataclass_fields__') else dados
         if isinstance(d, dict):
             d["sistema"] = "TJAC (2º Grau)" if grau == 2 else "TJAC (1º Grau)"
+            d["link_detalhe"] = resp.url_consultada
         return d
 
     loop = asyncio.get_running_loop()
@@ -95,10 +108,39 @@ async def buscar_processo(numero: str, grau: int = Query(1)):
         raise HTTPException(status_code=404, detail="Processo não encontrado")
     except ProcessoSigilosoError:
         raise HTTPException(status_code=403, detail="Processo sob segredo de justiça")
+    except CaptchaNecessarioError as e:
+        return JSONResponse(
+            status_code=428,
+            content={
+                "detail": "O tribunal exigiu verificação humana (Captcha).",
+                "captcha_necessario": True,
+                "url": e.url or f"https://esaj.tjac.jus.br/cpo{'sg5' if grau == 2 else 'pg'}/open.do",
+                "numero": numero,
+                "grau": grau,
+            },
+        )
     except ConsultaFalhouError:
         raise HTTPException(status_code=502, detail="Falha na consulta ao tribunal")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+@app.get("/undefined")
+async def handle_undefined():
+    # Evita 404 caso alguma aba antiga ou link com 'undefined' seja clicado
+    return RedirectResponse(url="/")
+
+@app.get("/v1/models")
+async def list_models():
+    return {"object": "list", "data": [{"id": "lexnode", "object": "model"}]}
+
+@app.get("/api/buscar/nome/{termo:path}")
+async def buscar_nome_path(termo: str, foro: str = Query("-1"), doc: bool = Query(False)):
+    # Compatibilidade: aceita o termo no path (incluindo CPF/CNPJ com pontos/barras).
+    return await buscar_nome(q=termo, foro=foro, doc=doc)
 
 @app.get("/api/buscar/nome")
 async def buscar_nome(q: str = Query(..., min_length=1), foro: str = Query("-1"), doc: bool = Query(False)):
@@ -171,7 +213,8 @@ async def buscar_nome(q: str = Query(..., min_length=1), foro: str = Query("-1")
                 "assunto": r.assunto,
                 "data_local": r.ultima_movimentacao,
                 "participacao": r.partes,
-                "sistema": "TRF1"
+                "sistema": "TRF1",
+                "link_detalhe": r.link_detalhe,
             })
         return formatted
 

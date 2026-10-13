@@ -15,6 +15,7 @@ Constraints de projeto (ver Ciclo 00, seção 3):
 from __future__ import annotations
 
 import logging
+import re
 import time
 from dataclasses import dataclass
 from typing import Optional
@@ -65,6 +66,15 @@ class ProcessoNaoEncontradoError(Exception):
 
 class ConsultaFalhouError(Exception):
     """Erro genérico de consulta após esgotar retries."""
+
+
+class CaptchaNecessarioError(ConsultaFalhouError):
+    """O e-SAJ exigiu um desafio humano (captcha). Não há retry automático:
+    o usuário deve resolvê-lo no site oficial (`url`)."""
+
+    def __init__(self, mensagem: str, url: str = "") -> None:
+        super().__init__(mensagem)
+        self.url = url
 
 
 @dataclass
@@ -177,9 +187,9 @@ class BaseCrawler:
                     )
 
                 if self._parece_captcha(resp.text):
-                    raise ConsultaFalhouError(
-                        f"Captcha detectado ao consultar {numero_processo}; "
-                        "resolução automática não implementada neste ciclo."
+                    raise CaptchaNecessarioError(
+                        f"Captcha detectado ao consultar {numero_processo}.",
+                        url=resp.url,
                     )
 
                 if self._processo_nao_encontrado(resp.text):
@@ -194,8 +204,8 @@ class BaseCrawler:
                     url_consultada=resp.url,
                 )
 
-            except ProcessoNaoEncontradoError:
-                raise  # Não faz retry — o processo não existe
+            except (ProcessoNaoEncontradoError, CaptchaNecessarioError):
+                raise  # Não faz retry — processo inexistente ou captcha humano
 
             except (requests.RequestException, ConsultaFalhouError) as exc:
                 last_error = exc
@@ -252,9 +262,9 @@ class BaseCrawler:
                     )
 
                 if self._parece_captcha(resp.text):
-                    raise ConsultaFalhouError(
-                        f"Captcha detectado ao consultar {numero_processo}; "
-                        "resolução automática não implementada neste ciclo."
+                    raise CaptchaNecessarioError(
+                        f"Captcha detectado ao consultar {numero_processo}.",
+                        url=resp.url,
                     )
 
                 if self._processo_nao_encontrado(resp.text):
@@ -269,8 +279,8 @@ class BaseCrawler:
                     url_consultada=resp.url,
                 )
 
-            except ProcessoNaoEncontradoError:
-                raise  # Não faz retry — o processo não existe
+            except (ProcessoNaoEncontradoError, CaptchaNecessarioError):
+                raise  # Não faz retry — processo inexistente ou captcha humano
 
             except (requests.RequestException, ConsultaFalhouError) as exc:
                 last_error = exc
@@ -323,14 +333,33 @@ class BaseCrawler:
         conteúdo real. Evita falsos positivos com scripts de background.
         """
         html_lower = html.lower()
-        # Procura por elementos estruturais típicos de um desafio ativo
-        return (
-            'class="g-recaptcha"' in html_lower or
-            'id="rc-imageselect"' in html_lower or
-            '/sysgen/captcha.do' in html_lower or
-            'vc-captcha' in html_lower or
-            'captcha' in html_lower
-        )
+
+        # Se os dados reais do processo foram carregados, não é página de bloqueio por captcha
+        if (
+            'id="containerdadosprincipaisprocesso"' in html_lower or
+            'id="classeprocesso"' in html_lower or
+            'id="tabelatodasmovimentacoes"' in html_lower
+        ):
+            return False
+
+        # Desafios estruturais típicos
+        if any(k in html_lower for k in [
+            'class="g-recaptcha"',
+            'id="rc-imageselect"',
+            'h-captcha',
+            '/sysgen/captcha.do',
+            'vc-captcha',
+        ]):
+            return True
+
+        # Remove scripts e estilos para verificar se há texto ou formulário ativo de captcha
+        html_sem_scripts = re.sub(r'<script[^>]*>.*?</script>', '', html_lower, flags=re.DOTALL)
+        html_sem_scripts = re.sub(r'<style[^>]*>.*?</style>', '', html_sem_scripts, flags=re.DOTALL)
+
+        if 'captcha' in html_sem_scripts:
+            return True
+
+        return False
 
     @staticmethod
     def _processo_nao_encontrado(html: str) -> bool:

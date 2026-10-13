@@ -271,15 +271,17 @@ def extrair_resumos_pesquisa_2grau(html: str) -> list[ResumoProcesso]:
 
 
 def _verificar_sigilo_fail_closed(html: str) -> None:
-    """
-    Filtro desativado a pedido do usuário devido a falsos positivos em operações de OSINT.
-    """
-    # Re-enabling basic check for tests to pass.
     if len(html.strip()) < 100:
         raise ProcessoSigilosoError("HTML vazio ou muito curto")
 
     html_lower = html.lower()
-    if "segredo de justiça" in html_lower or "acesso restrito ao processo" in html_lower:
+    # Remove aviso padrão do e-SAJ no menu ("É necessário informar uma senha para acessar processo em segredo de justiça...")
+    # que existe no cabeçalho/menu de todas as páginas públicas do TJAC.
+    aviso_padrao = "é necessário informar uma senha para acessar processo em segredo de justiça"
+    aviso_padrao_sem_acento = "e necessario informar uma senha para acessar processo em segredo de justica"
+    html_limpo = html_lower.replace(aviso_padrao, "").replace(aviso_padrao_sem_acento, "")
+
+    if "segredo de justiça" in html_limpo or "acesso restrito ao processo" in html_limpo:
         raise ProcessoSigilosoError("Processo em segredo de justiça")
 
 
