@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="LexNode — consulta pública a processos e jurisprudência do TJAC e do TRF1.">
+    <meta name="theme-color" content="#f3efe6">
+    <title>LexNode — Consulta processual</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3efe6'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Palatino,serif' font-size='20' fill='%231c3554'%3EL%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,650;0,7..72,700;1,7..72,500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #f3efe6;
+            --sheet: #fffcf6;
+            --ink: #1b1916;
+            --muted: #3e3a34;
+            --line: #d4cbbd;
+            --navy: #1c3554;
+            --navy-hover: #14263c;
+            --burgundy: #5c1a2a;
+            --danger: #7f1d1d;
+            --danger-bg: #f8e8e6;
+            --serif: "Literata", "Iowan Old Style", Palatino, "Palatino Linotype", "Times New Roman", serif;
+            --sans: "Source Sans 3", "Segoe UI", sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--sans);
+            font-size: 1.0625rem;
+            line-height: 1.55;
+            text-rendering: optimizeLegibility;
+        }
+        .skip {
+            position: absolute;
+            left: 0.75rem;
+            top: 0;
+            transform: translateY(-120%);
+            background: var(--navy);
+            color: var(--sheet);
+            padding: 0.65rem 1rem;
+            z-index: 20;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .skip:focus { transform: none; }
+        :focus { outline: none; }
+        :focus-visible {
+            outline: 3px solid var(--navy);
+            outline-offset: 3px;
+        }
+        #results-heading:focus,
+        #error-message:focus {
+            outline: 3px solid var(--navy);
+            outline-offset: 4px;
+        }
+        .wrap {
+            width: min(46rem, calc(100% - 2rem));
+            margin-inline: auto;
+        }
+        .masthead {
+            background: var(--sheet);
+            border-bottom: 1px solid var(--line);
+        }
+        .masthead .wrap { padding: 1.25rem 0 0; }
+        .brand-name {
+            margin: 0;
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: 1.65rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+        .brand-kicker {
+            margin: 0.35rem 0 0.9rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+        }
+        .rule {
+            height: 0.45rem;
+            border-top: 3px solid var(--ink);
+            border-bottom: 1px solid var(--ink);
+        }
+        main { padding: 2rem 0 3rem; }
+        h1, h2, h3, h4 {
+            font-family: var(--serif);
+            font-weight: 650;
+            line-height: 1.25;
+            color: var(--ink);
+        }
+        h1 {
+            margin: 0 0 0.6rem;
+            font-size: clamp(1.85rem, 4vw, 2.35rem);
+            letter-spacing: -0.015em;
+        }
+        .lede {
+            margin: 0 0 1.75rem;
+            max-width: 40rem;
+            color: var(--ink);
+        }
+        .panel {
+            background: var(--sheet);
+            border: 1px solid var(--line);
+            padding: 1.25rem 1.25rem 1.4rem;
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem 1.25rem;
+            border-bottom: 1px solid var(--line);
+            margin: 0 0 1.25rem;
+            padding: 0;
+        }
+        .tabs button {
+            appearance: none;
+            background: transparent;
+            border: 0;
+            border-bottom: 3px solid transparent;
+            margin: 0 0 -1px;
+            padding: 0.7rem 0.15rem;
+            min-height: 44px;
+            font: 600 1.02rem/1.2 var(--sans);
+            color: var(--muted);
+            cursor: pointer;
+        }
+        .tabs button[aria-selected="true"] {
+            color: var(--ink);
+            border-bottom-color: var(--navy);
+        }
+        .tabs button:hover { color: var(--ink); }
+        .field { margin-bottom: 1rem; }
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+        .hint {
+            margin: 0.4rem 0 0;
+            color: var(--muted);
+            font-size: 0.98rem;
+        }
+        input[type="text"], select {
+            width: 100%;
+            min-height: 48px;
+            padding: 0.65rem 0.75rem;
+            border: 1px solid #8d867b;
+            border-radius: 0;
+            background: #fff;
+            color: var(--ink);
+            font: 400 1.0625rem/1.4 var(--sans);
+        }
+        input::placeholder { color: #5c564c; }
+        .actions { margin-top: 1.15rem; }
+        button.primary {
+            appearance: none;
+            min-height: 48px;
+            padding: 0.7rem 1.4rem;
+            background: var(--navy);
+            color: var(--sheet);
+            border: 2px solid var(--navy);
+            font: 700 1.05rem/1 var(--sans);
+            cursor: pointer;
+        }
+        button.primary:hover { background: var(--navy-hover); border-color: var(--navy-hover); }
+        button.primary:disabled {
+            background: #5c6b7c;
+            border-color: #5c6b7c;
+            cursor: not-allowed;
+        }
+        .loading, .alert, .empty {
+            margin-top: 1.5rem;
+            padding: 1rem 1.1rem;
+            background: var(--sheet);
+            border: 1px solid var(--line);
+        }
+        .loading { color: var(--ink); }
+        .loading-mark {
+            display: inline-block;
+            width: 0.75rem;
+            height: 0.75rem;
+            margin-right: 0.45rem;
+            border: 2px solid var(--navy);
+            border-right-color: transparent;
+            border-radius: 50%;
+            vertical-align: -1px;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .alert {
+            background: var(--danger-bg);
+            border-color: #e4b8b4;
+        }
+        .notice {
+            margin-top: 1.25rem;
+            padding: 0.9rem 1.1rem;
+            background: #f5f0e4;
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--navy);
+        }
+        .notice h3 {
+            margin: 0 0 0.35rem;
+            font-size: 1.05rem;
+        }
+        .notice ul {
+            margin: 0.35rem 0 0;
+            padding-left: 1.2rem;
+        }
+        .notice li { margin: 0.2rem 0; }
+        .alert h2, .empty h2, #results-heading {
+            margin: 0 0 0.35rem;
+            font-size: 1.35rem;
+        }
+        .alert p, .empty p { margin: 0; }
+        .count { color: var(--muted); margin: 0 0 1rem; }
+        .docket {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .docket > li {
+            background: var(--sheet);
+            border: 1px solid var(--line);
+            padding: 1rem 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        .kicker {
+            margin: 0 0 0.25rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .case-link {
+            appearance: none;
+            background: none;
+            border: 0;
+            padding: 0;
+            color: var(--navy);
+            font: 650 1.15rem/1.3 var(--serif);
+            text-align: left;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+        }
+        .classe, .assunto { margin: 0.25rem 0; }
+        .meta {
+            display: grid;
+            gap: 0.5rem 1.25rem;
+            grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+            margin: 0.75rem 0 0;
+        }
+        .meta dt {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .meta dd { margin: 0.1rem 0 0; }
+        .ementa {
+            margin: 0.75rem 0;
+            padding: 0.75rem 0 0.75rem 0.9rem;
+            border-left: 3px solid var(--line);
+            user-select: text;
+        }
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 1.25rem 0 2rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <a class="skip" href="#search-input">Ir para a consulta</a>
+    <header class="masthead">
+        <div class="wrap">
+            <p class="brand-name">LexNode</p>
+            <p class="brand-kicker">Consulta pública · TJAC e TRF1</p>
+            <div class="rule" aria-hidden="true"></div>
+        </div>
+    </header>
+    <main>
+        <div class="wrap">
+            <h1>Consulta processual</h1>
+            <p class="lede">Pesquise por nome, documento, número único do processo ou termo de jurisprudência nos sistemas públicos do TJAC e do TRF1.</p>
+            <div class="panel">
+                <div class="tabs" role="tablist" aria-label="Tipo de consulta" id="search-tabs">
+                    <button type="button" role="tab" id="tab-nome" data-tab="nome" aria-selected="true" aria-controls="search-panel" tabindex="0">Parte ou documento</button>
+                    <button type="button" role="tab" id="tab-processo" data-tab="processo" aria-selected="false" aria-controls="search-panel" tabindex="-1">Número do processo</button>
+                    <button type="button" role="tab" id="tab-jurisprudencia" data-tab="jurisprudencia" aria-selected="false" aria-controls="search-panel" tabindex="-1">Jurisprudência</button>
+                </div>
+                <div id="search-panel" role="tabpanel" aria-labelledby="tab-nome">
+                    <form id="search-form">
+                        <div class="field">
+                            <label id="search-label" for="search-input">Nome, CPF ou CNPJ</label>
+                            <input type="text" id="search-input" name="q" required aria-required="true" aria-describedby="search-hint" autocomplete="off" spellcheck="true" placeholder="Ex.: Maria da Silva ou 000.000.000-00">
+                            <p id="search-hint" class="hint">A busca percorre o primeiro e o segundo grau do TJAC e, em paralelo, o TRF1.</p>
+                        </div>
+                        <div class="field" id="grau-field" hidden>
+                            <label for="grau-select">Grau de jurisdição</label>
+                            <select id="grau-select">
+                                <option value="1">1º grau</option>
+                                <option value="2">2º grau</option>
+                            </select>
+                            <p class="hint">Processos do TRF1, com o segmento 4.01, são identificados pelo número e não dependem desta escolha.</p>
+                        </div>
+                        <div class="actions">
+                            <button type="submit" class="primary" id="search-btn">Pesquisar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <p id="loading-indicator" class="loading" hidden role="status">
+                <span class="loading-mark" aria-hidden="true"></span>
+                Consultando os tribunais…
+            </p>
+            <div id="error-message" class="alert" hidden role="alert" tabindex="-1">
+                <h2>Não foi possível concluir</h2>
+                <p id="error-text"></p>
+            </div>
+            <div id="results-container" hidden></div>
+        </div>
+    </main>
+    <footer>
+        <div class="wrap">
+            <p>LexNode consulta apenas informações públicas. Resultados dependem da disponibilidade dos tribunais.</p>
+        </div>
+    </footer>
+    <script>
+        (() => {
+            const $ = (id) => document.getElementById(id);
+            let currentTab = "nome";
+            const COPY = {
+                nome: {
+                    label: "Nome, CPF ou CNPJ",
+                    hint: "A busca percorre o primeiro e o segundo grau do TJAC e, em paralelo, o TRF1.",
+                    placeholder: "Ex.: Maria da Silva ou 000.000.000-00",
+                    spellcheck: "true"
+                },
+                processo: {
+                    label: "Número do processo",
+                    hint: "Informe o número único (padrão CNJ). Processos federais do TRF1 trazem o segmento 4.01.",
+                    placeholder: "Ex.: 0000000-00.0000.8.01.0001",
+                    spellcheck: "false"
+                },
+                jurisprudencia: {
+                    label: "Termo de jurisprudência",
+                    hint: "Busca em acórdãos e decisões colegiadas indexadas publicamente.",
+                    placeholder: "Ex.: atraso de voo",
+                    spellcheck: "true"
+                }
+            };
+
+            function esc(s) {
+                return String(s == null ? "" : s)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;");
+            }
+
+            function clearFeedback() {
+                const results = $("results-container");
+                results.hidden = true;
+                results.innerHTML = "";
+                $("error-message").hidden = true;
+                $("loading-indicator").hidden = true;
+            }
+
+            function switchTab(tab, options) {
+                const keepValue = options && options.keepValue;
+                currentTab = tab;
+                const copy = COPY[tab];
+                document.querySelectorAll('[role="tab"]').forEach((btn) => {
+                    const on = btn.getAttribute("data-tab") === tab;
+                    btn.setAttribute("aria-selected", on ? "true" : "false");
+                    btn.tabIndex = on ? 0 : -1;
+                });
+                $("search-panel").setAttribute("aria-labelledby", "tab-" + tab);
+                const input = $("search-input");
+                $("search-label").textContent = copy.label;
+                $("search-hint").textContent = copy.hint;
+                input.placeholder = copy.placeholder;
+                input.spellcheck = copy.spellcheck === "true";
+                $("grau-field").hidden = tab !== "processo";
+                if (!keepValue) input.value = "";
+                clearFeedback();
+            }
+
+            document.querySelectorAll('[role="tab"]').forEach((btn) => {
+                btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
+                btn.addEventListener("keydown", (event) => {
+                    const list = Array.from(document.querySelectorAll('[role="tab"]'));
+                    const i = list.indexOf(event.target);
+                    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+                        event.preventDefault();
+                        const next = event.key === "ArrowRight"
+                            ? list[(i + 1) % list.length]
+                            : list[(i - 1 + list.length) % list.length];
+                        next.focus();
+                        switchTab(next.getAttribute("data-tab"), { keepValue: true });
+                    }
+                });
+            });
+
+            $("results-container").addEventListener("click", (event) => {
+                const btn = event.target.closest("[data-numero]");
+                if (!btn) return;
+                openProcesso(btn.getAttribute("data-numero"), btn.getAttribute("data-grau") || "1");
+            });
+
+            $("search-form").addEventListener("submit", async (event) => {
+                event.preventDefault();
+                const query = $("search-input").value.trim();
+                if (!query) return;
+
+                const results = $("results-container");
+                const loading = $("loading-indicator");
+                const errorBox = $("error-message");
+                const errorText = $("error-text");
+                const button = $("search-btn");
+
+                results.hidden = true;
+                results.innerHTML = "";
+                errorBox.hidden = true;
+                loading.hidden = false;
+                button.disabled = true;
+                button.textContent = "Consultando…";
+                button.setAttribute("aria-busy", "true");
+
+                try {
+                    let url = "";
+                    if (currentTab === "processo") {
+                        const grau = $("grau-select").value;
+                        url = "/api/buscar/processo/" + encodeURIComponent(query) + "?grau=" + encodeURIComponent(grau);
+                    } else if (currentTab === "nome") {
+                        const digits = query.replace(/\D/g, "");
+                        const isDoc = /^[\d.\-\/]+$/.test(query) && digits.length >= 11;
+                        url = "/api/buscar/nome/" + encodeURIComponent(query) + "?doc=" + (isDoc ? "true" : "false");
+                    } else {
+                        url = "/api/buscar/jurisprudencia/" + encodeURIComponent(query);
+                    }
+
+                    const response = await fetch(url);
+                    let data = {};
+                    try { data = await response.json(); } catch (parseError) { data = {}; }
+
+                    if (!response.ok) {
+                        throw new Error(data.detail || "O tribunal não respondeu a esta consulta.");
+                    }
+
+                    renderResults(data, currentTab);
+                } catch (err) {
+                    errorText.textContent = err.message || "Não foi possível concluir a consulta.";
+                    errorBox.hidden = false;
+                    errorBox.focus();
+                } finally {
+                    loading.hidden = true;
+                    button.disabled = false;
+                    button.textContent = "Pesquisar";
+                    button.removeAttribute("aria-busy");
+                }
+            });
+
+            async function openProcesso(numero, grau) {
+                switchTab("processo", { keepValue: true });
+                $("search-input").value = numero;
+                $("grau-select").value = grau === "2" ? "2" : "1";
+                $("search-form").requestSubmit();
+            }
+
+            function focusHeading() {
+                const heading = $("results-heading");
+                if (!heading) return;
+                heading.tabIndex = -1;
+                heading.focus();
+            }
+
+            function renderAvisos(avisos) {
+                if (!avisos || !avisos.length) return "";
+                const items = avisos.map((a) => `<li>${esc(a)}</li>`).join("");
+                return `
+                    <div class="notice" role="status">
+                        <h3>Consulta parcial</h3>
+                        <p>Parte dos tribunais não respondeu. Os resultados abaixo (se houver) vêm apenas das fontes que atenderam.</p>
+                        <ul>${items}</ul>
+                    </div>`;
+            }
+
+            function renderResults(data, type) {
+                const container = $("results-container");
+                if (type === "processo") {
+                    container.innerHTML = renderProcesso(data);
+                } else {
+                    const items = data.resultados || [];
+                    const avisos = data.avisos || [];
+                    const avisoHtml = renderAvisos(avisos);
+                    if (items.length === 0) {
+                        const msg = avisos.length
+                            ? "Nenhum registro nas fontes que responderam. Houve falha em ao menos um tribunal — confira o aviso abaixo e tente de novo."
+                            : "Não há registro público correspondente a esta consulta. Confira o termo ou pesquise pelo número único do processo.";
+                        container.innerHTML = `
+                            <div class="empty">
+                                <h2 id="results-heading">Nenhum resultado</h2>
+                                <p>${msg}</p>
+                            </div>${avisoHtml}`;
+                    } else {
+                        const noun = items.length === 1 ? "registro público" : "registros públicos";
+                        const cards = type === "nome"
+                            ? items.map((item) => renderResumo(item)).join("")
+                            : items.map((item) => renderJurisprudencia(item)).join("");
+                        container.innerHTML = `
+                            <h2 id="results-heading">Resultados</h2>
+                            <p class="count">${items.length} ${noun}.</p>
+                            ${avisoHtml}
+                            <ol class="docket">${cards}</ol>`;
+                    }
+                }
+                container.hidden = false;
+                focusHeading();
+            }
+
+            function renderProcesso(p) {
+                const numero = esc(p.numero_processo || "Número não informado");
+                const sistema = esc(p.sistema || "Fonte não informada");
+                const classe = esc(p.classe || "Classe não informada");
+                const situacao = esc(p.situacao || "Não informada");
+                const campos = [
+                    ["Assunto", p.assunto],
+                    ["Magistrado", p.juiz || p.relator],
+                    ["Órgão julgador", p.vara || p.orgao_julgador || p.foro],
+                    ["Distribuição", p.distribuicao]
+                ];
+                const meta = campos.map(([label, value]) => `
+                    <div>
+                        <dt>${esc(label)}</dt>
+                        <dd>${esc(value || "Não informado")}</dd>
+                    </div>`).join("");
+                return `
+                    <article>
+                        <p class="kicker">${sistema}</p>
+                        <h2 id="results-heading" class="numero">${numero}</h2>
+                        <p class="classe">${classe}</p>
+                        <p class="situacao">Situação: <strong>${situacao}</strong></p>
+                        <dl class="meta">${meta}</dl>
+                    </article>`;
+            }
+
+            function renderResumo(r) {
+                const numero = esc(r.numero || "");
+                return `
+                    <li>
+                        <article>
+                            <p class="kicker">${esc(r.sistema || "Tribunal")}</p>
+                            <h3><button type="button" class="case-link" data-numero="${numero}" data-grau="1">Consultar ${numero}</button></h3>
+                            <p class="classe">${esc(r.classe || "Classe não informada")}</p>
+                            <p class="assunto">${esc(r.assunto || "Assunto não informado")}</p>
+                            <dl class="meta">
+                                <div>
+                                    <dt>Última movimentação</dt>
+                                    <dd>${esc(r.data_local || "Não informada")}</dd>
+                                </div>
+                                <div>
+                                    <dt>Partes</dt>
+                                    <dd>${esc(r.participacao || "Não informado")}</dd>
+                                </div>
+                            </dl>
+                        </article>
+                    </li>`;
+            }
+
+            function renderJurisprudencia(j) {
+                const numero = esc(j.numero || "");
+                return `
+                    <li>
+                        <article>
+                            <p class="kicker">${esc(j.orgao || "Órgão julgador")}</p>
+                            <h3><button type="button" class="case-link" data-numero="${numero}" data-grau="2">Consultar ${numero}</button></h3>
+                            <p class="footnote"><time>${esc(j.data || "Data não informada")}</time></p>
+                            <blockquote class="ementa"><p>${esc(j.ementa || "Ementa não disponível.")}</p></blockquote>
+                            <p class="relator"><strong>Relator:</strong> ${esc(j.relator || "Não informado")}</p>
+                        </article>
+                    </li>`;
+            }
+        })();
+    </script>
+</body>
+</html>
