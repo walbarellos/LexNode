@@ -1,3 +1,7 @@
 ## 2024-05-24 - HTML Parser Optimization
 **Learning:** The application uses BeautifulSoup with the default 'html.parser' in several places. Since the application performs heavy web scraping of large judicial HTML pages, switching to 'lxml' provides a significant performance boost (up to 35-50% faster parsing times) without losing functionality. Also found an unused BeautifulSoup parsing in the fallback regex extraction.
 **Action:** Replace 'html.parser' with 'lxml' where BeautifulSoup is used. Add 'lxml' to requirements.txt. Remove the unnecessary BeautifulSoup instantiation in `extrair_resumos_pesquisa_2grau` since it extracts via regex anyway.
+
+## 2024-05-25 - JSF Web Scraping Optimization
+**Learning:** JSF/RichFaces targets (like TRF1) send massive HTML payloads but only small portions are actually needed (e.g., ViewState input or a specific results table). Using `bs4.SoupStrainer` with `lxml` significantly reduces parsing overhead by skipping the rest of the DOM. Additionally, redundant GET requests for session initialization can be avoided by caching `javax.faces.ViewState` and implementing a retry mechanism catching `requests.HTTPError` on subsequent POSTs to gracefully handle server-side `ViewExpiredException`s.
+**Action:** Use `bs4.SoupStrainer` when parsing specific elements from large HTML payloads, especially in JSF targets. Always cache the ViewState and handle HTTPError on POSTs to retry session initialization when dealing with JSF architecture.

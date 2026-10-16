@@ -15,7 +15,7 @@ import time
 import warnings
 import requests
 from dataclasses import dataclass
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
@@ -89,8 +89,13 @@ class CrawlerTRF1:
 
     def _iniciar_sessao(self):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
+        if self._view_state:
+            return
+
         r = self._request_with_retry("GET", BASE_URL)
-        soup = BeautifulSoup(r.text, "lxml")
+        # Optimização: carregar apenas o input desejado para evitar full DOM parse
+        strainer = SoupStrainer("input", {"name": "javax.faces.ViewState"})
+        soup = BeautifulSoup(r.text, "lxml", parse_only=strainer)
         vs = soup.find("input", {"name": "javax.faces.ViewState"})
         if vs:
             self._view_state = vs["value"]
@@ -148,7 +153,16 @@ class CrawlerTRF1:
             "Accept": "*/*",
             "Referer": BASE_URL,
         }
-        r = self._request_with_retry("POST", BASE_URL, data=data, headers=headers)
+
+        try:
+            r = self._request_with_retry("POST", BASE_URL, data=data, headers=headers)
+        except requests.HTTPError:
+            # Em caso de erro (ex: ViewExpiredException), limpa o view state e tenta novamente
+            self._view_state = None
+            self._iniciar_sessao()
+            data["javax.faces.ViewState"] = self._view_state
+            r = self._request_with_retry("POST", BASE_URL, data=data, headers=headers)
+
         body = r.text or ""
         content_type = (r.headers.get("content-type") or "").lower()
         if "xml" in content_type or body.lstrip().startswith("<?xml"):
@@ -177,7 +191,9 @@ class CrawlerTRF1:
         return body
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
-        soup = BeautifulSoup(html, "lxml")
+        # Optimização: carregar apenas a tabela de resultados para evitar full DOM parse
+        strainer = SoupStrainer("table", id="fPP:processosTable")
+        soup = BeautifulSoup(html, "lxml", parse_only=strainer)
         table = soup.find("table", id="fPP:processosTable")
         if not table:
             return []
