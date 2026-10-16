@@ -62,6 +62,10 @@
             outline: 3px solid var(--navy);
             outline-offset: 3px;
         }
+        .interactive-card:focus-visible {
+            outline: 3px solid var(--navy);
+            outline-offset: 2px;
+        }
         #results-heading:focus,
         #error-message:focus {
             outline: 3px solid var(--navy);
@@ -257,6 +261,16 @@
             padding: 1rem 1.1rem;
             margin-bottom: 0.75rem;
         }
+        .interactive-card {
+            cursor: pointer;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+            outline-offset: -2px; /* For focus ring inside the card */
+            display: block; /* Ensures outline works correctly on article */
+        }
+        .interactive-card:hover {
+            background: #fdfcf9;
+            border-color: #c0b4a1;
+        }
         .kicker {
             margin: 0 0 0.25rem;
             color: var(--muted);
@@ -272,7 +286,7 @@
             color: var(--navy);
             font: 650 1.15rem/1.3 var(--serif);
             text-align: left;
-            cursor: pointer;
+            cursor: inherit;
             text-decoration: underline;
             text-underline-offset: 0.15em;
         }
@@ -499,6 +513,16 @@
                 const btn = event.target.closest("[data-numero]");
                 if (!btn) return;
                 openProcesso(btn.getAttribute("data-numero"), btn.getAttribute("data-grau") || "1");
+            });
+
+            $("results-container").addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    const btn = event.target.closest("[data-numero]");
+                    if (btn) {
+                        event.preventDefault();
+                        openProcesso(btn.getAttribute("data-numero"), btn.getAttribute("data-grau") || "1");
+                    }
+                }
             });
 
             $("search-form").addEventListener("submit", async (event) => {
@@ -736,9 +760,9 @@
                 const numero = esc(r.numero || "");
                 return `
                     <li>
-                        <article>
+                        <article class="interactive-card" role="button" tabindex="0" aria-label="Ver detalhes do processo ${numero}" data-numero="${numero}" data-grau="1">
                             <p class="kicker">${esc(r.sistema || "Tribunal")}</p>
-                            <h3><button type="button" class="case-link" data-numero="${numero}" data-grau="1">Consultar ${numero}</button></h3>
+                            <h3><span class="case-link">Consultar ${numero}</span></h3>
                             <p class="classe">${esc(r.classe || "Classe não informada")}</p>
                             <p class="assunto">${esc(r.assunto || "Assunto não informado")}</p>
                             <dl class="meta">
@@ -759,9 +783,9 @@
                 const numero = esc(j.numero || "");
                 return `
                     <li>
-                        <article>
+                        <article class="interactive-card" role="button" tabindex="0" aria-label="Ver detalhes do processo ${numero}" data-numero="${numero}" data-grau="2">
                             <p class="kicker">${esc(j.orgao || "Órgão julgador")}</p>
-                            <h3><button type="button" class="case-link" data-numero="${numero}" data-grau="2">Consultar ${numero}</button></h3>
+                            <h3><span class="case-link">Consultar ${numero}</span></h3>
                             <p class="footnote"><time>${esc(j.data || "Data não informada")}</time></p>
                             <blockquote class="ementa"><p>${esc(j.ementa || "Ementa não disponível.")}</p></blockquote>
                             <p class="relator"><strong>Relator:</strong> ${esc(j.relator || "Não informado")}</p>
