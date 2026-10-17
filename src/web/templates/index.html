@@ -256,6 +256,11 @@
             border: 1px solid var(--line);
             padding: 1rem 1.1rem;
             margin-bottom: 0.75rem;
+            position: relative;
+            transition: border-color 0.2s ease;
+        }
+        .docket > li:hover {
+            border-color: var(--navy);
         }
         .kicker {
             margin: 0 0 0.25rem;
@@ -275,6 +280,11 @@
             cursor: pointer;
             text-decoration: underline;
             text-underline-offset: 0.15em;
+        }
+        .case-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
         }
         .classe, .assunto { margin: 0.25rem 0; }
         .meta {
@@ -342,6 +352,8 @@
             font-weight: 600;
             text-decoration: underline;
             text-underline-offset: 0.15em;
+            position: relative;
+            z-index: 2;
         }
         .sr-only {
             position: absolute;

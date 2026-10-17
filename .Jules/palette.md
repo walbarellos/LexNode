@@ -1,3 +1,6 @@
 ## 2024-10-27 - Consistent Affordances on Interactive Cards
 **Learning:** When using full elements (like `<article>`) as clickable cards for both mouse and keyboard users, two things are essential: 1) they must have `role="button"` for screen readers to recognize them properly, and 2) the interaction boundaries must be unified. In this app, one card allowed keyboard activation on the full card but restricted mouse clicks to a small inner span, confusing mouse users.
 **Action:** Always ensure that when `tabindex="0"` and keyboard events are added to a card, the `onclick` handler and visual hover states (like `hover:bg-gray-50`) apply to the same outer element, and always include `role="button"`.
+## 2024-11-20 - Pseudo-element overlay for accessible clickable cards
+**Learning:** To make entire UI cards clickable while maintaining strict accessibility, adding `role="button"` to the outer wrapper is an anti-pattern as it causes screen readers to ignore inner structured content.
+**Action:** Use the pseudo-element overlay CSS pattern: keep the semantic `<button>` or `<a href>` inside, apply `position: relative` to the card wrapper, and add `::before { content: ''; position: absolute; inset: 0; }` to the link/button so it stretches to cover the card. Elevate `z-index` on secondary interactive elements.
