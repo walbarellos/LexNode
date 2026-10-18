@@ -1,5 +1,3 @@
-import re
-from typing import List, Optional
 
 try:
     from src.normalizer import ProcessoNormalizado, ResumoProcesso
@@ -375,7 +373,7 @@ def gerar_html_processo(processo: ProcessoNormalizado) -> str:
 
 _NUMERO_TRANS_TABLE = str.maketrans(".-/", "___")
 
-def gerar_html_lista_busca(nome: str, resumos: List[ResumoProcesso], link_local: bool = False) -> str:
+def gerar_html_lista_busca(nome: str, resumos: list[ResumoProcesso], link_local: bool = False) -> str:
     """Gera um HTML apresentando os resultados de busca por nome."""
     
     if resumos:

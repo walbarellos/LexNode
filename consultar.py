@@ -23,15 +23,15 @@ from src.base_crawler import (
     ConsultaFalhouError,
     ProcessoNaoEncontradoError,
 )
+from src.formatter import formatar_json, formatar_resumos_processos, formatar_texto
 from src.normalizer import (
-    ProcessoNormalizado,
     ProcessoSigilosoError,
-    normalizar_html_1grau,
-    normalizar_html_2grau,
     extrair_resumos_pesquisa,
     extrair_resumos_pesquisa_2grau,
+    normalizar_html_1grau,
+    normalizar_html_2grau,
 )
-from src.formatter import formatar_texto, formatar_json, formatar_resumos_processos
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -271,7 +271,7 @@ Exemplos:
             
             resumos_trf1 = []
             if not args.json:
-                print(f"  Buscando na Justiça Federal (TRF1)...")
+                print("  Buscando na Justiça Federal (TRF1)...")
             try:
                 from src.crawler_trf1 import CrawlerTRF1
                 crawler_trf1 = CrawlerTRF1()
@@ -287,7 +287,10 @@ Exemplos:
                 sys.exit(0)
             
             if args.html:
-                from src.html_generator import gerar_html_lista_busca, gerar_html_processo
+                from src.html_generator import (
+                    gerar_html_lista_busca,
+                    gerar_html_processo,
+                )
                 
                 if args.detalhar:
                     print(f"Baixando detalhes de {len(resumos)} processos...")
