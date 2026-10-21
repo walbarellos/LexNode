@@ -44,7 +44,6 @@ def formatar_texto(processo: ProcessoNormalizado, colorido: bool = True) -> str:
     Returns:
         String formatada.
     """
-    WIDTH = 67
     
     # Cores
     c_box = _Cor.DIM if colorido else ''

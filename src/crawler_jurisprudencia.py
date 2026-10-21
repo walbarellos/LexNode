@@ -1,7 +1,9 @@
 import re
-import requests
+
 from bs4 import BeautifulSoup
+
 from src.base_crawler import BaseCrawler
+
 
 class CrawlerJurisprudencia:
     def __init__(self):
