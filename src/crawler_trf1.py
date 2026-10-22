@@ -15,7 +15,7 @@ import time
 import warnings
 import requests
 from dataclasses import dataclass
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
@@ -90,7 +90,9 @@ class CrawlerTRF1:
     def _iniciar_sessao(self):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
         r = self._request_with_retry("GET", BASE_URL)
-        soup = BeautifulSoup(r.text, "lxml")
+        # ⚡ Bolt Optimization: Use SoupStrainer to parse only the ViewState input, avoiding full DOM parse
+        strainer = SoupStrainer("input", {"name": "javax.faces.ViewState"})
+        soup = BeautifulSoup(r.text, "lxml", parse_only=strainer)
         vs = soup.find("input", {"name": "javax.faces.ViewState"})
         if vs:
             self._view_state = vs["value"]
@@ -177,7 +179,9 @@ class CrawlerTRF1:
         return body
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
-        soup = BeautifulSoup(html, "lxml")
+        # ⚡ Bolt Optimization: Use SoupStrainer to parse only the results table, drastically improving performance for large payloads
+        strainer = SoupStrainer("table", id="fPP:processosTable")
+        soup = BeautifulSoup(html, "lxml", parse_only=strainer)
         table = soup.find("table", id="fPP:processosTable")
         if not table:
             return []
