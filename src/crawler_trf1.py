@@ -90,7 +90,10 @@ class CrawlerTRF1:
     def _iniciar_sessao(self):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
         r = self._request_with_retry("GET", BASE_URL)
-        soup = BeautifulSoup(r.text, "lxml")
+        # ⚡ Bolt: Parse only the needed input tag to avoid loading the entire DOM
+        from bs4 import SoupStrainer
+        strainer = SoupStrainer("input", {"name": "javax.faces.ViewState"})
+        soup = BeautifulSoup(r.text, "lxml", parse_only=strainer)
         vs = soup.find("input", {"name": "javax.faces.ViewState"})
         if vs:
             self._view_state = vs["value"]
@@ -177,7 +180,10 @@ class CrawlerTRF1:
         return body
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
-        soup = BeautifulSoup(html, "lxml")
+        # ⚡ Bolt: Parse only the main results table to drastically speed up large JSF payloads
+        from bs4 import SoupStrainer
+        strainer = SoupStrainer("table", id="fPP:processosTable")
+        soup = BeautifulSoup(html, "lxml", parse_only=strainer)
         table = soup.find("table", id="fPP:processosTable")
         if not table:
             return []
