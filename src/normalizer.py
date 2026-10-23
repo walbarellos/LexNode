@@ -205,7 +205,10 @@ def normalizar_html_2grau(numero_processo: str, html: str) -> ProcessoNormalizad
 
 def extrair_resumos_pesquisa(html: str) -> list[ResumoProcesso]:
     """Extrai uma lista de resumos de processo da página de resultados de busca por nome."""
-    soup = BeautifulSoup(html, "lxml")
+    # ⚡ Bolt: Parse only the list items to avoid parsing headers/footers/menus
+    from bs4 import SoupStrainer
+    strainer = SoupStrainer("div", class_="home__lista-de-processos")
+    soup = BeautifulSoup(html, "lxml", parse_only=strainer)
     resumos = []
     
     blocos = soup.find_all("div", class_="home__lista-de-processos")
