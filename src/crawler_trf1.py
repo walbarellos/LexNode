@@ -15,7 +15,7 @@ import time
 import warnings
 import requests
 from dataclasses import dataclass
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
@@ -177,7 +177,9 @@ class CrawlerTRF1:
         return body
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
-        soup = BeautifulSoup(html, "lxml")
+        # Optimize parsing by only loading the table element instead of the entire large DOM
+        strainer = SoupStrainer("table", id="fPP:processosTable")
+        soup = BeautifulSoup(html, "lxml", parse_only=strainer)
         table = soup.find("table", id="fPP:processosTable")
         if not table:
             return []
