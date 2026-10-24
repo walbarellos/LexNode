@@ -517,7 +517,7 @@
                 errorBox.hidden = true;
                 loading.hidden = false;
                 button.disabled = true;
-                button.textContent = "Consultando…";
+                button.innerHTML = '<span class="loading-mark" aria-hidden="true" style="border-color: currentColor; border-right-color: transparent;"></span>Consultando…';
                 button.setAttribute("aria-busy", "true");
 
                 try {
@@ -553,7 +553,7 @@
                 } finally {
                     loading.hidden = true;
                     button.disabled = false;
-                    button.textContent = "Pesquisar";
+                    button.innerHTML = "Pesquisar";
                     button.removeAttribute("aria-busy");
                 }
             });
