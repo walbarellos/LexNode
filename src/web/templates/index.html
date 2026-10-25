@@ -256,6 +256,12 @@
             border: 1px solid var(--line);
             padding: 1rem 1.1rem;
             margin-bottom: 0.75rem;
+            position: relative;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .docket > li:hover, .docket > li:focus-within {
+            border-color: var(--navy);
+            box-shadow: 0 4px 12px rgba(28, 53, 84, 0.08);
         }
         .kicker {
             margin: 0 0 0.25rem;
@@ -276,6 +282,12 @@
             text-decoration: underline;
             text-underline-offset: 0.15em;
         }
+        .case-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
         .classe, .assunto { margin: 0.25rem 0; }
         .meta {
             display: grid;
@@ -294,6 +306,8 @@
             padding: 0.75rem 0 0.75rem 0.9rem;
             border-left: 3px solid var(--line);
             user-select: text;
+            position: relative;
+            z-index: 2;
         }
         footer {
             border-top: 1px solid var(--line);
