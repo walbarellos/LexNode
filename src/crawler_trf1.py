@@ -13,9 +13,10 @@ import logging
 import re
 import time
 import warnings
-import requests
 from dataclasses import dataclass
-from bs4 import BeautifulSoup
+
+import requests
+from bs4 import BeautifulSoup, SoupStrainer
 
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
@@ -90,7 +91,9 @@ class CrawlerTRF1:
     def _iniciar_sessao(self):
         """GET inicial para obter o JSESSIONID e o javax.faces.ViewState."""
         r = self._request_with_retry("GET", BASE_URL)
-        soup = BeautifulSoup(r.text, "lxml")
+        # Otimização: usar SoupStrainer para analisar apenas o input necessário (evita parse de DOM massivo)
+        strainer = SoupStrainer("input", attrs={"name": "javax.faces.ViewState"})
+        soup = BeautifulSoup(r.text, "lxml", parse_only=strainer)
         vs = soup.find("input", {"name": "javax.faces.ViewState"})
         if vs:
             self._view_state = vs["value"]
@@ -177,7 +180,9 @@ class CrawlerTRF1:
         return body
 
     def _parsear_resultados(self, html: str) -> list[ResumoProcessoFederal]:
-        soup = BeautifulSoup(html, "lxml")
+        # Otimização: usar SoupStrainer para analisar apenas a tabela de resultados (melhora performance da busca)
+        strainer = SoupStrainer("table", id="fPP:processosTable")
+        soup = BeautifulSoup(html, "lxml", parse_only=strainer)
         table = soup.find("table", id="fPP:processosTable")
         if not table:
             return []
@@ -241,7 +246,7 @@ class CrawlerTRF1:
         soup = BeautifulSoup(r.text, "lxml")
 
         def get_prop(label):
-            b = soup.find("b", string=re.compile(label, re.I))
+            b = soup.find("b", string=re.compile(label, re.IGNORECASE))
             if not b:
                 return ""
             parent = b.parent
@@ -258,14 +263,14 @@ class CrawlerTRF1:
 
         orgao_julgador = ""
         endereco = ""
-        b_orgao = soup.find("b", string=re.compile("Órgão Julgador", re.I))
+        b_orgao = soup.find("b", string=re.compile("Órgão Julgador", re.IGNORECASE))
         if b_orgao:
             parent_div = b_orgao.parent
             texto = parent_div.get_text(" ", strip=True)
-            match_orgao = re.search(r"Órgão Julgador\s+(.*?)(?:Endereço|$)", texto, re.I)
+            match_orgao = re.search(r"Órgão Julgador\s+(.*?)(?:Endereço|$)", texto, re.IGNORECASE)
             if match_orgao:
                 orgao_julgador = match_orgao.group(1).strip()
-            match_end = re.search(r"Endereço\s+(.*)", texto, re.I)
+            match_end = re.search(r"Endereço\s+(.*)", texto, re.IGNORECASE)
             if match_end:
                 endereco = match_end.group(1).strip()
 
