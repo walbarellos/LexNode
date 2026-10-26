@@ -252,6 +252,7 @@
             padding: 0;
         }
         .docket > li {
+            position: relative;
             background: var(--sheet);
             border: 1px solid var(--line);
             padding: 1rem 1.1rem;
@@ -276,6 +277,12 @@
             text-decoration: underline;
             text-underline-offset: 0.15em;
         }
+        .case-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+        }
+        .case-link:hover { color: var(--navy-hover); }
         .classe, .assunto { margin: 0.25rem 0; }
         .meta {
             display: grid;
