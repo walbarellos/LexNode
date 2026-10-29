@@ -252,10 +252,14 @@
             padding: 0;
         }
         .docket > li {
+            position: relative;
             background: var(--sheet);
             border: 1px solid var(--line);
             padding: 1rem 1.1rem;
             margin-bottom: 0.75rem;
+        }
+        .docket > li:hover {
+            border-color: var(--navy);
         }
         .kicker {
             margin: 0 0 0.25rem;
@@ -275,6 +279,11 @@
             cursor: pointer;
             text-decoration: underline;
             text-underline-offset: 0.15em;
+        }
+        .case-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
         }
         .classe, .assunto { margin: 0.25rem 0; }
         .meta {
@@ -517,7 +526,7 @@
                 errorBox.hidden = true;
                 loading.hidden = false;
                 button.disabled = true;
-                button.textContent = "Consultando…";
+                button.innerHTML = '<span class="loading-mark" aria-hidden="true" style="border-color: currentColor; border-right-color: transparent;"></span> Consultando…';
                 button.setAttribute("aria-busy", "true");
 
                 try {
