@@ -1,8 +1,9 @@
-import os
-import requests
-from pathlib import Path
-from dotenv import load_dotenv
 import logging
+import os
+from pathlib import Path
+
+import requests
+from dotenv import load_dotenv
 
 logger = logging.getLogger("processolivre.pdf")
 
