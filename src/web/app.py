@@ -1,30 +1,30 @@
+import asyncio
 import os
 import re
-import asyncio
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 
-from fastapi import FastAPI, HTTPException, Request, Query
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, FileResponse
+from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-import threading
 from src.base_crawler import (
     BaseCrawler,
-    ProcessoNaoEncontradoError,
-    ConsultaFalhouError,
     CaptchaNecessarioError,
-)
-from src.normalizer import (
-    normalizar_html_1grau, 
-    normalizar_html_2grau, 
-    ProcessoSigilosoError,
-    extrair_resumos_pesquisa,
-    extrair_resumos_pesquisa_2grau
+    ConsultaFalhouError,
+    ProcessoNaoEncontradoError,
 )
 from src.crawler_jurisprudencia import CrawlerJurisprudencia
 from src.crawler_trf1 import CrawlerTRF1
+from src.normalizer import (
+    ProcessoSigilosoError,
+    extrair_resumos_pesquisa,
+    extrair_resumos_pesquisa_2grau,
+    normalizar_html_1grau,
+    normalizar_html_2grau,
+)
 
 app = FastAPI(title="LexNode")
 
